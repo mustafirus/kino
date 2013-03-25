@@ -49,7 +49,6 @@ public:
 #ifdef _DEBUG
 	void Dump();
 #endif //_DEBUG
-DECLARE_DICT_MEMORY
 };
 
 class FKey : public PKey
@@ -63,7 +62,6 @@ public:
 #ifdef _DEBUG
 	void Dump();
 #endif //_DEBUG
-DECLARE_DICT_MEMORY
 };
 
 class QTable;

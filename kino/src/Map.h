@@ -102,7 +102,7 @@ class StringMap
 		Assoc(const char* k, VALUE* v) : next(0), key(k), value(v){};
 		~Assoc(){if(value)delete value;if(next) delete next;};
 		VALUE*	value;
-		Assoc* Find(const char* k){if(!lstrcmp(k,key))return this;if(next)return next->Find(k);else return NULL;};
+		Assoc* Find(const char* k){if(!strcmp(k,key))return this;if(next)return next->Find(k);else return NULL;};
 		Assoc* Add(Assoc* a)
 		{
 			if(next)

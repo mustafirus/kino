@@ -5,15 +5,8 @@
 #include "stdx.h"
 #include "Styles.h"
 #include "StMdfr.h"
-#include "Wnd.h"
 #include "FDC.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 FDC::FDC(Wnd* pwnd, HDC hdc /*= NULL*/) :
 pWnd(pwnd), style(0), modified(false)

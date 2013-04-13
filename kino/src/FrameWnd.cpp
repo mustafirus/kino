@@ -21,9 +21,7 @@
 
 //#include "Grid.h"
 //#include "RFieldControl.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+
 
 #define MAXACCELS	10
 #define BASECLASS MDIChild
@@ -89,7 +87,7 @@ BEGIN_COMMAND_MAP(FrameWnd, BASECLASS)
 //	ON_COMMAND_EX(ID_RECORD_DELETE, OnCommands)
 END_COMMAND_MAP
 
-LRESULT FrameWnd::WindowProc(UINT message, WPARAM wParam, LPARAM lParam) 
+LRESULT FrameWnd::WindowProc(uint message, WPARAM wParam, LPARAM lParam)
 {
 	DISPATCH
 		ON_MSG(WM_GETMINMAXINFO, OnGetMinMaxInfo);
@@ -114,7 +112,7 @@ LRESULT FrameWnd::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 	BASEROUGHT
 }
 
-bool FrameWnd::OnCommand(UINT nID, HWND hwndCtl, UINT codeNotify)
+bool FrameWnd::OnCommand(uint nID, HWND hwndCtl, uint codeNotify)
 {
 	Wnd* pWnd = GetFocus();
 	Wnd* pWndParent;
@@ -174,7 +172,7 @@ void FrameWnd::OnWindowPosChanged(const LPWINDOWPOS lpwpos)
 	}
 }
 
-void FrameWnd::OnSize(UINT nType, int cx, int cy)
+void FrameWnd::OnSize(uint nType, int cx, int cy)
 {
 	Default();
 }
@@ -254,7 +252,7 @@ void FrameWnd::OnGetMinMaxInfo(LPMINMAXINFO pmm)
 		Default();*/
 }
 
-bool FrameWnd::OnSetCursor(HWND hwndCursor, UINT codeHitTest, UINT msg)
+bool FrameWnd::OnSetCursor(HWND hwndCursor, uint codeHitTest, uint msg)
 {
 	if(hwndCursor == *this)
 	{
@@ -317,7 +315,7 @@ void FrameWnd::OnClose()
 			pRec->Save();
 		else
 		{
-			switch(MessageBox(*this, "Сохранить изменения?", "Kino", MB_YESNOCANCEL|MB_ICONQUESTION))
+			switch(MessageBox(*this, "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?", "Kino", MB_YESNOCANCEL|MB_ICONQUESTION))
 			{
 			case IDYES:
 				pRec->Save();
@@ -355,7 +353,7 @@ void FrameWnd::OnPaint()
 	pRootFrame->Draw(hdc);
 }
 
-void FrameWnd::OnKey(UINT nChar, bool fDown, int nRepCnt, UINT nFlags)
+void FrameWnd::OnKey(uint nChar, bool fDown, int nRepCnt, uint nFlags)
 {
 //	Frame::FocusDir dir=Frame::none;
 //	if(!fDown)
@@ -386,7 +384,7 @@ void FrameWnd::OnKey(UINT nChar, bool fDown, int nRepCnt, UINT nFlags)
 	Default();
 }
 
-void FrameWnd::OnLButtonDown(bool fDoubleClick, int x, int y, UINT keyFlags)
+void FrameWnd::OnLButtonDown(bool fDoubleClick, int x, int y, uint keyFlags)
 {
 	if(!fDoubleClick)
 	if(keyFlags == MK_LBUTTON)
@@ -405,7 +403,7 @@ void FrameWnd::OnDestroy()
 	GetMainWnd()->MDIActivate(prev);
 }
 
-void FrameWnd::OnMouseMove(int x, int y, UINT keyFlags)
+void FrameWnd::OnMouseMove(int x, int y, uint keyFlags)
 {
 /*	POINT pt = {x, y};
 	HWND hwnd = ::ChildWindowFromPoint(*this, pt);
@@ -433,7 +431,7 @@ char* FrameWnd::GetControls(char* str, RFieldControls& vct)
 	return str;
 }
 
-void FrameWnd::OnCommands(UINT nID)
+void FrameWnd::OnCommands(uint nID)
 {
 	Wait w;
 	switch(nID)
@@ -527,7 +525,7 @@ MainWnd* FrameWnd::GetMainWnd()
 /////////////////////////////////////////////////////////////////////////////
 // FrameWnd message handlers
 
-/*BOOL FrameWnd::OnCmdMsg(UINT nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo) 
+/*BOOL FrameWnd::OnCmdMsg(uint nID, int nCode, void* pExtra, AFX_CMDHANDLERINFO* pHandlerInfo)
 {
 	CWnd* pWnd = GetFocus();
 	if(IsChild(pWnd))
@@ -607,7 +605,7 @@ bool FrameWnd::OnCmdUI(CmdUI* pCmdUI)
 		
 	if(pWnd && pWnd->OnCmdUI(pCmdUI))
 		return true;
-/*	UINT nID = *pCmdUI;
+/*	uint nID = *pCmdUI;
 	if(nID >= ID_EDIT_FIRST && nID <= ID_EDIT_LAST)
 	{
 		pCmdUI->Enable();
@@ -639,8 +637,8 @@ bool FrameWnd::PreTranslateMessage(MSG* pMsg)
 	return (hAccel ? (::TranslateAccelerator(*this, hAccel, pMsg)>0) : false);
 }
 
-/*static void CrackAcc(char* acstr, UINT wID, ACCEL* pac, int cac);
-void FrameWnd::Fun(QTable * pqt, UINT nID)
+/*static void CrackAcc(char* acstr, uint wID, ACCEL* pac, int cac);
+void FrameWnd::Fun(QTable * pqt, uint nID)
 {
 //	ASSERT(nID > 0);
 //	nID--;
@@ -689,7 +687,7 @@ void FrameWnd::Fun(QTable * pqt, UINT nID)
 	delete ni.names;
 }
 
-static void CrackAcc(char* acstr, UINT wID, ACCEL* pac, int cac)
+static void CrackAcc(char* acstr, uint wID, ACCEL* pac, int cac)
 {
 	while(cac)
 	{

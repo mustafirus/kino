@@ -11,13 +11,7 @@
 #include "RKey.h"
 #include "RLink.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 QRestr* RLink::CreateQRestr(Query* pQuery, QRestr* pHead)
 {
 	if(psrckey->IsPrimary())

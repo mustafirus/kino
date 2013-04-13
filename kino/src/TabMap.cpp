@@ -5,12 +5,6 @@
 #include "stdx.h"
 #include "TabMap.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 TabDir TabMap::up = {-1, 0};
 TabDir TabMap::down = {1, 0};
 TabDir TabMap::left = {0, -1};

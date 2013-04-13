@@ -32,7 +32,7 @@ public:
 	virtual void BindParameter(RKey* prk) = 0;
 
 	virtual void Execute() = 0;
-	virtual bool BindEx(int col, int* len, char* buf, SDWORD* pindicator) = 0;
+	virtual bool BindEx(int col, int* len, char* buf, unsigned short* pindicator) = 0;
 	virtual int Fetch(FetchType fetchtype, int rownum, int nfetchrows) = 0;
 //DECLARE_DICT_MEMORY
 };

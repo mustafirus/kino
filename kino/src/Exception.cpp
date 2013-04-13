@@ -3,12 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdx.h"
-#include "Log.h"
 #include "Exception.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 Exception Exception::ex;
 Log*	Exception::errlog = NULL;

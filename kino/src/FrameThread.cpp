@@ -8,12 +8,7 @@
 #include "Thread.h"
 #include "Exception.h"
 #include "FrameThread.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+
 #define GetApp() Application::GetApp()
 FrameThread::FrameThread(FrameThread*& pHead) :
 next(pHead), pprev(&pHead),
@@ -61,7 +56,7 @@ FrameThread* FrameThread::CreateThread()
 	return new FrameThread(*pprev);
 }
 
-void FrameThread::CreateThread(RKey* prk, UINT formID)
+void FrameThread::CreateThread(RKey* prk, uint formID)
 {
 	Wait ww;
 	FrameThread* ptr = new FrameThread(*pprev);

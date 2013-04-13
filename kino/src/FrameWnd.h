@@ -91,10 +91,10 @@ protected:
 	virtual ~FrameWnd(); // Destruct by DestroyWindow
 
 	
-//	bool OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	bool OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
-//	bool OnLButtonDown(UINT nFlags, CPoint point);
-//	bool OnLButtonDblClk(UINT nFlags);
+//	bool OnKeyDown(uint nChar, uint nRepCnt, uint nFlags);
+//	bool OnKeyUp(uint nChar, uint nRepCnt, uint nFlags);
+//	bool OnLButtonDown(uint nFlags, CPoint point);
+//	bool OnLButtonDblClk(uint nFlags);
 //	void OnNorm(RecordSet* pRec);
 
 

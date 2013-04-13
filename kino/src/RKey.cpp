@@ -14,13 +14,7 @@
 #include "QField.h"
 #include "RKey.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 RKey::RKey(QTable* pqt, Record* psrc) :
 pQTable(pqt)/*, pTRec(NULL), rest(NULL), clone(false), copy(false)*/
 {

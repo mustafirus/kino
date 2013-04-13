@@ -9,7 +9,6 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 #include "ErrorCodes.h"
-#include "Log.h"
 #include "Exception.h"
 
 class DbException : public Exception  

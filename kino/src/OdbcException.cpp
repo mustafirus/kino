@@ -3,15 +3,8 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdx.h"
-#include "Log.h"
 #include "OdbcException.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 OdbcException OdbcException::ex;//5701 Change context to kino; 5703 Change lang to russian
 
 void OdbcException::Report(RETCODE  code, const char* pszCall,	const char* pszFile, int nLine, HENV henv, HDBC hdbc, HSTMT hstmt)

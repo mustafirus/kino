@@ -6,14 +6,6 @@
 #include "Dict.h"
 #include "Field.h"
 
-IMPLEMENT_DICT_MEMORY(Field)
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 Field::Field() : name(NULL), capt(NULL), ro(false), str(0), strlen(0),
 scrlen(0), type(Unknown), style(0), stmdf(NULL), deft(NULL){}

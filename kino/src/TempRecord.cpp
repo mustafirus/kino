@@ -6,12 +6,6 @@
 #include "dblib.h"
 #include "TempRecord.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 #define pDB Record::pDB
 TempRecord::TempRecord(const char* str, RKey* prk) : pDbStmt(NULL)
 {

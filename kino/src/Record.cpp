@@ -11,22 +11,16 @@
 #include "RKey.h"
 #include "QRestr.h"
 #include "RLink.h"
-#include "Wait.h"
 #include "DbException.h"
 #include "DataBase.h"
 #include "RecordSet.h"
 
 //#define GrowBy	4
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+
 DataBase* Record::pDB = NULL;
 Dict* Record::pDict = NULL;
-UINT Record::CF_RKEY = RegisterClipboardFormat("CF_RKEY");
+uint Record::CF_RKEY = RegisterClipboardFormat("CF_RKEY");
 
 Record::Record() : 
 pPRKey(NULL), pDbStmt(NULL),
@@ -715,7 +709,7 @@ bool Record::Insert()
 	}catch(DbException * e)
 	{
 		e->Dump();
-		MessageBox(NULL, "       Невозможно добавить запись!         ", "Ошибка!", MB_OK|MB_ICONERROR);
+		MessageBox(NULL, "       пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!         ", "пїЅпїЅпїЅпїЅпїЅпїЅ!", MB_OK|MB_ICONERROR);
 	}
 	pDB->Flush();
 	Empty();

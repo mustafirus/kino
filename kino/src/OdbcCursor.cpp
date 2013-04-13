@@ -9,9 +9,6 @@
 #include "RSWhere.h"
 #include "RKey.h"
 #include "OdbcCursor.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif //_DEBUG
 
 #ifdef DEBUGSQL
 #define SaveCmd(X) if(lstrlen(X)>=1024){CopyMemory(OdbcCursor::stmt, X, 1024); OdbcCursor::stmt[1023] = 0;}else lstrcpy(OdbcCursor::stmt, X)

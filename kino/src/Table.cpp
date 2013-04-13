@@ -11,14 +11,6 @@
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-IMPLEMENT_DICT_MEMORY(Table)
-IMPLEMENT_DICT_MEMORY(PKey)
-IMPLEMENT_DICT_MEMORY(FKey)
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 
 Field* Table::GetField(int n)
 {

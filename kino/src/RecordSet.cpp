@@ -17,9 +17,6 @@
 //#include "WaitCursor.h"
 #include "RecordSet.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #define BUFSIZE		10
 //#define DBBUFSIZE	50
@@ -328,7 +325,7 @@ void RecordSet::Delete()
 	}catch(DbException * e)
 	{
 		e->Dump();
-		MessageBox(NULL, "       Удалить нельзя!         ", "Ошибка!", MB_OK|MB_ICONERROR);
+		MessageBox(NULL, "       пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ!         ", "пїЅпїЅпїЅпїЅпїЅпїЅ!", MB_OK|MB_ICONERROR);
 	}
 	pDB->Flush();
 	MoveCur(INT_MIN);

@@ -4,7 +4,6 @@
 
 #include "stdx.h"
 #include "dblib.h"
-#include "Frame.h"
 #include "ErrorCodes.h"
 #include "Exception.h"
 #include "Kinores.h"
@@ -12,9 +11,6 @@
 
 #define GetApp() Application::GetApp()
 #define MAXACCELS	10
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
@@ -41,7 +37,7 @@ void DataContext::Create(const char* table)
 //	((char*)szFrameName) = (char*)((QTable*)*pQuery)->GetName(1);
 }
 
-void DataContext::Create(RKey* prk, RLink* prl, UINT nID)
+void DataContext::Create(RKey* prk, RLink* prl, uint nID)
 {
 	ASSERT(_isFree());
 	pRKey = prk;
@@ -64,8 +60,8 @@ void DataContext::FreeContext()
 	pRKey = NULL;
 	rt = none;
 	ifdel(szForm);
-	(char*)szFrameName = NULL;
-	(char*)szForm = NULL;
+	szFrameName = NULL;
+	szForm = NULL;
 	pWnd = NULL;
 	bAutoSave = false;
 }
@@ -109,8 +105,8 @@ RecordSet* DataContext::GetRecordSet()
 	return (RecordSet*)pRec;
 }
 
-static void CrackAcc(char* acstr, UINT wID, ACCEL* pac, int cac);
-void DataContext::Fun(QTable * pqt, UINT nID)
+static void CrackAcc(char* acstr, uint wID, ACCEL* pac, int cac);
+void DataContext::Fun(QTable * pqt, uint nID)
 {
 	ASSERT(nID > 0);
 	nID--;
@@ -160,7 +156,7 @@ void DataContext::Fun(QTable * pqt, UINT nID)
 	delete ni.names;
 }
 
-static void CrackAcc(char* acstr, UINT wID, ACCEL* pac, int cac)
+static void CrackAcc(char* acstr, uint wID, ACCEL* pac, int cac)
 {
 	while(cac)
 	{

@@ -12,9 +12,6 @@
 #include "OdbcCursor.h"
 #include "OdbcDataBase.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #define ex	OdbcException::ex
 #ifdef DEBUGSQL

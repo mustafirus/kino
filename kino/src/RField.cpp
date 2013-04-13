@@ -9,12 +9,6 @@
 #include "Record.h"
 #include "RField.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 RField::RField() :
 buf(NULL), type(Field::Char), pQField(NULL), pPRField(NULL), pRec(NULL), pind(NULL),
 /*state(s_dummy), */buf_attrib(b_none), /*attr(Hidden), */v(0){}

@@ -11,11 +11,6 @@
 #include "SqlStmt.h"
 #include "QTable.h"
 
-IMPLEMENT_DICT_MEMORY(QTable)
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 
 //DataBase* QTable::pDB=NULL;

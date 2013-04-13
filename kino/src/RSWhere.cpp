@@ -8,9 +8,6 @@
 #include "RSField.h"
 #include "RSWhere.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif //_DEBUG
 
 #ifdef ifdel
 #undef ifdel

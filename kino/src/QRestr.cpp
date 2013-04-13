@@ -14,11 +14,6 @@
 #include "Query.h"
 #include "QRestr.h"
 
-IMPLEMENT_DICT_MEMORY(QRestr)
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 char* GetRest(){return NULL;};
 /*const char* RKey::GetRest()

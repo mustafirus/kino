@@ -7,13 +7,6 @@
 #include "SqlStmt.h"
 
 #define GROWBY 256
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif //_DEBUG
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
-
 SqlStmt& SqlStmt::operator<<(const char* s1)
 {
 	int len = lstrlen(s1);

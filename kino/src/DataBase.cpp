@@ -8,6 +8,5 @@
 #include "DbException.h"
 #include "DataBase.h"
 
-IMPLEMENT_DICT_MEMORY(DataBase)
 
 

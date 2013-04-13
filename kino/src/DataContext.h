@@ -27,8 +27,8 @@ class DataContext
 
 	void Fun(QTable*pqt, uint nID);
 public:
-	char* const szFrameName;
-	char* const szForm;
+	char*		szFrameName;
+	char*		szForm;
 	FrameWnd*	pWnd;
 	bool		bAutoSave; 
 

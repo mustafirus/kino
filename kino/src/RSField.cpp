@@ -13,12 +13,7 @@
 #include "SqlStmt.h"
 #include "RSField.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+
 RSField::RSField(): dbbuf(NULL), pRSWhere(NULL){}
 
 /*RSBookmark::RSBookmark(RecordSet* prs)

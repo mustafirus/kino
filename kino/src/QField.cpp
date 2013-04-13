@@ -7,14 +7,6 @@
 #include "SqlStmt.h"
 #include "QField.h"
 
-IMPLEMENT_DICT_MEMORY(QField)
-
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
 
 QField::QField(QTable* pqt, Field* pf)
 {

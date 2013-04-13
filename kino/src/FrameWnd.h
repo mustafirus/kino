@@ -22,11 +22,10 @@ class FrameThread;
 class MainWnd;
 class DataContext;
 
-#include "MDIChild.h"
 #include "Defines.h"
 #include "TabMap.h"
 
-class FrameWnd : public MDIChild
+class FrameWnd
 {
 	FrameWnd*	prev;
 	FrameWnd*	next;
@@ -123,7 +122,7 @@ public:
 	void BringToTop(bool top);
 	static void RegisterClass();
 	virtual const char* GetClassName(){return "FRAMEWND";};
-DECLARE_COMMAND_MAP()
+
 	void OnCommands(UINT nID);
 };
 

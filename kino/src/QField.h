@@ -43,7 +43,7 @@ public:
 	int GetStyle();
 	const char* GetCaption();
 */protected:
-DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_QFIELD_H__2A22DB53_DE78_11D1_A60C_204C4F4F5020__INCLUDED_)

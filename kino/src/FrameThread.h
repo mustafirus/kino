@@ -9,12 +9,11 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "WinThread.h"
 #include "DataContext.h"
 
 class FrameWnd;
 
-class FrameThread : public WinThread
+class FrameThread
 {
 	FrameThread**	pprev;
 	FrameThread*	next;

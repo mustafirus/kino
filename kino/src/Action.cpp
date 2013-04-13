@@ -7,11 +7,8 @@
 #include "DataContext.h"
 #include "FrameThread.h"
 #include "FrameWnd.h"
-#include "MainWnd.h"
-#include "KinoRes.h"
 #include "KinoApp.h"
 #include "Exception.h"
-#include "Wait.h"
 #include "Action.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW

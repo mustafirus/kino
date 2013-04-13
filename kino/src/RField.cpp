@@ -154,14 +154,15 @@ void RField::OnCopy(HWND hWnd)
 
 void RField::OnPaste(HWND hWnd)
 {
-	if(!(OpenClipboard(hWnd) && IsClipboardFormatAvailable(Record::CF_RKEY)))
+/*	if(!(OpenClipboard(hWnd) && IsClipboardFormatAvailable(Record::CF_RKEY)))
 	{
 		CloseClipboard();
 		return;
 	}
 	char* str = (char* )GetClipboardData(Record::CF_RKEY);
 	CloseClipboard();
-	RKey* prk = pRec->GetRKey(*pQField);
+*/	RKey* prk = pRec->GetRKey(*pQField);
+	char* str = "";
 	if(!prk->CanSet(str))
 		return;
 	prk->Set(str);
@@ -179,7 +180,7 @@ bool RField::CanPaste(HWND hWnd)
 	RKey* prk = pRec->GetRKey(*pQField);
 	ASSERT(prk);
 	bool can = false;
-	if(OpenClipboard(hWnd) && IsClipboardFormatAvailable(Record::CF_RKEY))
+/*	if(OpenClipboard(hWnd) && IsClipboardFormatAvailable(Record::CF_RKEY))
 	{
 		HANDLE h = GetClipboardData(Record::CF_RKEY);
 		char* str = (char*)GlobalLock(h);
@@ -187,5 +188,6 @@ bool RField::CanPaste(HWND hWnd)
 		GlobalUnlock(h);
 	}
 	CloseClipboard();
+*/
 	return can;
 }

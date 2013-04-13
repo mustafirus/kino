@@ -114,7 +114,13 @@ class StringMap
 	Assoc* pData[HASH_SIZE];
 	unsigned char GetHash(const char* key) const;
 public:
-	StringMap(){ASSERT(HASH_SIZE < 256);memset(pData, 0, sizeof(pData));};
+	StringMap(){
+#ifdef _DEBUG
+		int zzz = HASH_SIZE;
+		ASSERT(zzz < 256);
+#endif //_DEBUG
+		memset(pData, 0, sizeof(pData));
+	};
 	~StringMap()
 	{
 		for(int i = 0; i < HASH_SIZE; i++)
@@ -128,8 +134,8 @@ public:
 template <class VALUE, int HASH_SIZE>
 unsigned char StringMap<VALUE, HASH_SIZE>::GetHash(const char* key) const
 {
-	UINT nHash = 0;
-	UINT n = 0;
+	unsigned nHash = 0;
+	unsigned n = 0;
 	while (*key)
 		nHash += (nHash<<14) + *key++ ;
 	nHash  = nHash % HASH_SIZE;

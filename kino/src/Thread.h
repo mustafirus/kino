@@ -9,7 +9,6 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-class Wnd;
 
 #define ThreadPtr __declspec( thread ) static Thread*
 
@@ -25,8 +24,6 @@ protected:
 	Thread() : hThread(NULL), nThreadID(0), pWndCreate(NULL), hhk(NULL){};
 //Attributes
 public:
-	Wnd* pWndCreate;
-	HHOOK hhk;
 //Construction
 public:
 	Thread(bool suspended, bool autodel);
@@ -37,9 +34,9 @@ public:
 	virtual int Run(){return -1;};
 	virtual void Resume(){ResumeThread(hThread);};
 	operator HANDLE(){return hThread;};
-	static Thread* GetCurrent();
+//	static Thread* GetCurrent();
 private:
-	static DWORD WINAPI Start(Thread* pThread);
+	static void* Start(Thread* pThread);
 };
 
 #endif // !defined(AFX_THREAD_H__E7D87217_272F_11D2_A6D9_204C4F4F5020__INCLUDED_)

@@ -13,10 +13,10 @@
 #define BO_FLAG		2
 
 class RiB;
-DWORD LoadRuner(RiB* pRec);
+uint LoadRuner(RiB* pRec);
 class RiB
 {
-friend DWORD LoadRuner(RiB* pRec);
+friend uint LoadRuner(RiB* pRec);
 friend 	bool Normalize();
 	int start;
 	int size;
@@ -31,7 +31,7 @@ protected:
 	enum Flag{all, eof, bof};
 
 	RiB(int psz,int sz = 0)
-	: size_d((sz > 0) ? sz : psz * 3), psize_d(min(psz,size_d)),
+	: size_d((sz > 0) ? sz : psz * 3), psize_d(std::min(psz,size_d)),
 		start(0), size(0), pstart(0), psize(0), currow(0), flag(0)
 	{
 		size = size_d;		
@@ -40,7 +40,7 @@ protected:
 	~RiB(){};
 
 	int  GetSize(){return size;};
-	void SetSize(int s){size = s; psize = min(GetPageSize_D(),size);};
+	void SetSize(int s){size = s; psize = std::min(GetPageSize_D(),size);};
 
 	int  GetPageRow(int row){if(row<0 || row>=psize) return -1;int rr = start + pstart + row; return (rr<size) ? rr : rr-size;};
 	int  GetCurRow(){int rr = start + pstart + currow; if(size == 0) return -1; return (rr<size) ? rr : rr-size;};
@@ -61,7 +61,7 @@ public:
 	void SetPageCur(int row){if(row<0 || row>=psize) currow = 0; currow = row;};
 
 	int  GetPageSize(){return psize;};
-	void SetPageSize(int s){ASSERT(s>=0 /*&& s<size*/);psize = min(s,size);};
+	void SetPageSize(int s){ASSERT(s>=0 /*&& s<size*/);psize = std::min(s,size);};
 };
 
 #endif // !defined(AFX_RIB_H__785A9FA2_EFBB_11D1_A636_204C4F4F5020__INCLUDED_)

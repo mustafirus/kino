@@ -68,7 +68,7 @@ public:
 	virtual int  GetIdentity() = 0;
 	virtual bool ExecProc(const char* name, int id, int& newid) = 0;
 	virtual bool ExecProc(const char * name, int id, char* str, int slen) = 0;
-	DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_DATABASE_H__670D9FD3_DFFF_11D1_A611_204C4F4F5020__INCLUDED_)

@@ -7,7 +7,6 @@
 #include "Frame.h"
 #include "ErrorCodes.h"
 #include "Exception.h"
-#include "Application.h"
 #include "Kinores.h"
 #include "DataContext.h"
 

@@ -58,7 +58,7 @@ hThread(NULL), nThreadID(0), pWndCreate(NULL), hhk(NULL), auto_delete(autodel)
 		suspended ? CREATE_SUSPENDED : 0, &nThreadID);
 };
 
-DWORD WINAPI Thread::Start(Thread* pThread)
+void* Thread::Start(Thread* pThread)
 {
 	pThread->pCurentThread = pThread;
 	int exc = pThread->exit_code = pThread->Run();

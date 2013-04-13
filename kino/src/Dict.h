@@ -9,37 +9,6 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#ifndef SET_DEBUG_NEW
-#ifdef _DEBUG
-
-#define DECLARE_DICT_MEMORY		public:\
-void* operator new(unsigned int size);\
-void* operator new(unsigned int size, int, const char *, int);\
-void operator delete(void* p);
-
-#define IMPLEMENT_DICT_MEMORY(X)		\
-void* X::operator new(unsigned int size){return Dict::malloc(size);};\
-void* X::operator new(unsigned int size, int, const char *, int){return Dict::malloc(size);};\
-void X::operator delete(void* p){Dict::free(p);};
-
-#else
-
-#define DECLARE_DICT_MEMORY		public:\
-void* operator new(unsigned int size);\
-void operator delete(void* p);
-
-#define IMPLEMENT_DICT_MEMORY(X)		\
-void* X::operator new(unsigned int size){return Dict::malloc(size);};\
-void X::operator delete(void* p){Dict::free(p);};
-
-#endif //_DEBUG
-
-#else
-
-#define DECLARE_DICT_MEMORY
-#define IMPLEMENT_DICT_MEMORY(X)
-
-#endif //SET_DEBUG_NEW
 
 #include "Array.h"
 #include "Map.h"
@@ -94,20 +63,8 @@ public:
 
 	operator DataBase*(){return pDB;};
 
-	static HANDLE hDictHeap;
-	static void* malloc(unsigned int size);
-	static void free(void* p);
-#ifndef SET_DEBUG_NEW
-	void* operator new(unsigned int size){return malloc(size);};
-#ifdef _DEBUG
-	void* operator new(unsigned int size, int, const char *, int){return malloc(size);};
-#endif //_DEBUG
-	void operator delete(void* p){free(p);};
-#endif //SET_DEBUG_NEW
 private:
 	bool LoadTables();
-	static HANDLE hLoadDict;
-	static DWORD WINAPI LoadDict(Dict* pDict);
 
 #ifdef _DEBUG
 public:

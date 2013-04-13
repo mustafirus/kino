@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <malloc.h>
 #include <limits.h>
+#include <cstring>
+#include <algorithm>
 #include "hlpdefs.h"
-#include "x_dbg.h"
-//#define new	DEBUG_NEW
+#include <cassert>
+#define ASSERT assert

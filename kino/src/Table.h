@@ -97,7 +97,7 @@ public:
 #ifdef _DEBUG
 	void Dump();
 #endif //_DEBUG
-DECLARE_DICT_MEMORY
+
 };
 
 

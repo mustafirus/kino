@@ -9,6 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include <cstring>
 template <class T>
 class Array
 {

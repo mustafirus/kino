@@ -61,7 +61,7 @@ friend class RKey;
 friend class DataBase;
 friend class RSField;
 friend class RSBookmark;
-friend DWORD LoadRuner(RiB* pRec);
+friend uint LoadRuner(RiB* pRec);
 //	CWnd*		pWnd;
 };
 

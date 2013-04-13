@@ -45,7 +45,7 @@ public:
 			return NULL;
 		if(fields == max_fields)
 		{
-			ASSERT(FALSE);
+			ASSERT(false);
 			return NULL;
 		}
 		return pData[fields++] = pt;

@@ -18,6 +18,10 @@ struct TabPos
 typedef TabPos TabDir;
 inline TabPos operator+(TabPos pos, TabDir dir){pos.r += dir.r, pos.c += dir.c; return pos;};
 inline bool operator==(TabDir d1, TabDir d2){return d1.r == d2.r && d1.c == d2.c;};
+struct SIZE{
+	int cx;
+	int cy;
+};
 class TabMap
 {
 	int rows;

@@ -5,8 +5,9 @@ src/Action.d src/Action.o: ../src/Action.cpp ../src/stdx.h \
  ../src/List.h ../src/RSField.h ../src/RField.h ../src/QField.h \
  ../src/QTable.h ../src/RSWhere.h ../src/RKey.h ../src/RLink.h \
  ../src/QRestr.h ../src/OdbcDataBase.h ../src/DataBase.h ../src/Defines.h \
- ../src/DataContext.h ../src/FrameThread.h ../src/FrameWnd.h \
- ../src/TabMap.h ../src/Exception.h ../src/Action.h ../src/Kinores.h
+ ../src/DataContext.h ../src/FrameThread.h ../src/Thread.h \
+ ../src/FrameWnd.h ../src/TabMap.h ../src/Exception.h ../src/Action.h \
+ ../src/Kinores.h
 
 ../src/stdx.h:
 
@@ -63,6 +64,8 @@ src/Action.d src/Action.o: ../src/Action.cpp ../src/stdx.h \
 ../src/DataContext.h:
 
 ../src/FrameThread.h:
+
+../src/Thread.h:
 
 ../src/FrameWnd.h:
 

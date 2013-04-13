@@ -5,7 +5,6 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Action.cpp \
-../src/Column.cpp \
 ../src/CreateFrame.cpp \
 ../src/DBCursor.cpp \
 ../src/DataBase.cpp \
@@ -57,7 +56,6 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/Action.o \
-./src/Column.o \
 ./src/CreateFrame.o \
 ./src/DBCursor.o \
 ./src/DataBase.o \
@@ -109,7 +107,6 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/Action.d \
-./src/Column.d \
 ./src/CreateFrame.d \
 ./src/DBCursor.d \
 ./src/DataBase.d \

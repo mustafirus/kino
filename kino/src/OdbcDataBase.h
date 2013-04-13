@@ -12,6 +12,11 @@
 #include "DataBase.h"
 #include "Map.h"
 
+typedef ptrdiff_t HSTMT,HENV,HDBC;
+
+#define RETCODE int
+#define SQL_NULL_HSTMT 0
+
 
 class OdbcStmt : public DbStmt
 {
@@ -27,7 +32,7 @@ public:
 	void Unlock(){locked = false;};
 	OdbcStmt * Find(const char* stmt)
 	{
-		if(!locked && !lstrcmp(stmt, *this))
+		if(!locked && !strcmp(stmt, *this))
 			return this;
 		if(next)
 			return next->Find(stmt);
@@ -41,8 +46,8 @@ class OdbcStmtMap
 	OdbcStmt* pData[HASH_SIZE];
 	unsigned char GetHash(const char* key) const
 	{
-		UINT nHash = 0;
-		UINT n = 0;
+		uint nHash = 0;
+		uint n = 0;
 		while (*key)
 			nHash += (nHash<<14) + *key++ ;
 		nHash  = nHash % HASH_SIZE;
@@ -56,7 +61,7 @@ public:
 			if(pData[i])
 				delete pData[i];
 	};
-	OdbcStmt* OdbcStmtMap::SetAt(const char* stmt, HSTMT hstmt)
+	OdbcStmt* SetAt(const char* stmt, HSTMT hstmt)
 	{
 		unsigned char i = GetHash(stmt);
 		ASSERT(operator[](stmt) == NULL);
@@ -104,11 +109,11 @@ public:
 	DbStmt* Prepare(const char* str);
 	void Set(DbStmt* pst);
 	void Exec();
-	void __cdecl ExecFDirect(const char* str, ...);
+	void ExecFDirect(const char* str, ...);
 	void Bind(int col, RField* prf);
 	void Bind(int col, char* buf, int len, int* pi, Field::Type type = Field::Char);
 //	void Bind(RFields& rf);
-	void BindParameter(/*int col, */int len, char* buf, SDWORD* pindicator);
+	void BindParameter(/*int col, */int len, char* buf, unsigned short* pindicator);
 	void BindParameter(/*int num, */int* par);
 	void BindParameter(RKey* prk);
 	void BindParameter(RSField* prf);
@@ -119,7 +124,7 @@ public:
 	void GetData(int icol, char& data);
 	void GetData(int icol, char* data, int num);
 	void CheckData(RField* prf);
-	void* GetIndicator(int rows){return new SDWORD[rows];};
+	void* GetIndicator(int rows){return new unsigned short[rows];};
 	Field::Type Convert(const char* frombuf, char* tobuf, Field::Type from, Field::Type to);
 	void GetInfo(TABLEINFO* pti);
 	

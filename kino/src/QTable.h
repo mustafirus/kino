@@ -108,7 +108,7 @@ public:
 private:
 /*	CString GetForm(int n);
 */
-DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_QTABLE_H__2A22DB52_DE78_11D1_A60C_204C4F4F5020__INCLUDED_)

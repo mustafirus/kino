@@ -5,12 +5,9 @@
 #include "stdx.h"
 #include "Thread.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-//////////////////////////////////////////////////////////////////////
-// Construction/Destruction
-//////////////////////////////////////////////////////////////////////
+virtual void Thread::Resume(){
+	ResumeThread(hThread);
+};
 
 /*	// Non microsoft implementation
 DWORD Thread::ThreadPtrIndex = -1; */
@@ -32,27 +29,15 @@ void Thread::Attach()
 	nThreadID = ::GetCurrentThreadId();
 }
 
-void Thread::Detach()
-{
-/*	// Non microsoft implementation
-	ASSERT(ThreadPtrIndex != -1 && TlsGetValue(ThreadPtrIndex));
-	TlsSetValue(ThreadPtrIndex, NULL);*/
-	// Microsoft implementation
+void Thread::Detach(){
 	pCurentThread = NULL;
-	hThread	= NULL;
-	nThreadID = 0;
 }
 
-Thread* Thread::GetCurrent()
-{
-/*	// Non microsoft implementation
-	return (Thread*)TlsGetValue(ThreadPtrIndex);  */
-	// Microsoft implementation
+Thread* Thread::GetCurrent(){
 	return pCurentThread;
 }
 
-Thread::Thread(bool suspended, bool autodel) :
-hThread(NULL), nThreadID(0), pWndCreate(NULL), hhk(NULL), auto_delete(autodel)
+Thread::Thread(bool suspended, bool autodel) : auto_delete(autodel)
 {
 	hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Start, this,
 		suspended ? CREATE_SUSPENDED : 0, &nThreadID);
@@ -69,15 +54,12 @@ void* Thread::Start(Thread* pThread)
 
 Thread::~Thread()
 {
-	if(hThread)
+	if(pCurentThread != this)
 	{
-		if(pCurentThread != this)
-		{
-			DWORD status;
-			GetExitCodeThread(hThread, &status);
-			if(status == STILL_ACTIVE)
-				TerminateThread(hThread, -1);
-		}
-		CloseHandle(hThread);
+		DWORD status;
+		GetExitCodeThread(hThread, &status);
+		if(status == STILL_ACTIVE)
+			TerminateThread(hThread, -1);
 	}
+	CloseHandle(hThread);
 };

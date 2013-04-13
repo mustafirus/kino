@@ -33,7 +33,7 @@ public:
 			return next->GetCapt(pfk, pf);
 		else return NULL;
 	};
-DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_FCAPTS_H__CCEE1E13_363D_11D2_A701_204C4F4F5020__INCLUDED_)

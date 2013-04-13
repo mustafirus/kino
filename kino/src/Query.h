@@ -46,7 +46,7 @@ protected:
 
 private:
 //	Query*	next;
-DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_QUERY_H__1ACBEBB2_DE6E_11D1_A60C_204C4F4F5020__INCLUDED_)

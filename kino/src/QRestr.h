@@ -31,7 +31,7 @@ public:
 	bool SetDefaults(Record* pr);
 public:
 	static QRestr* Create(Query* pq, RKey* prk, QRestr* pqr, Record* pr = NULL);
-	DECLARE_DICT_MEMORY
+
 };
 
 #endif // !defined(AFX_QRESTR_H__10DF6D42_F923_11D1_A657_204C4F4F5020__INCLUDED_)

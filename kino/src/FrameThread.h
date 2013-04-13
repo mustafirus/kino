@@ -10,10 +10,11 @@
 #endif // _MSC_VER >= 1000
 
 #include "DataContext.h"
+#include "Thread.h"
 
 class FrameWnd;
 
-class FrameThread
+class FrameThread : public Thread
 {
 	FrameThread**	pprev;
 	FrameThread*	next;
@@ -28,14 +29,14 @@ public:
 //	FrameThread(RKey* prk, FrameThread*& pHead);
 	virtual ~FrameThread();
 //Operations
-	void CreateThread(RKey* prk, UINT formID);
+	void CreateThread(RKey* prk, uint formID);
 	FrameThread* CreateThread();
 //Helpers
 	FrameWnd* GetThreadWnd(){return pMainWnd;};
 //Standard
 	virtual bool OnIdle(){return false;};
 	virtual bool InitInstance();
-	bool PreTranslateMessage(MSG* pMsg);
+	bool PreTranslateMessage(void* pMsg);
 	static FrameThread* GetCurrent(){return (FrameThread*)Thread::GetCurrent();};
 };
 

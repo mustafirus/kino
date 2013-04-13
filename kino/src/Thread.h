@@ -10,18 +10,19 @@
 #endif // _MSC_VER >= 1000
 
 
-#define ThreadPtr __declspec( thread ) static Thread*
+//#define ThreadPtr __declspec( thread ) static Thread*
+#define ThreadPtr static __thread Thread*
 
 class Thread
 {
 //	static DWORD ThreadPtrIndex; // Non microsoft implementation
 	ThreadPtr pCurentThread;
-	HANDLE	hThread;
-	DWORD	nThreadID;
+//	HANDLE	hThread;
+//	DWORD	nThreadID;
 protected:
 	int		exit_code;
 	bool	auto_delete;
-	Thread() : hThread(NULL), nThreadID(0), pWndCreate(NULL), hhk(NULL){};
+	Thread(){};
 //Attributes
 public:
 //Construction
@@ -32,9 +33,9 @@ public:
 	virtual void Attach();
 	virtual void Detach();
 	virtual int Run(){return -1;};
-	virtual void Resume(){ResumeThread(hThread);};
-	operator HANDLE(){return hThread;};
-//	static Thread* GetCurrent();
+	virtual void Resume();
+//	operator HANDLE(){return hThread;};
+	static Thread* GetCurrent();
 private:
 	static void* Start(Thread* pThread);
 };

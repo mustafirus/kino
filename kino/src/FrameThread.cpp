@@ -3,11 +3,9 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdx.h"
-#include "Application.h"
-#include "MDIMain.h"
 #include "FrameWnd.h"
 #include "Record.h"
-#include "Wait.h"
+#include "Thread.h"
 #include "Exception.h"
 #include "FrameThread.h"
 #ifdef _DEBUG

@@ -108,9 +108,9 @@ public:
 			bool IsDummy(){return state == s_dummy;};
 //Clipboard support
 	virtual	bool CanCopy();
-	virtual	bool CanPaste(HWND hWnd);
-	virtual	void Copy(HWND hWnd);
-	virtual	void Paste(HWND hWnd);
+	virtual	bool CanPaste();
+	virtual	void Copy();
+	virtual	void Paste();
 	virtual	void Undo();
 
 	static DataBase* pDB;
@@ -120,7 +120,7 @@ private:
 	RField*	Find(QField* pqf);
 	void Find(QFields& qf, RFields& rf);
 public:
-	static UINT	CF_RKEY;
+	static uint	CF_RKEY;
 //	void FreeLink(RLink* prl){pTrgLink = NULL;}
 //	RField& operator[](int n){return *(pRFields[n]);};
 //	Record(char* pkey);

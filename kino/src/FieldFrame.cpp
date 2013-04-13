@@ -3,17 +3,12 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdx.h"
-#include "DbLib.h"
-#include "Edit.h"
 #include "Styles.h"
 #include "FDC.h"
 #include "FrameWnd.h"
 #include "RFieldControl.h"
 #include "FieldFrame.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
 
 #define GrowBy 4
 //////////////////////////////////////////////////////////////////////

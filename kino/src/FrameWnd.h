@@ -30,21 +30,17 @@ class FrameWnd
 	FrameWnd*	prev;
 	FrameWnd*	next;
 //Members
-	HACCEL		hAccel;       // accelerator table
-	HMENU		hMenu;       // context menu
 	Frame*		pRootFrame;
 	Record*		pRec;
 	Record*		pRecdef;
 	RLink*		pRLink;
 	RFieldControls vCtrls;
-	HWND		hWndTracking;
 	TabMap		tabmap;
 	TabPos		curpos;
 	bool		bAutoSave; 
 public:
 	FrameWnd(DataContext* pdc, FrameWnd* pPrev);
 protected:
-	LRESULT		lRes;
 //	virtual void Init(char* str, CreateContext* pContext);
 public:
 //	ScreenAction*	pAction;
@@ -61,10 +57,8 @@ public:
 	char* GetControls(char* str, RFieldControls& vCtrls);
 	void Action(Record* pr, RField* prf, int nID);
 	virtual bool DestroyWindow();
-	bool OnCmdUI(CmdUI* pCmdUI);
 	void SetPos(TabPos pos){curpos = pos;};
 
-	void UpdateMenu(HMENU hmenu);
 
 	operator Record*(){return pRec;};
 	operator RecordSet*(){return (RecordSet*)pRec;};
@@ -77,28 +71,15 @@ public:
 //	Frame* GetFrame(){return pRootFrame;}
 
 //	bool Start();
-	virtual bool PreTranslateMessage(MSG* pMsg);
+	virtual bool PreTranslateMessage(void* pMsg);
 protected:
 
 // Implementation
 // Message handlers
-	virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
-	bool OnCommand(UINT nID, HWND hwndCtl, UINT codeNotify);
-	void OnSetFocus(HWND hwndOldFocus);
-	void OnGetMinMaxInfo(LPMINMAXINFO lpMinMaxInfo);
-	void OnSize(UINT nType, int cx, int cy);
-	void OnWindowPosChanged(const LPWINDOWPOS lpwpos);
-	bool OnCreate(LPCREATESTRUCT lpCreateStruct);
-	void OnPaint();
-	void OnMDIActivate(bool fActive, HWND hwndActivate, HWND hwndDeactivate);
-	void OnKey(UINT vk, bool fDown, int cRepeat, UINT flags);
-	void OnLButtonDown(bool fDoubleClick, int x, int y, UINT keyFlags);
-	void OnMouseMove(int x, int y, UINT keyFlags);
 	void OnClose();
 	void OnCopy();
 	void OnPaste();
 	void OnDestroy();
-	bool OnSetCursor(HWND hwndCursor, UINT codeHitTest, UINT msg);
 	
 // Operations
 protected:
@@ -117,13 +98,11 @@ protected:
 //	void OnNorm(RecordSet* pRec);
 
 
-	static RECT defspace;
 public:
 	void BringToTop(bool top);
 	static void RegisterClass();
 	virtual const char* GetClassName(){return "FRAMEWND";};
 
-	void OnCommands(UINT nID);
 };
 
 /////////////////////////////////////////////////////////////////////////////

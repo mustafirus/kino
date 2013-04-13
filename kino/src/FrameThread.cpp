@@ -12,7 +12,7 @@
 #define GetApp() Application::GetApp()
 FrameThread::FrameThread(FrameThread*& pHead) :
 next(pHead), pprev(&pHead),
-WinThread(true, true), pMainWnd(NULL), pRec(NULL)
+Thread(true, true), pMainWnd(NULL), pRec(NULL)
 {
 	if(pHead)
 		pHead->pprev = &next;
@@ -21,7 +21,7 @@ WinThread(true, true), pMainWnd(NULL), pRec(NULL)
 
 FrameThread::FrameThread(const char* tab, FrameThread*& pHead) :
 next(pHead), pprev(&pHead),
-WinThread(true, true), pMainWnd(NULL), pRec(NULL)
+Thread(true, true), pMainWnd(NULL), pRec(NULL)
 {
 	try{
 	dc.Create(tab);
@@ -42,12 +42,6 @@ FrameThread::~FrameThread()
 	if(next)
 		next->pprev = pprev;
 	auto_delete = false;
-	if(pMainWnd)
-	{
-		PostMessage(*pMainWnd, WM_CLOSE, 0, 0);
-	}
-	if(GetCurrent() != this)
-		WaitForSingleObject(*this, INFINITE);
 	ifdel(pRec);
 }
 
@@ -58,7 +52,6 @@ FrameThread* FrameThread::CreateThread()
 
 void FrameThread::CreateThread(RKey* prk, uint formID)
 {
-	Wait ww;
 	FrameThread* ptr = new FrameThread(*pprev);
 	pRec = new Record(prk);
 	prk = pRec->GetRKey();
@@ -76,12 +69,8 @@ bool FrameThread::InitInstance()
 	return true;
 }
 
-bool FrameThread::PreTranslateMessage(MSG* pMsg)
-{
-	Wnd* pWnd = ((MDIMain*) GetApp()->GetMainWnd())->GetActiveChild();
-	if(pWnd && pWnd->PreTranslateMessage(pMsg))
-		return true;
-	return GetApp()->PreTranslateMessage(pMsg);
+bool FrameThread::PreTranslateMessage(void* pMsg){
+	return true;
 };
 
 /*FrameThread::FrameThread(RKey* prk, FrameThread*& pHead) :

@@ -14,12 +14,10 @@ class WinHandler;
 class RKey;
 class Table;
 class FormAction;
-class Frame;
 class RecordSet;
 class Record;
 class RLink;
 class FrameThread;
-class MainWnd;
 class DataContext;
 
 #include "Defines.h"
@@ -30,7 +28,6 @@ class FrameWnd
 	FrameWnd*	prev;
 	FrameWnd*	next;
 //Members
-	Frame*		pRootFrame;
 	Record*		pRec;
 	Record*		pRecdef;
 	RLink*		pRLink;
@@ -85,18 +82,11 @@ protected:
 protected:
 	void ShowAll(bool sa_show);
 	FrameWnd* GetThreadWnd();
-	MainWnd*  GetMainWnd();
 
 //Destruction
 	virtual ~FrameWnd(); // Destruct by DestroyWindow
 
 	
-//	bool OnKeyDown(uint nChar, uint nRepCnt, uint nFlags);
-//	bool OnKeyUp(uint nChar, uint nRepCnt, uint nFlags);
-//	bool OnLButtonDown(uint nFlags, CPoint point);
-//	bool OnLButtonDblClk(uint nFlags);
-//	void OnNorm(RecordSet* pRec);
-
 
 public:
 	void BringToTop(bool top);

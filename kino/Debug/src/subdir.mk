@@ -12,7 +12,6 @@ CPP_SRCS += \
 ../src/Dict.cpp \
 ../src/Exception.cpp \
 ../src/FCapts.cpp \
-../src/FDC.cpp \
 ../src/Field.cpp \
 ../src/FrameThread.cpp \
 ../src/FrameWnd.cpp \
@@ -51,7 +50,6 @@ OBJS += \
 ./src/Dict.o \
 ./src/Exception.o \
 ./src/FCapts.o \
-./src/FDC.o \
 ./src/Field.o \
 ./src/FrameThread.o \
 ./src/FrameWnd.o \
@@ -90,7 +88,6 @@ CPP_DEPS += \
 ./src/Dict.d \
 ./src/Exception.d \
 ./src/FCapts.d \
-./src/FDC.d \
 ./src/Field.d \
 ./src/FrameThread.d \
 ./src/FrameWnd.d \

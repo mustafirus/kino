@@ -25,21 +25,19 @@ class DataContext
 	RLink*		pRLink;
 	enum{none, rec, rset} rt;
 
-	void Fun(QTable*pqt, UINT nID);
+	void Fun(QTable*pqt, uint nID);
 public:
 	char* const szFrameName;
 	char* const szForm;
 	FrameWnd*	pWnd;
-	HMENU		hMenu;
-	HACCEL		hAccel;
 	bool		bAutoSave; 
 
 public:
 	DataContext() : pQuery(NULL), pRec(NULL), pRKey(NULL), pRLink(NULL), rt(none),
-		szFrameName(NULL), szForm(NULL), pWnd(NULL), hMenu(NULL), hAccel(NULL), bAutoSave(false){};
-	~DataContext(){ASSERT(_isFree());};
+		szFrameName(NULL), szForm(NULL), pWnd(NULL), bAutoSave(false){};
+	~DataContext();
 	void Create(const char* table);
-	void Create(RKey* prk, RLink* prl, UINT nID);
+	void Create(RKey* prk, RLink* prl, uint nID);
 	void FreeContext();
 
 	RecordSet*	GetRecordSet();
@@ -47,13 +45,16 @@ public:
 	Record*		GetDefRecord(){return pRec;};
 	RKey*		GetRKey(){return pRKey;};
 
-#ifdef _DEBUG
+private:
 	bool _isFree()
 	{
+#ifdef _DEBUG
 		return pQuery == NULL && pRec == NULL && pRKey == NULL &&
 		pRLink == NULL && rt == none &&	szFrameName == NULL && szForm == NULL;
-	};
+#else
+		return true;
 #endif //_DEBUG
+	};
 };
 
 #endif // !defined(AFX_DATACONTEXT_H__76248D13_4B4F_11D2_A732_204C4F4F5020__INCLUDED_)

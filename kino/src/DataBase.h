@@ -23,7 +23,7 @@ class DbStmt
 {
 	char* buf;
 public:
-	DbStmt(const char* stmt){buf = new char[lstrlen(stmt)+1]; lstrcpy(buf, stmt);};
+	DbStmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
 	virtual ~DbStmt(){delete buf;};
 	operator const char*(){return buf;};
 //DECLARE_DICT_MEMORY
@@ -40,7 +40,7 @@ public:
 	virtual DbStmt* Prepare(const char* str) = 0;
 	virtual void Set(DbStmt* pst) = 0;
 	virtual void Exec() = 0;
-	virtual void __cdecl ExecFDirect(const char* str, ...) = 0;
+	virtual void ExecFDirect(const char* str, ...) = 0;
 	virtual void GetData(int icol, int& data) = 0;
 	virtual void GetData(int icol, char*& data) = 0;
 	virtual void GetData(int icol, char& data) = 0;
@@ -56,7 +56,7 @@ public:
 	virtual void Bind(int col, char* buf, int len, int* pi, Field::Type type = Field::Char) = 0;
 
 //	virtual void Bind(RKey* prk) = 0;
-	virtual void BindParameter(/*int num, */int len, char* buf, SDWORD* pindicator) = 0;
+	virtual void BindParameter(/*int num, */int len, char* buf, unsigned short* pindicator) = 0;
 	virtual void BindParameter(/*int num, */int* par) = 0;
 	virtual void BindParameter(RKey* prk) = 0;
 	virtual void BindParameter(RSField* prf) = 0;

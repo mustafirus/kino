@@ -24,8 +24,8 @@ public:
 
 	void SetDelMem(void *p, FNFREE pfn = NULL){memptr = p; pfnfree = pfn;};
 	virtual void Effect();
-	void __cdecl printf(DWORD fmt, ...);
-	void __cdecl printf(char* fmt, char code, ...);
+	void printf(uint fmt, ...);
+	void printf(char* fmt, char code, ...);
 
 	static	Exception ex;
 	static	Log*	errlog;

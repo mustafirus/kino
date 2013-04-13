@@ -7,18 +7,13 @@
 #include "DataContext.h"
 #include "FrameThread.h"
 #include "FrameWnd.h"
-#include "KinoApp.h"
 #include "Exception.h"
 #include "Action.h"
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
+#include "Kinores.h"
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 Action* Action::pAction = NULL;
-void PrintPedigree(HWND hWnd, RKey* prk);
-void PrintPedigreeSetup(HWND hWnd, RKey* prk);
 
 bool Action::Can(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 {
@@ -36,7 +31,6 @@ bool Action::Can(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 
 void Action::Exec(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 {
-	Wait w;
 	bool f_thread	= (nID & ACT_FLAG_THREAD) > 0;
 	bool f_blank	= (nID & ACT_FLAG_BLANK) > 0;
 	nID &= ~(ACT_FLAG_THREAD|ACT_FLAG_BLANK);
@@ -99,7 +93,7 @@ void Action::Exec(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 			char* szProc = RecordSet::pDict->GetForm(prk, nID, 1);
 			char stmt[255];
 			ASSERT(prk->GetCount());
-			UINT c = prk->GetCount() - 1;
+			uint c = prk->GetCount() - 1;
 			ASSERT(c < 20);
 			char par[50]="?";
 			while(c--)
@@ -114,16 +108,5 @@ void Action::Exec(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 			e->Effect();
 			return;
 		}
-	}else if(nID == ID_FILE_PRINT)
-	{
-		if(!pr)
-			return;
-		Table* pt = *((QTable*)*((Query*)*pr)); 
-		if(strcmp( pt->name,"dog") )
-			return;
-		PrintPedigree(*pWnd, pr->GetRKey(NULL));
-	}else if(nID == ID_FILE_PRINT_SETUP)
-	{
-		PrintPedigreeSetup(*pWnd, NULL);
 	}
 }

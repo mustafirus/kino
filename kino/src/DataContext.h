@@ -25,7 +25,6 @@ class DataContext
 	RLink*		pRLink;
 	enum{none, rec, rset} rt;
 
-	void Fun(QTable*pqt, uint nID);
 public:
 	char*		szFrameName;
 	char*		szForm;

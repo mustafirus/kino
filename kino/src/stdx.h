@@ -6,3 +6,6 @@
 #include "hlpdefs.h"
 #include <cassert>
 #define ASSERT assert
+#define DWORD unsigned
+#define SDWORD unsigned short
+#define SQL_NTS 0

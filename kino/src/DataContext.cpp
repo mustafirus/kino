@@ -25,15 +25,14 @@ void DataContext::Create(const char* table)
 	pQuery = RecordSet::pDict->GetQuery(table);
 	ASSERT(pQuery);
 
-	((char*)szForm) = RecordSet::pDict->GetForm(pQuery, 2);
+	szForm = RecordSet::pDict->GetForm(pQuery, 2);
 	if(!szForm)
 	{
-		Exception::ex.printf(MSG_ERROR_FORM_NOTFOUND, ((Table*)*(QTable*)*pQuery)->name,
+		Exception::ex.printf("form not fount %s %s", 'e', ((Table*)*(QTable*)*pQuery)->name,
 			((Table*)*(QTable*)*pQuery)->mPKey.name);
 		throw &Exception::ex;
 	}
 
-	Fun(*pQuery, 1);
 //	((char*)szFrameName) = (char*)((QTable*)*pQuery)->GetName(1);
 }
 
@@ -42,8 +41,7 @@ void DataContext::Create(RKey* prk, RLink* prl, uint nID)
 	ASSERT(_isFree());
 	pRKey = prk;
 	pRLink = prl;
-	((char*)szForm) = RecordSet::pDict->GetForm(prk, nID);
-	Fun(*prk, nID);
+	szForm = RecordSet::pDict->GetForm(prk, nID);
 //	((char*)szFrameName) = (char*)((QTable*)*prk)->GetName(nID-1);
 }
 

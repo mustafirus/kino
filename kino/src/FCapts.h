@@ -20,9 +20,9 @@ class FCapts
 public:
 	FCapts(FKey* pfk, Field* pf, const char* str, FCapts* pn): next(pn), pFKey(pfk), pField(pf)
 	{
-		ASSERT(lstrlen(str));
-		capt = new char[lstrlen(str)+1];
-		lstrcpy(capt, str);
+		ASSERT(strlen(str));
+		capt = new char[strlen(str)+1];
+		strcpy(capt, str);
 	};
 	~FCapts(){delete capt;if(next)delete next;};
 	const char* GetCapt(FKey* pfk, Field* pf)

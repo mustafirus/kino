@@ -3,8 +3,6 @@
 //////////////////////////////////////////////////////////////////////
 
 #include "stdx.h"
-#include "Log.h"
-#include "Clock.h"
 #include "ErrorCodes.h"
 #include "Dict.h"
 #include "DataBase.h"
@@ -16,7 +14,6 @@
 #include "Query.h"
 #include "Record.h"
 
-HANDLE Dict::hLoadDict = NULL;
 static Field::Type TypeCrack(unsigned char dbtype);
 
 #define duser "dict"
@@ -25,59 +22,20 @@ static Field::Type TypeCrack(unsigned char dbtype);
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
-HANDLE Dict::hDictHeap = HeapCreate( HEAP_GENERATE_EXCEPTIONS,  32768, 0);
-
-void* Dict::malloc(unsigned int size)
-{
-	return HeapAlloc(hDictHeap, HEAP_GENERATE_EXCEPTIONS, size);
-}
-
-void Dict::free(void* p)
-{
-	HeapFree(hDictHeap, 0, p);
-}
 
 Dict::Dict(DataBase* pdb) : pDB(pdb), pFCapts(NULL), ready(false), pStmtForm(NULL), pStmtProc(NULL)
 {
-	DWORD dw;
-	ASSERT(hLoadDict == NULL);
-	if(!  (hLoadDict = CreateThread(NULL, 0, 
-		(PTHREAD_START_ROUTINE)LoadDict, this, 0, &dw))
-		)
-	{
-		delete pDB;
-		DbError(MSG_ERROR_CREATE_THREAD,"load db dictionary")
-	}
+	LoadTables();
 }
 
 Dict::~Dict()
 {
-	if(hLoadDict)
-	{
-		TerminateThread(hLoadDict, -1);
-		CloseHandle(hLoadDict);
-	}
 	ifdel(pFCapts);
 	ifdel(pDB);
 	pDB = NULL;
 }
 
-bool Dict::Ready()
-{
-	if(ready)
-		return true;
-	if(WaitForSingleObject(hLoadDict, 5000) == WAIT_TIMEOUT)
-		return false;
-	DWORD dw;
-	if(!GetExitCodeThread(hLoadDict, &dw)||dw != 0)
-	{
-		delete pDB;
-		pDB = NULL;
-		DbError(MSG_ERROR_LOAD_DICT,"");
-		return false;
-	}
-	ready = true;
-	CloseHandle(hLoadDict); hLoadDict = NULL;
+bool Dict::Ready(){
 	return true;
 }
 
@@ -95,7 +53,7 @@ Table* Dict::GetTableByName(const char* name)
 {
 	for(int i = 0; i < pTables.GetSize(); i++)
 	{
-		if(!lstrcmp(pTables[i]->name, name))
+		if(!strcmp(pTables[i]->name, name))
 			return pTables[i];
 	}
 	DbError(MSG_ERROR_GET_TABLE, name);
@@ -120,10 +78,6 @@ const char* Dict::GetCapt(QField* pqf)
 	return s1 ? s1 : ((Field*)*pqf)->capt;
 }
 
-DWORD WINAPI Dict::LoadDict(Dict* pDict)
-{
-	return pDict->LoadTables() ? 0 : -1;
-};
 
 
 #define GetData		pDB->GetData
@@ -171,7 +125,7 @@ bool Dict::LoadTables()
 		table_num = pTables.GetSize();
 		SDWORD indicator = SQL_NTS;
 		DbStmt* pStmt =	Prepare("select f.name, f.capt, f.ro, f.strlen, f.scrlen, f.type, f.style, f.stmdf, f.deft from SD_Fields f join SD_Tables t on t.id=f.table_id where t.name = ? order by fnum");
-		for(i=0; i < table_num; i++)
+		for(int i=0; i < table_num; i++)
 		{
 			pt = pTables[i];
 			Bind(0, pTables[i]->name,
@@ -239,7 +193,7 @@ bool Dict::LoadTables()
 			}
 		}
 		Flush();
-		for(i = 0; i < pTables.GetSize(); i++)
+		for(int i = 0; i < pTables.GetSize(); i++)
 		{
 			pt = pTables[i];
 			if(pt->mPKey.name)
@@ -324,7 +278,7 @@ bool Dict::LoadTables()
 			{
 			case 1:
 				GetData(2, s1, 30);
-				if( !pt || (pt && lstrcmpi(s1, pt->name)) )
+				if( !pt || (pt && strcasecmp(s1, pt->name)) )
 					pt = GetTableByName(s1);
 				ASSERT(pt);
 				GetData(4, num);
@@ -335,7 +289,7 @@ bool Dict::LoadTables()
 			case 3:
 				GetData(2, s1, 30);
 				GetData(3, s2, 30);
-				if( !pt || (pt && lstrcmpi(s1, pt->name)) )
+				if( !pt || (pt && strcasecmp(s1, pt->name)) )
 					pt = GetTableByName(s1);
 				pfk = pt->GetFKey(s2);
 				ASSERT(pt && pfk);
@@ -356,7 +310,7 @@ bool Dict::LoadTables()
 			ASSERT(prim = 3);
 			GetData(2, s1, 30);
 			GetData(3, s2, 30);
-			if( !pt || (pt && lstrcmpi(s1, pt->name)) )
+			if( !pt || (pt && strcasecmp(s1, pt->name)) )
 				pt = GetTableByName(s1);
 			pfk = pt->GetFKey(s2);
 			ASSERT(pt && pfk);

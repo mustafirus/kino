@@ -9,9 +9,9 @@
 #include "DataBase.h"
 //#include "StMdfr.h"
 //#include "Frame.h"
+#include "RSField.h"
 #include "RSWhere.h"
 #include "SqlStmt.h"
-#include "RSField.h"
 
 
 RSField::RSField(): dbbuf(NULL), pRSWhere(NULL){}

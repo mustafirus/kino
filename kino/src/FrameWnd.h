@@ -51,7 +51,8 @@ public:
 // Operations
 public:
 	void AdjustSize(SIZE& sz);
-	char* GetControls(char* str, RFieldControls& vCtrls);
+	bool OnCreate(DataContext* pdc);
+	char* GetControls(char* str);
 	void Action(Record* pr, RField* prf, int nID);
 	virtual bool DestroyWindow();
 	void SetPos(TabPos pos){curpos = pos;};

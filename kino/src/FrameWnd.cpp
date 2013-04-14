@@ -23,8 +23,8 @@ void FrameWnd::Action(Record* pr, RField* prf, int nID)
 }
 
 FrameWnd::FrameWnd(DataContext* pdc, FrameWnd* pPrev) :
-next(NULL), prev(pPrev), hWndTracking(NULL), pRootFrame(NULL), /*pLastFocused(NULL),*/
-curpos(TabMap::first_pos), hAccel(NULL), hMenu(NULL)
+next(NULL), prev(pPrev), /*pLastFocused(NULL),*/
+curpos(TabMap::first_pos)
 {
 	if(prev)
 		prev->next = this;
@@ -32,35 +32,18 @@ curpos(TabMap::first_pos), hAccel(NULL), hMenu(NULL)
 		next->prev = this;
 	pdc->pWnd = this;
 	bAutoSave = pdc->bAutoSave; 
-	GetMainWnd()->CreateChildFrame(this, pdc->szFrameName, MDIS_ALLCHILDSTYLES, CW_USEDEFAULT, CW_USEDEFAULT, 0, 0, (LPARAM)pdc);
 }
 
-void FrameWnd::AdjustSize(SIZE& sz)
-{
-	POINT pt = {-defspace.left, -defspace.top};
-	sz.cx += defspace.left + defspace.right;
-	sz.cy += defspace.top + defspace.bottom;
-	Rect r(pt,sz);
-	AdjustWindowRect(r, GetStyle(), FALSE);
-	sz = r;
-	RECT mc;
-	GetClientRect(*(GetMainWnd()), &mc);
-	sz.cx = min(sz.cx, mc.right - 20);
-	sz.cy = min(sz.cy, mc.bottom - 20);
+void FrameWnd::AdjustSize(SIZE& sz){
 }
 
 FrameWnd::~FrameWnd()
 {
-	if(hMenu)
-		DestroyMenu(hMenu);
-	if(hAccel)
-		DestroyAcceleratorTable(hAccel);
 	if(prev)
 		prev->next = next; 
 	if(next)
 		next->prev = prev;
 	ifdel(pRec);
-	ifdel(pRootFrame);
 }
 
 
@@ -76,15 +59,12 @@ void FrameWnd::OnPaste()
 
 
 
-bool FrameWnd::OnCreate(LPCREATESTRUCT lpcs)
-{
-	MDICREATESTRUCT* pmcs = (MDICREATESTRUCT*)lpcs->lpCreateParams;
-	DataContext* pdc = (DataContext*)pmcs->lParam;
+bool FrameWnd::OnCreate(DataContext* pdc){
 	ASSERT(pdc->szForm);
 	char* str = pdc->szForm;
 	ASSERT(str);
 	try{
-	pRootFrame = Frame::CreateFrame(str, pdc);
+	//pRootFrame = Frame::CreateFrame(str, pdc);
 	}catch(Exception* e)
 	{
 		pdc->FreeContext();
@@ -92,12 +72,7 @@ bool FrameWnd::OnCreate(LPCREATESTRUCT lpcs)
 		e->Effect();
 		return false;
 	}
-	if(!pRootFrame)
-	{
-		Exception::ex.printf(MSG_ERROR_FRAME_SYNTAX_ERROR);
-		Exception::ex.Effect();
-		return false;
-	}
+
 	pRec = pdc->GetRecord(false);//not create
 	if(!pRec)
 		pRecdef = pdc->GetDefRecord();//not create
@@ -108,29 +83,9 @@ bool FrameWnd::OnCreate(LPCREATESTRUCT lpcs)
 			return false;
 	}else
 	{
-		_RPT0(_CRT_WARN, "On Create FrameWnd RecordSet alredy loaded !");
+//		_RPT0(_CRT_WARN, "On Create FrameWnd RecordSet alredy loaded !");
 	}
 
-	MINMAX mm;
-	pRootFrame->GetMinMax(&mm);
-	TabPos pos;
-
-	_ASSERTE(_CrtCheckMemory());
-	pRootFrame->SetTabs(&tabmap, TabMap::first_pos, pos);
-	_ASSERTE(_CrtCheckMemory());
-	
-	POINT pt = {defspace.left, defspace.top};
-	AdjustSize(mm.szDes);
-	SetWindowPos(*this, NULL, 0,0, mm.szDes.cx, mm.szDes.cy, SWP_NOMOVE|
-		SWP_NOZORDER|SWP_NOACTIVATE|SWP_NOREDRAW|SWP_NOSENDCHANGING|
-		SWP_NOOWNERZORDER);
-
-//	SetCursorPos(lpcs->x + (lpcs->cx)/3, lpcs->y + (lpcs->cy)/2 );
-
-
-	EnableWindow(*prev, FALSE);
-//	SetFocus();
-	LRESULT l = Default();
 	return true;
 }
 
@@ -138,14 +93,16 @@ bool FrameWnd::OnCreate(LPCREATESTRUCT lpcs)
 
 void FrameWnd::OnClose() 
 {
-	Wait w;
 	if(pRec && pRec->IsModified())
 	{
 		if(bAutoSave)
 			pRec->Save();
 		else
 		{
-			switch(MessageBox(*this, "��������� ���������?", "Kino", MB_YESNOCANCEL|MB_ICONQUESTION))
+			int z = 0; // MessageBox(*this, "��������� ���������?", "Kino", MB_YESNOCANCEL|MB_ICONQUESTION)
+#define IDYES 1
+#define IDCANCEL 2
+			switch(z)
 			{
 			case IDYES:
 				pRec->Save();
@@ -171,41 +128,17 @@ void FrameWnd::OnDestroy()
 		next->DestroyWindow();
 }
 
-char* FrameWnd::GetControls(char* str, RFieldControls& vct)
+char* FrameWnd::GetControls(char* str)
 {
 	ASSERT(pRec);
 	RFields rf;
 	str = pRec->GetRFields(str, rf);
 	for(int i = 0; i < rf.GetCount(); i++)
 	{
-		vct.Add(vCtrls.Add(new RFieldControl(rf[i], this, vCtrls.GetCount())));
+		///add fild controls
 	}
 	return str;
 }
-
-void FrameWnd::OnCommands(uint nID)
-{
-	Wait w;
-	switch(nID)
-	{
-	case ID_RECORD_SAVE:
-		if(pRec)
-			pRec->Save();
-		InvalidateRect(NULL);
-		break;
-	case ID_RECORD_REFRESH:
-		if(pRec)
-			pRec->Load();
-		InvalidateRect(NULL);
-		return;
-	case ID_RECORD_UNDO:
-		if(pRec)
-			pRec->Undo();
-		InvalidateRect(NULL);
-		return;
-	};
-	Action::GetAction()->Exec(this, (pRec ? pRec : pRecdef), NULL, nID);
-};
 
 
 FrameWnd* FrameWnd::GetThreadWnd()

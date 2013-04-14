@@ -11,6 +11,7 @@
 #include "RKey.h"
 #include "OdbcCursor.h"
 #include "OdbcDataBase.h"
+#ifndef FUCK_IGNORE_THIS
 
 
 #define ex	OdbcException::ex
@@ -543,3 +544,5 @@ void OdbcDataBase::GetInfo(TABLEINFO* pti)
 	}
 	pti->size = off;
 }
+
+#endif // FUCK_IGNORE_THIS

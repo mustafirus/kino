@@ -10,3 +10,6 @@
 #define DWORD unsigned
 #define SDWORD unsigned short
 #define SQL_NTS 0
+#define RETCODE int
+
+#define FUCK_IGNORE_THIS

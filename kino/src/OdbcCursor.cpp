@@ -10,6 +10,9 @@
 #include "RKey.h"
 #include "OdbcCursor.h"
 
+#ifndef FUCK_IGNORE_THIS
+
+
 #ifdef DEBUGSQL
 #define SaveCmd(X) if(lstrlen(X)>=1024){CopyMemory(OdbcCursor::stmt, X, 1024); OdbcCursor::stmt[1023] = 0;}else lstrcpy(OdbcCursor::stmt, X)
 #define FlushCmd *stmt = 0;
@@ -195,3 +198,5 @@ int OdbcCursor::Fetch(FetchType ft, int irow, int nfetchrows)
 	Check(SQLExtendedFetch(*pStmt, fetchtype, irow, &crow, pstatus));
 	return crow;
 };
+
+#endif //FUCK_IGNORE_THIS

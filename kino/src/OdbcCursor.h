@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "DbCursor.h"
+#include "DBCursor.h"
 #include "OdbcDataBase.h"
 
 class OdbcDataBase;
@@ -17,7 +17,7 @@ class OdbcStmt;
 
 class OdbcCursor : public DbCursor
 {
-	UWORD*		pstatus;
+	DWORD*		pstatus;
 	OdbcStmt*	pStmt;
 	OdbcDataBase*	pDB;
 	int			maxrows;

@@ -45,7 +45,7 @@ QJoin::~QJoin()
 QTable::QTable(Table* pt) : pNTable(pt), pPTable(NULL),
 pQField(NULL), pFKey(NULL), next(NULL), mark(false), style(0)
 {
-	lstrcpy(Alias, "master");
+	strcpy(Alias, "master");
 }
 
 QTable::QTable(QTable* pt, FKey* pfk) : pNTable(pfk->pPKey->pTable),
@@ -242,10 +242,11 @@ const char* QTable::GetRest()
 
 void QTable::GetNames(PNAMEINFO pn)
 {
-	pn->fnum = max(pNTable->mPKey.fnum, pFKey ? pFKey->fnum : 0);
-	pn->pnum = max(pNTable->mPKey.pnum, pFKey ? pFKey->pnum : 0);
+	pn->fnum = std::max(pNTable->mPKey.fnum, pFKey ? pFKey->fnum : 0);
+	pn->pnum = std::max(pNTable->mPKey.pnum, pFKey ? pFKey->pnum : 0);
 	pn->names = new PNAME[pn->fnum + pn->pnum];
-	for(int i = 0; i < pn->fnum; i++)
+	int i=0;
+	for( i = 0; i < pn->fnum; i++)
 	{
 		if(pFKey && i < pFKey->fnum && pFKey->forms[i])
 			pn->names[i] = pFKey->forms[i];

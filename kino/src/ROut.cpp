@@ -12,13 +12,13 @@
 
 ROut::ROut(const char* filename)
 {
-	hFile = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
+//	hFile = CreateFile(filename, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, 0, NULL);
 
 }
 
 ROut::~ROut()
 {
-	CloseHandle(hFile);
+//	CloseHandle(hFile);
 }
 ROut& ROut::operator<<(RecordSet* pr)
 {

@@ -1,10 +1,6 @@
 #if !defined(SET_H__INCLUDED_)
 #define SET_H__INCLUDED_
 
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
-
 template <class T>
 class Set
 {

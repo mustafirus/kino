@@ -22,7 +22,7 @@ Field* Table::GetField(const char* name)
 {
 	for(int i=0; i < pFields.GetSize(); i++)
 	{
-		if(!lstrcmpi(pFields[i]->name, name))
+		if(!strcasecmp(pFields[i]->name, name))
 			return pFields[i];
 	}
 	return NULL;
@@ -32,7 +32,7 @@ FKey* Table::GetFKey(const char* name)
 {
 	for(int i = 0; i < pFKeys.GetSize(); i++)
 	{
-		if(!lstrcmpi(name,pFKeys[i]->name))
+		if(!strcasecmp(name,pFKeys[i]->name))
 			return pFKeys[i];
 	}
 	return NULL;

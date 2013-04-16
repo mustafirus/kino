@@ -31,8 +31,8 @@ void TabMap::Grow()
 		mr = last_pos.r + mr;
 		Wnd** pNew= new Wnd*[mr * mc];
 		memset(pNew, 0, sizeof(Wnd**) * mr * mc);
-		int cr = min(rows, mr);
-		int cc = min(cols, mc);
+		int cr = std::min(rows, (int)mr);
+		int cc = std::min(cols, (int)mc);
 		Wnd** src = pData;
 		Wnd** dst = pNew;
 		while(cr--)
@@ -88,8 +88,8 @@ Wnd* TabMap::GetAt(TabPos pos)
 
 void TabMap::SetAt(TabPos pos, Wnd* pWnd)
 {
-	last_pos.r = max(pos.r, last_pos.r);
-	last_pos.c = max(pos.c, last_pos.c);
+	last_pos.r = std::max(pos.r, last_pos.r);
+	last_pos.c = std::max(pos.c, last_pos.c);
 	if(pos.c >= cols || pos.r >= rows)
 	{
 		Grow();

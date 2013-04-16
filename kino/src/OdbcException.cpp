@@ -4,6 +4,7 @@
 
 #include "stdx.h"
 #include "OdbcException.h"
+#ifndef FUCK_IGNORE_THIS
 
 OdbcException OdbcException::ex;//5701 Change context to kino; 5703 Change lang to russian
 
@@ -68,3 +69,4 @@ void OdbcException::Report(RETCODE  code, const char* pszCall,	const char* pszFi
 	}
 #endif //_DEBUG
 }
+#endif // FUCK_IGNORE_THIS

@@ -12,10 +12,6 @@
 #include "DataBase.h"
 #include "Map.h"
 
-typedef ptrdiff_t HSTMT,HENV,HDBC;
-
-#define RETCODE int
-#define SQL_NULL_HSTMT 0
 
 
 class OdbcStmt : public DbStmt

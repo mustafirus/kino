@@ -2,7 +2,6 @@
 #define DEFINES_H_69179D70_464B_11d2_A720_204C4F4F5020_INCLUDED_
 
 
-#pragma once
 #include "Set.h"
 
 class RFieldControl;

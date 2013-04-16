@@ -6,11 +6,11 @@
 //#include "ConstructException.h"
 #include "Dict.h"
 #include "QField.h"
-#include "DbCursor.h"
+#include "DBCursor.h"
 #include "Record.h"
 #include "RField.h"
 #include "SqlStmt.h"
-#include "Rkey.h"
+#include "RKey.h"
 #include "Query.h"
 #include "QRestr.h"
 

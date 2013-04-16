@@ -20,7 +20,7 @@
 
 DataBase* Record::pDB = NULL;
 Dict* Record::pDict = NULL;
-uint Record::CF_RKEY = RegisterClipboardFormat("CF_RKEY");
+uint Record::CF_RKEY = 0;//RegisterClipboardFormat("CF_RKEY");
 
 Record::Record() : 
 pPRKey(NULL), pDbStmt(NULL),
@@ -36,7 +36,7 @@ Record::~Record()
 	{
 		delete pRFields[i];
 	}
-	for(i=0; i<pRKeys.GetCount(); i++)
+	for(int i=0; i<pRKeys.GetCount(); i++)
 	{
 		delete pRKeys[i];
 	}
@@ -159,7 +159,7 @@ void Record::AssistLoad()
 		str << "\nWHERE ";
 		pPRKey->Select(str);
 		pDB->Prepare(str);
-		for(i = 0; i<rf.GetCount(); i++)
+		for(int i = 0; i<rf.GetCount(); i++)
 			pDB->Bind(fn++, rf[i]);
 		pDB->BindParameter(pPRKey);
 		pDB->Exec();
@@ -227,7 +227,7 @@ bool Record::Insert()
 	str << ")\nVALUES ( ";
 
 	comma = false;
-	for(i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.GetCount(); i++)
 	{
 		if(rf[i]->state != RField::s_modified)
 			continue;
@@ -250,7 +250,7 @@ bool Record::Insert()
 
 	state /= s_blank; state /= s_modified;
 	ASSERT(state != s_dummy);
-	for(i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.GetCount(); i++)
 		rf[i]->state /= RField::s_modified;
 	return true;
 }
@@ -304,7 +304,7 @@ bool Record::Update()
 	}
 	state /= s_modified;
 	ASSERT(state != s_dummy && state != s_blank);
-	for(i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.GetCount(); i++)
 		rf[i]->state /= RField::s_modified;
 	return true;
 }
@@ -357,7 +357,7 @@ bool Record::Refresh(RKey* prk)
 			pDB->Bind(i+1, rf[i]);
 		if(!pDB->Read())
 		{
-			for(i = 0; i < rf.GetCount(); i++)
+			for(int i = 0; i < rf.GetCount(); i++)
 			{
 				rf[i]->state = RField::s_null;
 				rf[i]->state = RField::s_data;
@@ -372,7 +372,7 @@ bool Record::Refresh(RKey* prk)
 		e->Effect();
 		return false;
 	}
-	for(i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.GetCount(); i++)
 		pDB->CheckData(rf[i]);
 	pDB->FlushEx();
 	return true;
@@ -879,11 +879,13 @@ void Record::SetModified()
 		pChild.Remove(pr);
 }
 */
-void Record::Copy(HWND hWnd)
+
+void Record::Copy()
 {
 	RKey* prk = pPRKey ? pPRKey : GetRKey();
 	if(!prk || prk->IsNull())
 		return;
+/*
 	HANDLE h;
 	if(!OpenClipboard(hWnd) ||
 		!EmptyClipboard())
@@ -931,28 +933,11 @@ void Record::Copy(HWND hWnd)
 	GlobalUnlock(h);
 	SetClipboardData(CF_TEXT, h);
 	CloseClipboard();
+*/
 }
 
-void Record::Paste(HWND hWnd)
+void Record::Paste()
 {
-	Wait w;
-	if(!pPRKey || !OpenClipboard(hWnd) ||
-		!IsClipboardFormatAvailable(CF_RKEY))
-	{
-		CloseClipboard();
-		return;
-	}
-	char* str = (char* )GetClipboardData(CF_RKEY);
-	CloseClipboard();
-	if(!pPRKey->CanSet(str))
-		return;
-	char old[256];
-	pPRKey->Get(old);
-	pPRKey->Set(str);
-	Load();
-	char* s1 = old;
-	pPRKey->CanSet(s1);
-	pPRKey->Set(s1);
 }
 
 bool Record::CanCopy()
@@ -961,8 +946,9 @@ bool Record::CanCopy()
 	return !prk->IsNull();
 }
 
-bool Record::CanPaste(HWND hWnd)
+bool Record::CanPaste()
 {
+/*
 	if(!pPRKey || !OpenClipboard(hWnd) ||
 		!IsClipboardFormatAvailable(CF_RKEY))
 	{
@@ -971,7 +957,8 @@ bool Record::CanPaste(HWND hWnd)
 	}
 	char* str = (char*)GetClipboardData(CF_RKEY);
 	CloseClipboard();
-	return pPRKey->CanSet(str);
+*/
+	return false;// pPRKey->CanSet(str);
 }
 
 void Record::Undo()

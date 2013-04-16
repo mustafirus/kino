@@ -10,6 +10,7 @@
 #endif // _MSC_VER >= 1000
 
 class SqlStmt;
+class RSField;
 
 class RSWhere  
 {

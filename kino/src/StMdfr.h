@@ -33,7 +33,8 @@ public:
 			data = new char[4];
 			autodel = true;
 		}
-		itoa(s, (char*)data, 10);
+		//itoa(s, (char*)data, 10);
+		sprintf((char*)data, "%d", s);
 	};
 	void ModifyStyle(FStyle* pst);
 };

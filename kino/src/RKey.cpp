@@ -13,6 +13,7 @@
 #include "RField.h"
 #include "QField.h"
 #include "RKey.h"
+#include <stdlib.h>
 
 
 RKey::RKey(QTable* pqt, Record* psrc) :
@@ -158,7 +159,8 @@ void RKey::SetIdentity()
 		{
 			int id = Record::pDB->GetIdentity();
 			ASSERT(id>0);
-			itoa(id, pRFields[i]->GetBuf(), 10);
+//			itoa(id, pRFields[i]->GetBuf(), 10);
+			sprintf(pRFields[i]->GetBuf(),"%d",id);
 			pRFields[i]->SetData();
 			return;
 		}

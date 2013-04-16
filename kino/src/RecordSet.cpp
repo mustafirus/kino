@@ -5,7 +5,7 @@
 #include "stdx.h"
 #include "Dict.h"
 #include "RSField.h"
-#include "DbCursor.h"
+#include "DBCursor.h"
 #include "Query.h"
 #include "QTable.h"
 #include "RLink.h"
@@ -122,7 +122,7 @@ bool RecordSet::Load()
 		str << "\nFROM ";
 		pQuery->pQTable->Select(str);
 		bool bWhere = false;
-		for(i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.GetCount(); i++)
 		{
 			bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 		}
@@ -143,7 +143,7 @@ bool RecordSet::Load()
 			RestoreSizes();
 		}else
 			pCur = pDB->GetCursor(str, dbsize);
-		for(i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.GetCount(); i++)
 		{
 			pCur->BindParameter((RSField*)pRFields[i]);
 		}
@@ -160,7 +160,7 @@ bool RecordSet::Load()
 		}
 		pCur->Execute();
 		RSField* prf;
-		for(i=0; i< pRFields.GetCount(); i++)
+		for(int i=0; i< pRFields.GetCount(); i++)
 		{
 			prf = (RSField*)pRFields[i]; 
 			pCur->Bind(i+1, prf);
@@ -225,7 +225,7 @@ bool RecordSet::SelectInto(const char* tablename, bool hidden)
 	str << "\n INTO " << tablename << "\nFROM ";
 	pQuery->pQTable->Select(str);
 	bool bWhere = false;
-	for(i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.GetCount(); i++)
 	{
 		bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 	}
@@ -256,7 +256,7 @@ int	RecordSet::SelectCount()
 	str << "\nFROM ";
 	pQuery->pQTable->Select(str);
 	bool bWhere = false;
-	for(i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.GetCount(); i++)
 	{
 		bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 	}
@@ -269,7 +269,7 @@ int	RecordSet::SelectCount()
 		}while(pList = *pList);
 	}
 	pDB->Prepare(str);
-	for(i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.GetCount(); i++)
 	{
 		pDB->BindParameter((RSField*)pRFields[i]);
 	}
@@ -393,7 +393,7 @@ bool RecordSet::LoadProc(int& start, int& pstart, int size, int psize)
 	int total = 0;
 	while(off)
 	{
-		nfetchrows = min(dbsize, off) ;
+		nfetchrows = std::min(dbsize, off) ;
 		rowsnfetched=pCur->Fetch(fetchtype, 0, nfetchrows);
 		if(rowsnfetched < nfetchrows)
 			SetFlag(dir ? eof : bof);
@@ -487,7 +487,7 @@ void RecordSet::init(int& currow, int& pstart)
 	bool updated = false;
 	while(left)
 	{
-		nfetchrows = min(dbsize,left);
+		nfetchrows = std::min(dbsize,left);
 		rowsfetched = pCur->Fetch(fetchtype, 0, nfetchrows);
 		if(!dir) start -= rowsfetched;
 		for(int i = 0; i < pRFields.GetCount(); i++)
@@ -508,7 +508,7 @@ void RecordSet::init(int& currow, int& pstart)
 				return;
 		}
 		fetchtype = dir ? DbCursor::f_next : DbCursor::f_prev;
-		nfetchrows = dir ? min(dbsize,left) : 1;
+		nfetchrows = dir ? std::min(dbsize,left) : 1;
 		if(!updated && total >= GetPageSize())
 		{
 			updated = true;

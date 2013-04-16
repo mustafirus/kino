@@ -15,21 +15,21 @@ class RField;
 
 class ROut  
 {
-	HANDLE	hFile;
+	//HANDLE	hFile;
 	DWORD NumberOfBytesWritten;
 public:
 	ROut(const char* filename);
 	~ROut();
 	ROut& operator<<(RecordSet* rec);
 	ROut& operator<<(Record* pr);
-	ROut& ROut::operator<<(RField* rf)
+	ROut& operator<<(RField* rf)
 	{
 		*this << (const char*)*rf;
 		return *this;
 	};
-	ROut& ROut::operator<<(const char* str)
+	ROut& operator<<(const char* str)
 	{
-		WriteFile(hFile, str, strlen(str), &NumberOfBytesWritten, NULL);
+		//WriteFile(hFile, str, strlen(str), &NumberOfBytesWritten, NULL);
 		return *this;
 	};
 };

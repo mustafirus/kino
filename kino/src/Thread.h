@@ -11,12 +11,12 @@
 
 
 //#define ThreadPtr __declspec( thread ) static Thread*
-#define ThreadPtr static __thread Thread*
+#define ThreadPtr __thread Thread*
 
 class Thread
 {
 //	static DWORD ThreadPtrIndex; // Non microsoft implementation
-	ThreadPtr pCurentThread;
+	static ThreadPtr pCurentThread;
 //	HANDLE	hThread;
 //	DWORD	nThreadID;
 protected:
@@ -37,7 +37,7 @@ public:
 //	operator HANDLE(){return hThread;};
 	static Thread* GetCurrent();
 private:
-	static void* Start(Thread* pThread);
+	static int Start(Thread* pThread);
 };
 
 #endif // !defined(AFX_THREAD_H__E7D87217_272F_11D2_A6D9_204C4F4F5020__INCLUDED_)

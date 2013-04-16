@@ -5,15 +5,15 @@
 #include "stdx.h"
 #include "Thread.h"
 
-virtual void Thread::Resume(){
-	ResumeThread(hThread);
+void Thread::Resume(){
+	//ResumeThread(hThread);
 };
 
 /*	// Non microsoft implementation
 DWORD Thread::ThreadPtrIndex = -1; */
 
 	// Microsoft implementation
-Thread* Thread::pCurentThread = NULL;
+ThreadPtr Thread::pCurentThread = NULL;
 
 void Thread::Attach()
 {
@@ -25,8 +25,8 @@ void Thread::Attach()
 	// Microsoft implementation
 	pCurentThread = this;
 
-	hThread	= ::GetCurrentThread();
-	nThreadID = ::GetCurrentThreadId();
+	//hThread	= ::GetCurrentThread();
+	//nThreadID = ::GetCurrentThreadId();
 }
 
 void Thread::Detach(){
@@ -39,11 +39,11 @@ Thread* Thread::GetCurrent(){
 
 Thread::Thread(bool suspended, bool autodel) : auto_delete(autodel)
 {
-	hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Start, this,
-		suspended ? CREATE_SUSPENDED : 0, &nThreadID);
+	//hThread = CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)Start, this,
+		//suspended ? CREATE_SUSPENDED : 0, &nThreadID);
 };
 
-void* Thread::Start(Thread* pThread)
+int Thread::Start(Thread* pThread)
 {
 	pThread->pCurentThread = pThread;
 	int exc = pThread->exit_code = pThread->Run();
@@ -57,9 +57,9 @@ Thread::~Thread()
 	if(pCurentThread != this)
 	{
 		DWORD status;
-		GetExitCodeThread(hThread, &status);
-		if(status == STILL_ACTIVE)
-			TerminateThread(hThread, -1);
+//		GetExitCodeThread(hThread, &status);
+//		if(status == STILL_ACTIVE)
+//			TerminateThread(hThread, -1);
 	}
-	CloseHandle(hThread);
+//	CloseHandle(hThread);
 };

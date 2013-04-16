@@ -52,7 +52,7 @@ const char* TempRecord::operator[](const char* name)
 	COLINFO*& pci = pTabInfo->pColInfo;
 	for(int i = 0; i < pTabInfo->cols; i++)
 	{
-		if(!stricmp(pci[i].name, name))
+		if(!strcasecmp(pci[i].name, name))
 			return pci[i].intr == SQL_NULL_DATA ? NULL : buf + pci[i].offset;
 	}
 	return NULL;

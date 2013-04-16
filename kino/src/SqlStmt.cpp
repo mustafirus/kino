@@ -9,16 +9,16 @@
 #define GROWBY 256
 SqlStmt& SqlStmt::operator<<(const char* s1)
 {
-	int len = lstrlen(s1);
+	int len = strlen(s1);
 	if(end + len + 1 > stmt + buflen)
 	{
 		int l = end - stmt;
 		char * s1 = new char[buflen += GROWBY];
-		lstrcpy(s1, stmt);
+		strcpy(s1, stmt);
 		delete stmt;
 		stmt = s1;
 		end = stmt + l;
 	}
-	lstrcpy(end, s1); end += len;
+	strcpy(end, s1); end += len;
 	return *this;
 };

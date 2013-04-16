@@ -113,40 +113,40 @@ void RField::Delete()
 	}
 }
 
-void RField::OnCopy(HWND hWnd)
+void RField::OnCopy(/*HWND hWnd*/)
 {
-	RKey* prk = pRec->GetRKey(*pQField);
-	ASSERT(prk);
-	if(prk->IsNull())
-		return;
-	if(!(OpenClipboard(hWnd) &&	EmptyClipboard()))
-	{
-		CloseClipboard();
-		return;
-	}
-	HANDLE h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, 256);
-	prk->Get((char*)GlobalLock(h));
-	GlobalUnlock(h);
-	SetClipboardData(Record::CF_RKEY, h);
-
-	const char* s1 = *this;
-	int len = s1 ? strlen(s1) + 1 : 0;
-	if(len)
-	{
-		h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, len * 2);
-		MultiByteToWideChar(CP_ACP, 0, s1, len, (LPWSTR)GlobalLock(h), len * 2);
-		GlobalUnlock(h);
-		SetClipboardData(CF_UNICODETEXT, h);
-		
-		h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, len);
-		memcpy(GlobalLock(h), s1, len);
-		GlobalUnlock(h);
-		SetClipboardData(CF_TEXT, h);
-	}
-	CloseClipboard();
+//	RKey* prk = pRec->GetRKey(*pQField);
+//	ASSERT(prk);
+//	if(prk->IsNull())
+//		return;
+//	if(!(OpenClipboard(hWnd) &&	EmptyClipboard()))
+//	{
+//		CloseClipboard();
+//		return;
+//	}
+//	HANDLE h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, 256);
+//	prk->Get((char*)GlobalLock(h));
+//	GlobalUnlock(h);
+//	SetClipboardData(Record::CF_RKEY, h);
+//
+//	const char* s1 = *this;
+//	int len = s1 ? strlen(s1) + 1 : 0;
+//	if(len)
+//	{
+//		h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, len * 2);
+//		MultiByteToWideChar(CP_ACP, 0, s1, len, (LPWSTR)GlobalLock(h), len * 2);
+//		GlobalUnlock(h);
+//		SetClipboardData(CF_UNICODETEXT, h);
+//
+//		h = GlobalAlloc(GMEM_MOVEABLE|GMEM_DDESHARE, len);
+//		memcpy(GlobalLock(h), s1, len);
+//		GlobalUnlock(h);
+//		SetClipboardData(CF_TEXT, h);
+//	}
+//	CloseClipboard();
 }
 
-void RField::OnPaste(HWND hWnd)
+void RField::OnPaste()
 {
 /*	if(!(OpenClipboard(hWnd) && IsClipboardFormatAvailable(Record::CF_RKEY)))
 	{
@@ -169,7 +169,7 @@ bool RField::CanCopy()
 	return !prk->IsNull();
 }
 
-bool RField::CanPaste(HWND hWnd)
+bool RField::CanPaste()
 {
 	RKey* prk = pRec->GetRKey(*pQField);
 	ASSERT(prk);

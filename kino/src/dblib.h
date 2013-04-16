@@ -1,5 +1,3 @@
-#include <sql.h>
-#include <sqlext.h>
 #include "Set.h"
 #include "Dict.h"
 #include "Query.h"

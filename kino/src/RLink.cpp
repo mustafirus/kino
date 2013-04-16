@@ -4,7 +4,7 @@
 
 #include "stdx.h"
 #include "Dict.h"
-#include "DbCursor.h"
+#include "DBCursor.h"
 #include "DataBase.h"
 #include "Record.h"
 #include "SqlStmt.h"

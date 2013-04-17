@@ -26,7 +26,6 @@ public:
 	DbStmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
 	virtual ~DbStmt(){delete buf;};
 	operator const char*(){return buf;};
-//DECLARE_DICT_MEMORY
 };
 
 class DataBase  

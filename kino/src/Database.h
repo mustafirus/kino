@@ -15,23 +15,23 @@
 class RSField;
 class RKey;
 
-class DbStmt
-{
-	char* buf;
-public:
-	DbStmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
-	virtual ~DbStmt(){delete buf;};
-	operator const char*(){return buf;};
-};
 
 class Database  
 {
 public:
+	class Stmt
+	{
+		char* buf;
+	public:
+		Stmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
+		virtual ~Stmt(){delete buf;};
+		operator const char*(){return buf;};
+	};
 	Database(){};
 	virtual ~Database(){};
 // new design
 
-	virtual DbStmt* prepare(const char* str) = 0;
+	virtual Stmt* prepare(const char* str) = 0;
 	virtual void bind(int col, RField* prf) = 0;
 	virtual void param(RKey* prk) = 0;
 	virtual void param(RSField* prf) = 0;

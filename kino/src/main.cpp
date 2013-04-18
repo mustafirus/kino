@@ -21,8 +21,8 @@ int main() {
     	const char *user="";
     	const char *pass="";
     	Action::pAction = new Action;
-    	Record::pDict = new Dict(new OdbcDataBase (dsn, duser, dpass));
-    	Record::pDB = new OdbcDataBase("kino", user, pass);
+//    	Record::pDict = new Dict(new OdbcDataBase (dsn, duser, dpass));
+//    	Record::pDB = new OdbcDataBase("kino", user, pass);
     	while(!Record::pDict->Ready())
     		sleep(5000);
 

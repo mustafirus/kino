@@ -86,7 +86,7 @@ QTable* QTable::Join(const char* fkey)
 	FKey* pfk = pNTable->GetFKey(fkey);
 	if(!pfk)
 	{
-		DbError2(MSG_FK_NOT_FOUND, fkey, *pNTable);
+		//DbError2(MSG_FK_NOT_FOUND, fkey, *pNTable);
 		return NULL;
 	}
 	return Join(pfk);
@@ -135,7 +135,7 @@ QTable* QTable::GetLink(QTable* pqt)
 	FKey* pfk = pNTable->GetFKey(ppk);
 	if(!pfk)
 	{
-		DbError2(MSG_FK_NOT_FOUND, ppk->name, *pNTable);
+		//DbError2(MSG_FK_NOT_FOUND, ppk->name, *pNTable);
 		return NULL;
 	}
 	return Join(pfk);
@@ -208,7 +208,7 @@ const char* QTable::GetExtent(const char* s1)
 	FKey* pfk = pNTable->GetFKey(s1);
 	if(!pfk)
 	{
-		DbError2(MSG_FK_NOT_FOUND, s1, *pNTable);
+		//DbError2(MSG_FK_NOT_FOUND, s1, *pNTable);
 	}
 	if(pfk->ext)
 		return pfk->ext;

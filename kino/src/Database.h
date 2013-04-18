@@ -11,41 +11,63 @@
 #include "Field.h"
 #include "Set.h"
 #include "Defines.h"
+#include "DBCursor.h"
 
 class RSField;
 class RKey;
-
-
+class DbStmt
+{
+	char* buf;
+public:
+	DbStmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
+	virtual ~DbStmt(){delete buf;};
+	operator const char*(){return buf;};
+};
 class Database  
 {
+
 public:
 	class Stmt
 	{
-		char* buf;
 	public:
-		Stmt(const char* stmt){buf = new char[strlen(stmt)+1]; strcpy(buf, stmt);};
-		virtual ~Stmt(){delete buf;};
-		operator const char*(){return buf;};
+		Stmt(){};
+		virtual ~Stmt(){};
+
+		virtual void bind(int col, RField* prf) = 0;
+		virtual void param(RKey* prk) = 0;
+		virtual void param(RSField* prf) = 0;
+		virtual void param(RField* prf) = 0;
+		virtual void execute() = 0;
 	};
+protected:
+	typedef std::string							string;
+	typedef std::unordered_map<string,Stmt*> 	stmtmap;
+	virtual Stmt* create(const char* sql)=0;
+private:
+	stmtmap stm;
+public:
 	Database(){};
 	virtual ~Database(){};
 // new design
 
-	virtual Stmt* prepare(const char* str) = 0;
-	virtual void bind(int col, RField* prf) = 0;
-	virtual void param(RKey* prk) = 0;
-	virtual void param(RSField* prf) = 0;
-	virtual void param(RField* prf) = 0;
-	virtual void execute() = 0;
-	virtual int  get_id() = 0;
+
+	virtual Stmt* prepare(const char* sql){
+		Stmt* st = stm[sql];
+		if(!st){
+			stm[sql] = st = create(sql);
+		}
+		return st;
+	};
+	virtual void release(Stmt* ){};
+	virtual int  get_id(){};
 
 
 
 
 
-
+public:
 	virtual void CheckData(RField* prf) = 0;
-//	virtual DbCursor* GetCursor(const char* stmt, int maxfr) = 0;
+	virtual DbCursor* GetCursor(const char* stmt, int maxfr) = 0;
 	virtual void ExecDirect(const char* str) = 0;
 	virtual DbStmt* Prepare(const char* str) = 0;
 	virtual void Set(DbStmt* pst) = 0;

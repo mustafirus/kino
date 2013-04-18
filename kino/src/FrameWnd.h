@@ -69,7 +69,7 @@ public:
 //	Frame* GetFrame(){return pRootFrame;}
 
 //	bool Start();
-	virtual bool PreTranslateMessage(void* pMsg);
+	virtual bool PreTranslateMessage(void* pMsg){return false;};
 protected:
 
 // Implementation

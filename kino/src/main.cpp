@@ -9,11 +9,27 @@
 #include <iostream>
 #include "Action.h"
 #include "Record.h"
-#include "OdbcDataBase.h"
+#include "testDatabase.h"
 #include "Dict.h"
 
 
+void testDB(){
+	testDatabase* t = new testDatabase();
+	char* sss= new char[30];
+	strcpy(sss, "fuckingsj");
+	Database::Stmt* s1 = t->prepare("assss");
+	Database::Stmt* s2 = t->prepare(sss);
+	strcpy(sss, "      ");
+	delete sss;
+	Database::Stmt* s3 = t->prepare("fuckingsj");
+
+}
+
+
 int main() {
+
+	void testDB();
+	exit(0);
     try {
     	const char *dsn="";
     	const char *duser="";

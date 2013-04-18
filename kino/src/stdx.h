@@ -5,6 +5,7 @@
 #include <cstring>
 #include <algorithm>
 #include <cassert>
+#include <unordered_map>
 #include "hlpdefs.h"
 #define ASSERT assert
 #define DWORD unsigned

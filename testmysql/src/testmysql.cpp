@@ -15,11 +15,19 @@
 #include <unordered_map>
 
 
+
+
 #include <mysql/mysql.h>
 using namespace std;
+class stmt{
+	int i;
+public:
+	stmt():i(0){};
+	~stmt(){};
+};
 
 void zzz(){
-	unordered_map<string,int> str_map;
+	std::unordered_map<string,int> str_map;
 	typedef unordered_map<string,int>::iterator iter;
 	str_map["zzz"] = 1;
 	str_map["aaa"] = 2;

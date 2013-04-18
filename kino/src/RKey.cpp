@@ -8,7 +8,7 @@
 #include "Record.h"
 //#include "RecordSet.h"
 #include "SqlStmt.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "Query.h"
 #include "RField.h"
 #include "QField.h"

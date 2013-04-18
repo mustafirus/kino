@@ -12,7 +12,7 @@
 #include "List.h"
 #include "RKey.h"
 #include "DbException.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "SqlStmt.h"
 //#include "WaitCursor.h"
 #include "RecordSet.h"

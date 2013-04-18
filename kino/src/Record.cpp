@@ -12,13 +12,13 @@
 #include "QRestr.h"
 #include "RLink.h"
 #include "DbException.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "RecordSet.h"
 
 //#define GrowBy	4
 
 
-DataBase* Record::pDB = NULL;
+Database* Record::pDB = NULL;
 Dict* Record::pDict = NULL;
 uint Record::CF_RKEY = 0;//RegisterClipboardFormat("CF_RKEY");
 

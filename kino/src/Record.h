@@ -14,7 +14,7 @@ class RKey;
 class Query;
 class QTable;
 class QField;
-class DataBase;
+class Database;
 class Dict;
 class QRestr;
 class DbStmt;
@@ -113,7 +113,7 @@ public:
 	virtual	void Paste();
 	virtual	void Undo();
 
-	static DataBase* pDB;
+	static Database* pDB;
 	static Dict* pDict;
 
 private:

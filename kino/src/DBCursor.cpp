@@ -4,7 +4,7 @@
 
 #include "stdx.h"
 #include "Dict.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "DBCursor.h"
 
 

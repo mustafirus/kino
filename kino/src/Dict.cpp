@@ -5,7 +5,7 @@
 #include "stdx.h"
 #include "ErrorCodes.h"
 #include "Dict.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "DbException.h"
 #include "Table.h"
 #include "FCapts.h"
@@ -23,7 +23,7 @@ static Field::Type TypeCrack(unsigned char dbtype);
 // Construction/Destruction
 //////////////////////////////////////////////////////////////////////
 
-Dict::Dict(DataBase* pdb) : pDB(pdb), pFCapts(NULL), ready(false), pStmtForm(NULL), pStmtProc(NULL)
+Dict::Dict(Database* pdb) : pDB(pdb), pFCapts(NULL), ready(false), pStmtForm(NULL), pStmtProc(NULL)
 {
 	LoadTables();
 }

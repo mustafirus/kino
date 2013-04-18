@@ -15,7 +15,7 @@ class RKey;
 #include "QRestr.h"
 class SqlStmt;
 class DbCursor;
-class DataBase;
+class Database;
 
 class RLink : public BaseList
 {
@@ -35,7 +35,7 @@ public:
 
 	void Select(SqlStmt& str, bool bWhere);
 	void Bind(DbCursor* pCur);
-	void Bind(DataBase* pDB);
+	void Bind(Database* pDB);
 //Operations
 	bool	ReturnToSrc();
 	bool SetDefaults(Record* pr);

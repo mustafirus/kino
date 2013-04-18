@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-class DataBase;
+class Database;
 class RKey;
 class RSField;
 

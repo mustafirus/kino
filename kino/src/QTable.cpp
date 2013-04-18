@@ -7,7 +7,7 @@
 #include "Table.h"
 #include "QField.h"
 #include "DbException.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "SqlStmt.h"
 #include "QTable.h"
 

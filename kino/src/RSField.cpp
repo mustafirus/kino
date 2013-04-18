@@ -6,7 +6,7 @@
 #include "Dict.h"
 #include "RecordSet.h"
 #include "QField.h"
-#include "DataBase.h"
+#include "Database.h"
 //#include "StMdfr.h"
 //#include "Frame.h"
 #include "RSField.h"

@@ -5,7 +5,7 @@
 #include "stdx.h"
 #include "Dict.h"
 #include "DBCursor.h"
-#include "DataBase.h"
+#include "Database.h"
 #include "Record.h"
 #include "SqlStmt.h"
 #include "RKey.h"
@@ -36,7 +36,7 @@ void RLink::Bind(DbCursor* pCur)
 		pCur->BindParameter(psrckey);
 }
 
-void RLink::Bind(DataBase* pDB)
+void RLink::Bind(Database* pDB)
 {
 	if(!ptrgkey->IsPrimary())
 		pDB->BindParameter(psrckey);

@@ -58,7 +58,7 @@ private:
 public:
 //	bool SaveToFile(const char* filename);
 friend class RKey;
-friend class DataBase;
+friend class Database;
 friend class RSField;
 friend class RSBookmark;
 friend uint LoadRuner(RiB* pRec);

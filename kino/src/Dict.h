@@ -14,7 +14,7 @@
 #include "Map.h"
 #include "Query.h"
 #include "Table.h"
-class DataBase;
+class Database;
 class Table;
 class PKey;
 class Query;
@@ -34,7 +34,7 @@ class Dict
 		operator Table*(){if(!this) return NULL; return pTable;};
 	};
 
-	DataBase*	pDB;
+	Database*	pDB;
 	Tables		pTables;
 	FCapts*		pFCapts;
 	DbStmt*		pStmtForm;
@@ -45,7 +45,7 @@ class Dict
 	Table* GetTableByName(const char* name);
 public:
 	bool Ready();
-	Dict(DataBase* pdb);
+	Dict(Database* pdb);
 	virtual ~Dict();
 
 	PKey*  GetPKey(const char* name);
@@ -61,7 +61,7 @@ public:
 //	char* GetProc(const char* table, const char* key, int n);
 //	char* GetProc(RKey* prk, int n);
 
-	operator DataBase*(){return pDB;};
+	operator Database*(){return pDB;};
 
 private:
 	bool LoadTables();

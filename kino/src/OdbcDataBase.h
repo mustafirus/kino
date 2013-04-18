@@ -9,7 +9,7 @@
 #pragma once
 #endif // _MSC_VER >= 1000
 
-#include "DataBase.h"
+#include "Database.h"
 #include "Map.h"
 
 
@@ -77,7 +77,7 @@ public:
 
 //typedef StringMap<OdbcStmt, 50> OdbcStmtMap;
 
-class OdbcDataBase : public DataBase
+class OdbcDataBase : public Database
 {
 	HENV		henv;
 	HDBC		hdbc; 

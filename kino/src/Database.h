@@ -1,21 +1,17 @@
-// DataBase.h: interface for the DataBase class.
-//
-//////////////////////////////////////////////////////////////////////
+/*
+ * Database1.h
+ *
+ *  Redezigned on: 17 апр. 2013
+ *      Author: golubev
+ */
 
-#if !defined(AFX_DATABASE_H__670D9FD3_DFFF_11D1_A611_204C4F4F5020__INCLUDED_)
-#define AFX_DATABASE_H__670D9FD3_DFFF_11D1_A611_204C4F4F5020__INCLUDED_
-
-#if _MSC_VER >= 1000
-#pragma once
-#endif // _MSC_VER >= 1000
+#ifndef DATABASE_H_
+#define DATABASE_H_
 
 #include "Field.h"
 #include "Set.h"
 #include "Defines.h"
 
-class DbException;
-extern DbException dbExcep;
-class DbCursor;
 class RSField;
 class RKey;
 
@@ -28,13 +24,28 @@ public:
 	operator const char*(){return buf;};
 };
 
-class DataBase  
+class Database  
 {
 public:
-	virtual int Export(const char* tablename, const char * filename) = 0;
-	DataBase(){};
-	virtual ~DataBase(){};
-	virtual DbCursor* GetCursor(const char* stmt, int maxfr) = 0;
+	Database(){};
+	virtual ~Database(){};
+// new design
+
+	virtual DbStmt* prepare(const char* str) = 0;
+	virtual void bind(int col, RField* prf) = 0;
+	virtual void param(RKey* prk) = 0;
+	virtual void param(RSField* prf) = 0;
+	virtual void param(RField* prf) = 0;
+	virtual void execute() = 0;
+	virtual int  get_id() = 0;
+
+
+
+
+
+
+	virtual void CheckData(RField* prf) = 0;
+//	virtual DbCursor* GetCursor(const char* stmt, int maxfr) = 0;
 	virtual void ExecDirect(const char* str) = 0;
 	virtual DbStmt* Prepare(const char* str) = 0;
 	virtual void Set(DbStmt* pst) = 0;
@@ -45,10 +56,9 @@ public:
 	virtual void GetData(int icol, char& data) = 0;
 	virtual void GetData(int icol, bool& b) = 0;
 	virtual void GetData(int icol, char* data, int num) = 0;
-	virtual void CheckData(RField* prf) = 0;
 	virtual void* GetIndicator(int rows) = 0;
 	virtual Field::Type Convert(const char* frombuf, char* tobuf, Field::Type from, Field::Type to) = 0;
-//	virtual void Bind(RFields& rf) = 0;
+	virtual void Bind(RFields& rf) = 0;
 	virtual void GetInfo(TABLEINFO* pti) = 0;
 
 	virtual void Bind(int col, RField* prf) = 0;
@@ -67,7 +77,9 @@ public:
 	virtual int  GetIdentity() = 0;
 	virtual bool ExecProc(const char* name, int id, int& newid) = 0;
 	virtual bool ExecProc(const char * name, int id, char* str, int slen) = 0;
+private:
+	virtual int Export(const char* tablename, const char * filename) = 0;
 
 };
 
-#endif // !defined(AFX_DATABASE_H__670D9FD3_DFFF_11D1_A611_204C4F4F5020__INCLUDED_)
+#endif // DATABASE_H_

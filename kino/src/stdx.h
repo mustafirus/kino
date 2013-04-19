@@ -3,9 +3,12 @@
 #include <malloc.h>
 #include <limits.h>
 #include <cstring>
+#include <string>
 #include <algorithm>
 #include <cassert>
+#include <deque>
 #include <unordered_map>
+#include <memory>
 #include "hlpdefs.h"
 #define ASSERT assert
 #define DWORD unsigned
@@ -23,3 +26,5 @@ struct DATE_STRUCT{
 };
 
 #define FUCK_IGNORE_THIS
+#define BEGIN_CRITICAL_SECTION
+#define END_CRITICAL_SECTION

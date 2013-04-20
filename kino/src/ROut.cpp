@@ -32,7 +32,7 @@ ROut& ROut::operator<<(RecordSet* pr)
 ROut& ROut::operator<<(Record* pr)
 {
 	RFields& rf = *pr;
-	int n = rf.GetCount() - 1;
+	int n = rf.size() - 1;
 	for(int i = 0; i < n; i++)
 	{
 		if(rf[i]->hidden())

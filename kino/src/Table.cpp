@@ -69,7 +69,7 @@ void Table::Dump()
 void PKey::Dump()
 {
 	printf("Primary - %s\n", name);
-	for(int i = 0; i < pFields.GetCount(); i++)
+	for(int i = 0; i < pFields.size(); i++)
 	{
 		printf("\t%s\n", pFields[i]->name);
 	}
@@ -78,7 +78,7 @@ void FKey::Dump()
 {
 	printf("Foreign - %s\n", name);
 	printf("\tReferences - %s\n", pPKey->name);
-	for(int i = 0; i < pFields.GetCount(); i++)
+	for(int i = 0; i < pFields.size(); i++)
 	{
 		printf("\t%s - %s\n", pFields[i]->name, (*pPKey)[i]->name);
 	}

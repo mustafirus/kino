@@ -69,7 +69,7 @@ char* Query::GetQFields(const char* str, QFields& qf, QTable* pqt)
 		pqf = last->GetQField(s2);
 		if(pqf)
 		{
-			qf.Add(pqf);
+			qf.push_back(pqf);
 		}else
 		{
 			const char* ext = NULL;

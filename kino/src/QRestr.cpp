@@ -62,9 +62,9 @@ QRestr* Fun(Query* pq, const char* str, QRestr* pqr, Record* pr)/* : data("NULL"
 		return NULL;
 	QFields qf;
 	pq->GetQFields(s1, qf);
-	if(qf.GetCount() < 1)
+	if(qf.size() < 1)
 		return NULL;
-	if(qf.GetCount()>1)
+	if(qf.size()>1)
 		return NULL;
 	QField* pqf = qf[0];
 	RField* prf = NULL;
@@ -73,7 +73,7 @@ QRestr* Fun(Query* pq, const char* str, QRestr* pqr, Record* pr)/* : data("NULL"
 		ASSERT(pr);
 		RFields rf;
 		pr->GetRFields(s3, rf);
-		if(rf.GetCount()>1)
+		if(rf.size()>1)
 			return NULL;
 		prf = rf[0];
 	}

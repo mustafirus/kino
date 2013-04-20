@@ -38,7 +38,10 @@ public:
 		pData = p;
 	};
 	int GetSize(){return max_fields;};
-	int GetCount(){return fields;};
+//	int GetCount(){return fields;};
+//	int GetCount(){return fields;};
+
+	int size(){return fields;};
 	T* Add(T* pt)
 	{
 		if(!pt)

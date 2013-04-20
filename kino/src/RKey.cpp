@@ -42,7 +42,7 @@ bool RKey::IsPrimary()
 
 void RKey::Select(SqlStmt& str)
 {
-	for(int i = 0; i < pQFields.GetCount(); i++)
+	for(int i = 0; i < pQFields.size(); i++)
 	{
 		if(i!=0)
 			str << " AND ";
@@ -51,7 +51,7 @@ void RKey::Select(SqlStmt& str)
 }
 void RKey::Delete(SqlStmt& str)
 {
-	for(int i = 0; i < pQFields.GetCount(); i++)
+	for(int i = 0; i < pQFields.size(); i++)
 	{
 		if(i!=0)
 			str << " AND ";
@@ -60,7 +60,7 @@ void RKey::Delete(SqlStmt& str)
 }
 void RKey::SrcSelect(SqlStmt& str)
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		if(i!=0)
 			str << " AND ";
@@ -69,7 +69,7 @@ void RKey::SrcSelect(SqlStmt& str)
 }
 void RKey::Update(SqlStmt& str)
 {
-	for(int i = 0; i < pQFields.GetCount(); i++)
+	for(int i = 0; i < pQFields.size(); i++)
 	{
 		if(i!=0)
 			str << " AND ";
@@ -79,7 +79,7 @@ void RKey::Update(SqlStmt& str)
 
 void RKey::Refresh(SqlStmt& str)
 {
-	for(int i = 0; i < pQFields.GetCount(); i++)
+	for(int i = 0; i < pQFields.size(); i++)
 	{
 		if(i!=0)
 			str << " AND ";
@@ -90,7 +90,7 @@ void RKey::Refresh(SqlStmt& str)
 
 bool RKey::IsNull()
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		if(pRFields[i]->state == RField::s_null)
 			return true;
@@ -100,7 +100,7 @@ bool RKey::IsNull()
 
 void RKey::SetNull()
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		pRFields[i]->state = RField::s_null;
 		pRFields[i]->state = RField::s_data;
@@ -115,7 +115,7 @@ void RKey::Get(char* str)
 	else
 		str += sprintf(str, "%s;%s",((Table*)*pQTable)->name,
 		((Table*)*pQTable)->mPKey.name);
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		str += sprintf(str, ";%s",((const char*)*(pRFields[i])));
 	}
@@ -142,7 +142,7 @@ bool RKey::CanSet(char*& str)
 
 void RKey::Set(char* str)
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		Breaker s3(str,';');
 		ASSERT(str);
@@ -153,7 +153,7 @@ void RKey::Set(char* str)
 }
 void RKey::SetIdentity()
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		if( ((QField*)(*(pRFields[i])))->ro() )
 		{
@@ -169,8 +169,8 @@ void RKey::SetIdentity()
 
 RKey& RKey::operator=(RKey& rk)
 {
-	ASSERT(pRFields.GetCount() == rk.pRFields.GetCount());
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	ASSERT(pRFields.size() == rk.pRFields.size());
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		strcpy(pRFields[i]->GetBuf(), *(rk.pRFields[i]));
 		pRFields[i]->SetData();

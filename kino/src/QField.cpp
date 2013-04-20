@@ -82,7 +82,7 @@ void QField::UpdateWhere(SqlStmt& str)
 
 QFields& QField::operator>>(QFields& qf)
 {
-	qf.Add(this);
+	qf.push_back(this);
 	if(next)
 		return next->operator>>(qf);
 	else

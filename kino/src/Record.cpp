@@ -32,11 +32,11 @@ pQuery(*rkey), pQRestr(NULL), pSrcLink(NULL), pTrgLink(NULL){}
 
 Record::~Record()
 {
-	for(int i=0; i<pRFields.GetCount(); i++)
+	for(int i=0; i<pRFields.size(); i++)
 	{
 		delete pRFields[i];
 	}
-	for(int i=0; i<pRKeys.GetCount(); i++)
+	for(int i=0; i<pRKeys.size(); i++)
 	{
 		delete pRKeys[i];
 	}
@@ -48,7 +48,7 @@ Record::~Record()
 RField* Record::Find(QField* pqf)
 {
 	ASSERT(pqf);
-	for(int i=0; i<pRFields.GetCount(); i++)
+	for(int i=0; i<pRFields.size(); i++)
 	{
 		if(*pRFields[i] == pqf)
 			return pRFields[i];
@@ -77,9 +77,9 @@ bool Record::Load()
 	SqlStmt str;
 	if(!pDbStmt)
 	{
-		ASSERT(pRFields.GetCount());
+		ASSERT(pRFields.size());
 		str << "SELECT ";
-		for(int i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.size(); i++)
 		{
 			if(i>0)
 				str << ", ";
@@ -99,7 +99,7 @@ bool Record::Load()
 		}else
 			pDB->Set(pDbStmt);
 		pDB->BindParameter(pPRKey);
-		for(int i=0; i < pRFields.GetCount(); i++)
+		for(int i=0; i < pRFields.size(); i++)
 		{
 			if(pRFields[i]->state == RField::s_modified)
 				continue;
@@ -115,7 +115,7 @@ bool Record::Load()
 		pDB->FlushEx();
 		return false;
 	}
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		if(pRFields[i]->state != RField::s_modified)
 			pDB->CheckData(pRFields[i]);
@@ -127,7 +127,7 @@ bool Record::Load()
 void Record::AssistLoad()
 {
 	ASSERT(pPRKey);
-	ASSERT(pRFields.GetCount());
+	ASSERT(pRFields.size());
 	
 	bool nul = true;
 	RFields rf;
@@ -139,7 +139,7 @@ void Record::AssistLoad()
 		str << "SELECT ";
 		bool comma = false;
 		int fn = 1;
-		for(int i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.size(); i++)
 		{
 			if(pRFields[i]->state == RField::s_data)
 				continue;
@@ -150,7 +150,7 @@ void Record::AssistLoad()
 			prf = pRFields[i];
 			(*prf)->Select(str);
 			(*prf)->Mark();
-			rf.Add(prf);
+			rf.push_back(prf);
 		}
 		if(!comma)
 			return;
@@ -159,7 +159,7 @@ void Record::AssistLoad()
 		str << "\nWHERE ";
 		pPRKey->Select(str);
 		pDB->Prepare(str);
-		for(int i = 0; i<rf.GetCount(); i++)
+		for(int i = 0; i<rf.size(); i++)
 			pDB->Bind(fn++, rf[i]);
 		pDB->BindParameter(pPRKey);
 		pDB->Exec();
@@ -167,7 +167,7 @@ void Record::AssistLoad()
 			nul = true;
 		pDB->FlushEx();
 	}
-	for(int i = 0; i<rf.GetCount(); i++)
+	for(int i = 0; i<rf.size(); i++)
 	{
 		if(nul)
 			rf[i]->SetData(true);
@@ -186,7 +186,7 @@ bool Record::LoadDefaults()
 	{
 		QFields qf;
 		pqt->GetKeyFields(qf);
-		for(int i = 0; i<qf.GetCount(); i++)
+		for(int i = 0; i<qf.size(); i++)
 		{
 			prf = Find(qf[i]);
 			if(!prf || prf->state == RField::s_null)
@@ -203,7 +203,7 @@ next:	pqt = *pqt;
 
 bool Record::Insert()
 {
-	ASSERT(pRFields.GetCount());
+	ASSERT(pRFields.size());
 	SqlStmt str;
 	QTable* qt = *pQuery;
 	str << "INSERT INTO " << (const char*)*(Table*)*qt << "( ";
@@ -212,7 +212,7 @@ bool Record::Insert()
 	*qt >> qf;
 	Find(qf,rf);
 	bool comma = false;
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 	{
 		if(rf[i]->state != RField::s_modified)
 			continue;
@@ -227,7 +227,7 @@ bool Record::Insert()
 	str << ")\nVALUES ( ";
 
 	comma = false;
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 	{
 		if(rf[i]->state != RField::s_modified)
 			continue;
@@ -250,14 +250,14 @@ bool Record::Insert()
 
 	state /= s_blank; state /= s_modified;
 	ASSERT(state != s_dummy);
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 		rf[i]->state /= RField::s_modified;
 	return true;
 }
 
 bool Record::Update()
 {
-	ASSERT(pRFields.GetCount());
+	ASSERT(pRFields.size());
 	SqlStmt str;
 	QTable* qt = *pQuery;
 	str << "UPDATE " << (const char*)*(Table*)*qt << "\n SET  ";
@@ -266,7 +266,7 @@ bool Record::Update()
 	*qt >> qf;
 	Find(qf,rf);
 	bool comma = false;
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 	{
 		if(rf[i]->state != RField::s_modified)
 			continue;
@@ -287,7 +287,7 @@ bool Record::Update()
 	
 	try{
 		DbStmt* pst = pDB->Prepare(str);
-		for(int i = 0; i < rf.GetCount(); i++)
+		for(int i = 0; i < rf.size(); i++)
 		{
 			if(rf[i]->state != RField::s_modified)
 				continue;
@@ -304,25 +304,25 @@ bool Record::Update()
 	}
 	state /= s_modified;
 	ASSERT(state != s_dummy && state != s_blank);
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 		rf[i]->state /= RField::s_modified;
 	return true;
 }
 
 bool Record::Refresh(RKey* prk)
 {
-	ASSERT(pRFields.GetCount());
+	ASSERT(pRFields.size());
 
 	QTable* pqt = *prk;
 	QFields qf;
 	RFields rf;
 	*pqt >> qf;
 	Find(qf, rf);
-	ASSERT(rf.GetCount()>0);
+	ASSERT(rf.size()>0);
 	
 	if(prk->IsNull())
 	{
-		for(int i = 0; i < rf.GetCount(); i++)
+		for(int i = 0; i < rf.size(); i++)
 		{
 			rf[i]->state = RField::s_null;
 			rf[i]->state = RField::s_data;
@@ -335,7 +335,7 @@ bool Record::Refresh(RKey* prk)
 	SqlStmt str;
 	str << "SELECT ";
 	pqt->Mark(true);
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 	{
 		if(i>0)
 			str << ", ";
@@ -353,11 +353,11 @@ bool Record::Refresh(RKey* prk)
 		pDB->Prepare(str);
 		pDB->BindParameter(prk);
 		pDB->Exec();
-		for(int i=0; i < rf.GetCount(); i++)
+		for(int i=0; i < rf.size(); i++)
 			pDB->Bind(i+1, rf[i]);
 		if(!pDB->Read())
 		{
-			for(int i = 0; i < rf.GetCount(); i++)
+			for(int i = 0; i < rf.size(); i++)
 			{
 				rf[i]->state = RField::s_null;
 				rf[i]->state = RField::s_data;
@@ -372,7 +372,7 @@ bool Record::Refresh(RKey* prk)
 		e->Effect();
 		return false;
 	}
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 		pDB->CheckData(rf[i]);
 	pDB->FlushEx();
 	return true;
@@ -404,7 +404,7 @@ void Record::New()
 	state = s_blank;
 	state /= s_dummy;
 	state /= s_modified;
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		pRFields[i]->state = RField::s_null;
 		pRFields[i]->state = RField::s_data;
@@ -439,14 +439,14 @@ char* Record::GetRFields(char* str, RFields& rf, QTable* pqt /*= NULL*/)
 	QFields qf;
 	str = pQuery->GetQFields(str, qf, pqt);
 	GetRFields(qf, rf);
-	for(int i = 0; i < rf.GetCount(); i++)
+	for(int i = 0; i < rf.size(); i++)
 		rf[i]->state /= RField::s_hidden;
 	return str;
 }
 
 void Record::Find(QFields& qf, RFields& rf)
 {
-	int n = qf.GetCount();
+	int n = qf.size();
 	if(!n)
 		return;
 	RField* prf;
@@ -454,7 +454,7 @@ void Record::Find(QFields& qf, RFields& rf)
 	{
 		prf = Find(qf[i]);
 		if(prf)
-			rf.Add(prf);
+			rf.push_back(prf);
 	}
 }
 
@@ -464,16 +464,16 @@ RField*	Record::GetRField(QField* pqf)
 	if(prf)
 		return prf;
 	else
-		return pRFields.Add(CreateRField(pqf));
+		return pRFields.push_back(CreateRField(pqf)), pRFields.back();
 }
 
 void Record::GetRFields(QFields& qf, RFields& rf)
 {
-	int n = qf.GetCount();
+	int n = qf.size();
 	if(!n)
 		return;
 	for(int i = 0; i < n; i++)
-		rf.Add( GetRField(qf[i]));
+		rf.push_back( GetRField(qf[i]));
 }
 
 Record* Record::GetLinkedRecord(char* str)
@@ -609,15 +609,15 @@ RKey* Record::GetRKey(QTable* pqt)
 		pqt = pQuery->pQTable;
 /*	else
 		pqt = pqt->GetFirstChild();
-*/	for(int i = 0; i < pRKeys.GetCount(); i++)
+*/	for(size_t i = 0; i < pRKeys.size(); i++)
 	{
 		if(*pRKeys[i] == pqt)
 			return pRKeys[i];
 	}
-	RKey* prk = pRKeys.Add(new RKey(pqt, this));
+	pRKeys.push_back(new RKey(pqt, this));
 	if(state == s_dummy && state != s_prepare)
 		AssistLoad();
-	return prk;
+	return pRKeys.back();
 }
 
 /*QTable* Record::GetLinkTable(Query* pq)
@@ -963,7 +963,7 @@ bool Record::CanPaste()
 
 void Record::Undo()
 {
-	for(int i = 0; i < pRFields.GetCount(); i++)
+	for(int i = 0; i < pRFields.size(); i++)
 	{
 		pRFields[i]->state /= RField::s_data;
 		pRFields[i]->state /= RField::s_modified;

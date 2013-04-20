@@ -27,9 +27,9 @@ RecordSet::RecordSet(int rows, Query* pq/*, Record* pr  = NULL*/) :
 RiB(rows, rows), pCur(NULL), dbsize(BUFSIZE) /*pPRec(pr), pBM(NULL)*/
 {
 	pQuery	=	pq;
-	ASSERT(pRKeys.GetCount() == 0);
+	ASSERT(pRKeys.size() == 0);
 	RKey* prk = new RKey(pQuery->pQTable, this);
-	pRKeys.Add(prk);
+	pRKeys.push_back(prk);
 	pQRestr = QRestr::Create(pQuery, prk, pQRestr);
 }
 
@@ -111,8 +111,8 @@ bool RecordSet::Load()
 	{
 		SqlStmt str;
 		str << "SELECT ";
-		ASSERT(pRFields.GetCount());
-		for(int i = 0; i<pRFields.GetCount(); i++)
+		ASSERT(pRFields.size());
+		for(int i = 0; i<pRFields.size(); i++)
 		{
 			if(i>0)
 				str<<", ";
@@ -122,7 +122,7 @@ bool RecordSet::Load()
 		str << "\nFROM ";
 		pQuery->pQTable->Select(str);
 		bool bWhere = false;
-		for(int i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.size(); i++)
 		{
 			bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 		}
@@ -143,7 +143,7 @@ bool RecordSet::Load()
 			RestoreSizes();
 		}else
 			pCur = pDB->GetCursor(str, dbsize);
-		for(int i = 0; i<pRFields.GetCount(); i++)
+		for(int i = 0; i<pRFields.size(); i++)
 		{
 			pCur->BindParameter((RSField*)pRFields[i]);
 		}
@@ -160,7 +160,7 @@ bool RecordSet::Load()
 		}
 		pCur->Execute();
 		RSField* prf;
-		for(int i=0; i< pRFields.GetCount(); i++)
+		for(int i=0; i< pRFields.size(); i++)
 		{
 			prf = (RSField*)pRFields[i]; 
 			pCur->Bind(i+1, prf);
@@ -211,9 +211,9 @@ bool RecordSet::SelectInto(const char* tablename, bool hidden)
 {
 	SqlStmt str;
 	str << "SELECT ";
-	ASSERT(pRFields.GetCount());
+	ASSERT(pRFields.size());
 	bool comma = false;
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		if(!hidden)
 			if(pRFields[i]->state == RField::s_hidden)
@@ -225,7 +225,7 @@ bool RecordSet::SelectInto(const char* tablename, bool hidden)
 	str << "\n INTO " << tablename << "\nFROM ";
 	pQuery->pQTable->Select(str);
 	bool bWhere = false;
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 	}
@@ -249,14 +249,14 @@ int	RecordSet::SelectCount()
 {
 	SqlStmt str;
 	str << "SELECT count(*)";
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		(*pRFields[i])->Mark();
 	}
 	str << "\nFROM ";
 	pQuery->pQTable->Select(str);
 	bool bWhere = false;
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		bWhere = ((RSField*)pRFields[i])->Where(str, bWhere);
 	}
@@ -269,7 +269,7 @@ int	RecordSet::SelectCount()
 		}while(pList = *pList);
 	}
 	pDB->Prepare(str);
-	for(int i = 0; i<pRFields.GetCount(); i++)
+	for(int i = 0; i<pRFields.size(); i++)
 	{
 		pDB->BindParameter((RSField*)pRFields[i]);
 	}
@@ -402,7 +402,7 @@ bool RecordSet::LoadProc(int& start, int& pstart, int size, int psize)
 		off -= rowsnfetched;
 		total+=rowsnfetched;
 		ASSERT(off>=0);
-		for(int i = 0; i < pRFields.GetCount(); i++)
+		for(int i = 0; i < pRFields.size(); i++)
 		{
 			if(dir)
 			{
@@ -490,7 +490,7 @@ void RecordSet::init(int& currow, int& pstart)
 		nfetchrows = std::min(dbsize,left);
 		rowsfetched = pCur->Fetch(fetchtype, 0, nfetchrows);
 		if(!dir) start -= rowsfetched;
-		for(int i = 0; i < pRFields.GetCount(); i++)
+		for(int i = 0; i < pRFields.size(); i++)
 			((RSField*)pRFields[i])->Copy(start, 0, rowsfetched);
 		if(dir) start += rowsfetched;
 		total += rowsfetched;
@@ -500,7 +500,7 @@ void RecordSet::init(int& currow, int& pstart)
 			SetSize(total);
 			SetFlag(dir ? eof : bof);
 			if(!dir)
-				for(int i = 0; i < pRFields.GetCount(); i++)
+				for(int i = 0; i < pRFields.size(); i++)
 					((RSField*)pRFields[i])->Move(GetSize() - total, total);
 
 				if(dir){currow = 0;pstart = 0;}else

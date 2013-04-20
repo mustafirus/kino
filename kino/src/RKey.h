@@ -37,7 +37,7 @@ public:
 	bool CanSet(char*& str);
 	void Set(char* str);
 	void SetIdentity();
-	uint GetCount(){return pRFields.GetCount();};
+	uint GetCount(){return pRFields.size();};
 
 	bool IsPrimary();
 	bool IsNull();

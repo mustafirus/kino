@@ -26,7 +26,7 @@ public:
 	SqlStmt& operator<<(RFields rf)
 	{
 		if(type == Select && part == Sel)
-		for(int i = 0; i<rf.GetCount(); i++)
+		for(int i = 0; i<rf.size(); i++)
 		{
 			if(i>0)
 				*this<<", ";

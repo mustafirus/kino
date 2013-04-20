@@ -115,12 +115,12 @@ QField* QTable::GetQField(const char* name)
 
 void QTable::GetQFields(FieldSet& f, QFields& qf)
 {
-	for(int i = 0; i < f.GetCount(); i++)
+	for(int i = 0; i < f.size(); i++)
 	{
 		if(!pQField)
-			qf.Add(pQField = new QField(this, f[i]));
+			qf.push_back(pQField = new QField(this, f[i]));
 		else
-			qf.Add(pQField->GetQField(f[i]));
+			qf.push_back(pQField->GetQField(f[i]));
 	}
 }
 
@@ -164,7 +164,7 @@ void QTable::Select(SqlStmt& str, bool first /*= true*/)
 		str << *pNTable <<	" " << Alias << " ";
 		if(!first)
 		{
-			for(int i = 0; i < pFKey->pFields.GetCount(); i++)
+			for(int i = 0; i < pFKey->pFields.size(); i++)
 			{
 				str << (i ? " AND " : " ON ") << Alias << "." << pFKey->pPKey->pFields[i]->name <<
 					" = " << pPTable->Alias << "." << 

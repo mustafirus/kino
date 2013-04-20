@@ -6,7 +6,9 @@
  */
 
 #include "stdx.h"
+#define DATABASE_0X
 #include "Database.h"
+
 Database::stmtpool::~stmtpool(){
 	while (!empty())
 	  {
@@ -29,7 +31,6 @@ Database::Stmt* Database::prepare(const char* sql){
 		END_CRITICAL_SECTION
 	};
 	p = create(sql);
-	p->busy=true;
 	sp.push_back(p);
 	return p;
 };

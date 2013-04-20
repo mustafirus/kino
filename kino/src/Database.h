@@ -8,30 +8,21 @@
 #ifndef DATABASE_H_
 #define DATABASE_H_
 
-#include "Field.h"
-#include "Set.h"
+#include "Field.h" //Old
 #include "Defines.h"
 #include "DBCursor.h"
 
+class RField;
+
+
+class DbStmt;
 class RSField;
 class RKey;
-class DbStmt {
-	char* buf;
-public:
-	DbStmt(const char* stmt) {
-		buf = new char[strlen(stmt) + 1];
-		strcpy(buf, stmt);
-	}
-	virtual ~DbStmt() {
-		delete buf;
-	}
-	operator const char*() {
-		return buf;
-	}
-};
+
 class Database {
 public:
 	class Stmt;
+
 private:
 	typedef std::string string;
 	class stmtpool: public std::deque<Stmt*> {
@@ -48,16 +39,19 @@ public:
 		friend class Database;
 		bool busy;
 	public:
-		Stmt() {
+		typedef std::vector<RField*> RFields;
+		Stmt() : busy(true){
 		}
 		virtual ~Stmt() {
 		}
 
-		virtual void bind(int col, RField* prf) = 0;
+
+		virtual void bind(RFields& rf) = 0;
 		virtual void param(RKey* prk) = 0;
 		virtual void param(RSField* prf) = 0;
 		virtual void param(RField* prf) = 0;
 		virtual void execute() = 0;
+		virtual void fetch() = 0;
 		virtual void release();
 	};
 	Database() {
@@ -114,6 +108,22 @@ private:
 	virtual int Export(const char* tablename, const char * filename) = 0;
 
 #endif //DATABASE_0X
+};
+
+
+class DbStmt {
+	char* buf;
+public:
+	DbStmt(const char* sql) {
+		buf = new char[strlen(sql) + 1];
+		strcpy(buf, sql);
+	}
+	virtual ~DbStmt() {
+		delete buf;
+	}
+	operator const char*() {
+		return buf;
+	}
 };
 
 #endif // DATABASE_H_

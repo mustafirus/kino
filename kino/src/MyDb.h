@@ -11,26 +11,37 @@
 #define DATABASE_0X
 
 #include "Database.h"
+#include "mysql/mysql.h"
 
 class MyDb: public Database {
-	typedef struct st_mysql MYSQL; // forward declaration
-	typedef struct st_mysql_stmt MYSQL_STMT; // forward declaration
+
+	MYSQL *conn;
 
 	class Stmt : public Database::Stmt{
-		MYSQL_STMT* stmt;
-	public:
-		Stmt(MYSQL_STMT* st, const char* sql);
-		virtual ~Stmt();
+		MYSQL_STMT*		stmt;
+		unsigned int 	field_count;
+		unsigned long	param_count;
+		MYSQL_BIND*		fields;
+		my_bool*		is_null;
+		unsigned long*	length;
+		MYSQL_BIND*		params;
+		RFields			rfields;
 
-		void bind(int col, RField* prf);
+		void bind(RFields& rf);
 		void param(RKey* prk);
 		void param(RSField* prf);
 		void param(RField* prf);
 		void execute();
+		void fetch();
 		void release();
+
+	public:
+		Stmt(MYSQL_STMT* st, const char* sql);
+		virtual ~Stmt();
+
 	};
+
 	Database::Stmt* create(const char* sql);
-	MYSQL *conn;
 public:
 	MyDb();
 	virtual ~MyDb();

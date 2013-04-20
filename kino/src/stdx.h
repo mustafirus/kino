@@ -4,6 +4,7 @@
 #include <limits.h>
 #include <cstring>
 #include <string>
+#include <vector>
 #include <algorithm>
 #include <cassert>
 #include <deque>
@@ -28,3 +29,5 @@ struct DATE_STRUCT{
 #define FUCK_IGNORE_THIS
 #define BEGIN_CRITICAL_SECTION
 #define END_CRITICAL_SECTION
+
+//#define USE_STD_CONTAINERS

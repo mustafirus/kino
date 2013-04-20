@@ -13,6 +13,8 @@ public:
 	~Set(){if(pData)delete pData;};
 	T* operator[](int n){return (n>=0 && n<fields)?pData[n] : NULL;};
 	int GetCount(){return fields;};
+	int GetCount(){return fields;};
+//	int size(){return fields;};
 	T* Add(T* pt);
 	void SetAt(int n, T* pt){if(n>=0 && n<fields)pData[n]=pt;};
 	operator T**(){return pData;}
@@ -62,6 +64,11 @@ class RField;
 class QField;
 class RKey;
 class Record;
+#ifdef USE_STD_CONTAINERS
+typedef std::vector<RField*> RFields;
+#else
+#endif //USE_STD_CONTAINERS
+
 typedef Set<RField> RFields;
 typedef Set<QField> QFields;
 typedef Set<RKey>	RKeys;

@@ -6,7 +6,7 @@
 #include "RSWhere.h"
 #include "RKey.h"
 #include "RLink.h"
-#include "OdbcDataBase.h"
+#include "Database.h"
 
 /*#ifdef _DEBUG
 #pragma comment(lib, "dblibd.lib")

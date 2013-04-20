@@ -5,10 +5,10 @@
 #include "Set.h"
 
 class RFieldControl;
-typedef Set<RFieldControl> RFieldControls;
+//typedef Set<RFieldControl> RFieldControls;
 
 class Column;
-typedef Set<Column> Columns;
+//typedef Set<Column> Columns;
 
 
 typedef struct COLINFO_tag

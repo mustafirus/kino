@@ -31,18 +31,18 @@ class FrameWnd
 	Record*		pRec;
 	Record*		pRecdef;
 	RLink*		pRLink;
-	RFieldControls vCtrls;
+//	RFieldControls vCtrls;
 	TabMap		tabmap;
 	TabPos		curpos;
 	bool		bAutoSave; 
 public:
-	FrameWnd(DataContext* pdc, FrameWnd* pPrev);
+	FrameWnd(DataContext* pdc, FrameWnd* pPrev){};
 protected:
 //	virtual void Init(char* str, CreateContext* pContext);
 public:
 //	ScreenAction*	pAction;
 public:
-	FrameWnd(/*ScreenAction* pa, char* str, CreateContext* pContext*/);
+//	FrameWnd(/*ScreenAction* pa, char* str, CreateContext* pContext*/){};
 
 // Attributes
 public:

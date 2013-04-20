@@ -91,11 +91,5 @@ public:
 	void Refresh(SqlStmt& str){pQField->Refresh(str);};
 
 	void Delete();
-//Clipboard support
-	virtual	void OnCopy();
-	virtual	void OnPaste();
-	virtual	bool CanCopy();
-	virtual	bool CanPaste();
-
 };
 #endif // !defined(AFX_RFIELD_H__BC8CAC02_F65C_11D1_A64D_204C4F4F5020__INCLUDED_)

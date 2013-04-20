@@ -121,36 +121,6 @@ void RKey::Get(char* str)
 	}
 }
 
-bool RKey::CanSet(char*& str)
-{
-	Breaker s1(str, ';');
-	Breaker s2(s1, ';');
-	char* name;
-	if(s1 != true)
-		return false;
-	name = ((FKey*)*pQTable) ? ((FKey*)*pQTable)->pTable->name :
-	((Table*)*pQTable)->name;
-	if(strcmp(str, name))
-		return false;
-	name = (char*)(((FKey*)*pQTable) ? ((FKey*)*pQTable)->name :
-	((Table*)*pQTable)->mPKey.name);
-	if(strcmp(s1, name))
-		return false;
-	str = s2;
-	return true;
-}
-
-void RKey::Set(char* str)
-{
-	for(int i = 0; i < pRFields.size(); i++)
-	{
-		Breaker s3(str,';');
-		ASSERT(str);
-		strcpy(pRFields[i]->GetBuf(), str);
-		pRFields[i]->SetData();
-		str = s3;
-	}
-}
 void RKey::SetIdentity()
 {
 	for(int i = 0; i < pRFields.size(); i++)

@@ -70,7 +70,7 @@ void Action::Exec(FrameWnd* pWnd, Record* pr, RField* prf, int nID)
 				DataContext* pdc = NULL;
 				pdc = &(FrameThread::GetCurrent()->dc);
 				pdc->Create(prk, pr->GetLink(prk), nID);
-				new FrameWnd(pdc, pWnd);
+				//new FrameWnd(pdc, pWnd);
 			}	
 			return;
 		}catch(Exception* e)

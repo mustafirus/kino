@@ -23,27 +23,7 @@ class RLink;
 #include "Set.h"
 #include "List.h"
 
-class Breaker
-{
-	char* pos;
-	char  ch;
-public:
-	Breaker(char* str, char brk) : pos(NULL), ch(brk)
-	{
-		if(str && (pos = strchr(str, brk)))
-			*pos = 0;
-	};
-	operator bool(){return (pos && *(pos + 1));};
-	operator char*()
-	{
-		return (pos && *(pos + 1)) ? pos + 1 : NULL;
-	}; 
-	~Breaker()
-	{
-		if(pos)
-			*pos = ch;
-	};
-};
+/**/
 
 class Record  
 {

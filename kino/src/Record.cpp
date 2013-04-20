@@ -15,8 +15,27 @@
 #include "Database.h"
 #include "RecordSet.h"
 
-//#define GrowBy	4
-
+class Breaker
+{
+	char* pos;
+	char  ch;
+public:
+	Breaker(char* str, char brk) : pos(NULL), ch(brk)
+	{
+		if(str && (pos = strchr(str, brk)))
+			*pos = 0;
+	};
+	operator bool(){return (pos && *(pos + 1));};
+	operator char*()
+	{
+		return (pos && *(pos + 1)) ? pos + 1 : NULL;
+	};
+	~Breaker()
+	{
+		if(pos)
+			*pos = ch;
+	};
+};
 
 Database* Record::pDB = NULL;
 Dict* Record::pDict = NULL;

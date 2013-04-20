@@ -34,8 +34,8 @@ public:
 	operator QTable*(){return pQTable;};
 	operator RFields&(){return pRFields;};
 	void Get(char* str);
-	bool CanSet(char*& str);
-	void Set(char* str);
+//	bool CanSet(char*& str);
+//	void Set(char* str);
 	void SetIdentity();
 	uint GetCount(){return pRFields.size();};
 

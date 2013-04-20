@@ -65,7 +65,7 @@ bool FrameThread::InitInstance()
 /*	int c = 30;
 	while(!dc.szForm && c--)
 		Sleep(100);
-*/	pMainWnd = new FrameWnd(&dc, NULL);
+*///	pMainWnd = new FrameWnd(&dc, NULL);
 	return true;
 }
 

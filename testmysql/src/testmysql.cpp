@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <vector>
 #include <stdio.h>
 #include <functional>
 #include <unordered_map>
@@ -26,6 +27,22 @@ public:
 	~stmt(){};
 };
 
+void innerVector(vector<int>& param){
+	vector<int> inner;
+	printf("param: %d\n",param.size());
+	printf("inner: %d\n",inner.size());
+	inner = param;
+	printf("param: %d\n",param.size());
+	printf("inner: %d\n",inner.size());
+}
+
+void testVector(){
+	vector<int> outer(8,3);
+	printf("outer: %d\n",outer.size());
+	innerVector(outer);
+	printf("outer: %d\n",outer.size());
+}
+
 void zzz(){
 	std::unordered_map<string,int> str_map;
 	typedef unordered_map<string,int>::iterator iter;
@@ -40,24 +57,25 @@ void zzz(){
 
 
 int main() {
-zzz();
+testVector();
 exit(0);
 	MYSQL *conn;
 	MYSQL_STMT *stmt;
 	const char *sql;
 
 	// Bind variables
-	MYSQL_BIND param[1], result[2];
+	MYSQL_BIND param[1], result[3];
 
 	int f1_pi=1;
 	const char *f1_pc="1";
 	char f1[30];
 	char f2[30];
+	char f3[30];
 	memset(f2, 0, sizeof(f2)); /* zero the structures */
-	my_bool is_null[2];
+	my_bool is_null[3];
 
 	sql = "select f1,f2 from tab where f1 = ?";
-	sql = "select f1,f2 from tab";
+	sql = "select f1,f2,f3 from tab";
 
 	// Open Database
 	conn = mysql_init(NULL);
@@ -112,6 +130,13 @@ exit(0);
 	result[1].is_null = &is_null[1];
 	result[1].length = 0;
 
+	result[2].buffer_type = MYSQL_TYPE_STRING;
+	result[2].buffer = (void *) f3;
+	result[2].buffer_length = 30;
+	result[2].is_unsigned = 0;
+	result[2].is_null = &is_null[2];
+	result[2].length = 0;
+
 	// Bind param structure to statement
 /*
 	if (mysql_stmt_bind_param(stmt, param) != 0) {
@@ -142,11 +167,10 @@ exit(0);
 	// Init data
 
 	// Fetch
-	while(true){
-		while(mysql_stmt_fetch(stmt)==0){
-			printf("fuck %s %s\n", f1,f2);
-		};
-	}
+	while(mysql_stmt_fetch(stmt)==0){
+		printf("fuck %s %s - %s\n", f1, f2, f3);
+	};
+	printf("error: %s", mysql_error(conn));
 
 	// Deallocate result set
 	mysql_stmt_free_result(stmt); /* deallocate result set */

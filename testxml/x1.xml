@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
-<zzz c="35"/>
+<record name="city">
+<field name="name"/>
+<field name="county.name"/>
+</record>
 </root>

@@ -16,21 +16,65 @@
  */
 
 /*
- * $Id: SAX2Print.hpp 471735 2006-11-06 13:53:58Z amassari $
+ * $Id: DOMTreeErrorReporter.hpp 471735 2006-11-06 13:53:58Z amassari $
  */
 
-// ---------------------------------------------------------------------------
-//  Includes for all the program files to see
-// ---------------------------------------------------------------------------
-#include <string.h>
+#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
 #if defined(XERCES_NEW_IOSTREAMS)
 #include <iostream>
 #else
 #include <iostream.h>
 #endif
-#include <stdlib.h>
-#include "SAX2PrintHandlers.hpp"
 
+
+XERCES_CPP_NAMESPACE_USE
+
+
+class DOMTreeErrorReporter : public ErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+    DOMTreeErrorReporter() :
+       fSawErrors(false)
+    {
+    }
+
+    ~DOMTreeErrorReporter()
+    {
+    }
+
+
+    // -----------------------------------------------------------------------
+    //  Implementation of the error handler interface
+    // -----------------------------------------------------------------------
+    void warning(const SAXParseException& toCatch);
+    void error(const SAXParseException& toCatch);
+    void fatalError(const SAXParseException& toCatch);
+    void resetErrors();
+
+    // -----------------------------------------------------------------------
+    //  Getter methods
+    // -----------------------------------------------------------------------
+    bool getSawErrors() const;
+
+    // -----------------------------------------------------------------------
+    //  Private data members
+    //
+    //  fSawErrors
+    //      This is set if we get any errors, and is queryable via a getter
+    //      method. Its used by the main code to suppress output if there are
+    //      errors.
+    // -----------------------------------------------------------------------
+    bool    fSawErrors;
+};
+
+inline bool DOMTreeErrorReporter::getSawErrors() const
+{
+    return fSawErrors;
+}
 
 // ---------------------------------------------------------------------------
 //  This is a simple class that lets us do easy (though not terribly efficient)
@@ -52,6 +96,7 @@ public :
     {
         XMLString::release(&fLocalForm);
     }
+
 
     // -----------------------------------------------------------------------
     //  Getter methods
@@ -76,3 +121,4 @@ inline XERCES_STD_QUALIFIER ostream& operator<<(XERCES_STD_QUALIFIER ostream& ta
     target << toDump.localForm();
     return target;
 }
+

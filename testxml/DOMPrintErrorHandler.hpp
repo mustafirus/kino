@@ -16,29 +16,33 @@
  */
 
 /*
- * $Id: SAX2FilterHandlers.hpp 471735 2006-11-06 13:53:58Z amassari $
+ * $Id: DOMPrintErrorHandler.hpp 471735 2006-11-06 13:53:58Z amassari $
  */
 
-#include    <xercesc/parsers/SAX2XMLFilterImpl.hpp>
+
+#ifndef DOM_PRINT_ERROR_HANDLER_HPP
+#define DOM_PRINT_ERROR_HANDLER_HPP
+
+#include <xercesc/dom/DOMErrorHandler.hpp>
 
 XERCES_CPP_NAMESPACE_USE
 
-class SAX2SortAttributesFilter : public SAX2XMLFilterImpl
+class DOMPrintErrorHandler : public DOMErrorHandler
 {
 public:
-    // -----------------------------------------------------------------------
-    //  Constructors
-    // -----------------------------------------------------------------------
-    SAX2SortAttributesFilter(SAX2XMLReader* parent);
-    ~SAX2SortAttributesFilter();
 
+    DOMPrintErrorHandler(){};
+    ~DOMPrintErrorHandler(){};
 
-    // -----------------------------------------------------------------------
-    //  Implementations of the SAX2XMLFilter interface
-    // -----------------------------------------------------------------------
-    void startElement(	const   XMLCh* const    uri,
-						const   XMLCh* const    localname,
-						const   XMLCh* const    qname,
-					    const   Attributes&		attributes);
+    /** @name The error handler interface */
+    bool handleError(const DOMError& domError);
+    void resetErrors(){};
+
+private :
+    /* Unimplemented constructors and operators */
+    DOMPrintErrorHandler(const DOMErrorHandler&);
+    void operator=(const DOMErrorHandler&);
+
 };
 
+#endif

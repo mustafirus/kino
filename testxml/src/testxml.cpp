@@ -6,10 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include <xercesc/sax2/SAX2XMLReader.hpp>
-#include <xercesc/sax2/XMLReaderFactory.hpp>
-#include <xercesc/sax2/DefaultHandler.hpp>
-#include <xercesc/util/XMLString.hpp>
+#include <xercesc/dom/DOM.hpp>
 
 #include <iostream>
 
@@ -19,7 +16,7 @@ using namespace xercesc;
 int main(int argc, char* args[]) {
 
 	try {
-		XMLPlatformUtils::Initialize();
+ 		XMLPlatformUtils::Initialize();
 	} catch (const XMLException& toCatch) {
 		char* message = XMLString::transcode(toCatch.getMessage());
 		cout << "Error during initialization! :\n";
@@ -28,25 +25,25 @@ int main(int argc, char* args[]) {
 		return 1;
 	}
 
-	char* xmlFile = "x1.xml";
-	SAX2XMLReader* parser = XMLReaderFactory::createXMLReader();
-	parser->setFeature(XMLUni::fgSAX2CoreValidation, false);
-	parser->setFeature(XMLUni::fgSAX2CoreNameSpaces, false); // optional
-	parser->setFeature(XMLUni::fgXercesSchema, false); // optional
+	const char* xmlFile = "x1.xml";
+    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(NULL);
+    DOMLSParser       *parser = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
+//	DOMConfiguration  *config = parser->getDomConfig();
+
+/*
+    config->setParameter(XMLUni::fgDOMNamespaces, doNamespaces);
+    config->setParameter(XMLUni::fgXercesSchema, doSchema);
+    config->setParameter(XMLUni::fgXercesHandleMultipleImports, true);
+    config->setParameter(XMLUni::fgXercesSchemaFullChecking, schemaFullChecking);
+*/
 
 
-	DefaultHandler* defaultHandler = new DefaultHandler();
-	parser->setContentHandler(defaultHandler);
-	parser->setErrorHandler(defaultHandler);
+    DOMDocument *doc = 0;
 
 	try {
-		parser->parse(xmlFile);
+        doc = parser->parseURI(xmlFile);
+        doc->DOMXPathEvaluator();
 	} catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		cout << "Exception message is: \n" << message << "\n";
-		XMLString::release(&message);
-		return -1;
-	} catch (const SAXParseException& toCatch) {
 		char* message = XMLString::transcode(toCatch.getMessage());
 		cout << "Exception message is: \n" << message << "\n";
 		XMLString::release(&message);
@@ -57,6 +54,5 @@ int main(int argc, char* args[]) {
 	}
 
 	delete parser;
-	delete defaultHandler;
 	return 0;
 }

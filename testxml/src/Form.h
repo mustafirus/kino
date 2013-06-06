@@ -9,9 +9,16 @@
 #define FORM_H_
 
 class Form {
+	xsltStylesheetPtr cur;
+	xmlDocPtr doc;
 public:
 	Form();
 	virtual ~Form();
+	void trans(){
+		const char* zzz;
+		xmlDocPtr res = xsltApplyStylesheet(cur, doc, &zzz);
+		xsltSaveResultToFile(stdout, res, cur);
+	}
 };
 
 #endif /* FORM_H_ */

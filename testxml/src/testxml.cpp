@@ -1,58 +1,41 @@
-//============================================================================
-// Name        : testxml.cpp
-// Author      : Andrew Golubev
-// Version     :
-// Copyright   : GPL
-// Description : Hello World in C++, Ansi-style
-//============================================================================
-
-#include <xercesc/dom/DOM.hpp>
-
-#include <iostream>
-
-using namespace std;
-using namespace xercesc;
-
-int main(int argc, char* args[]) {
-
-	try {
- 		XMLPlatformUtils::Initialize();
-	} catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		cout << "Error during initialization! :\n";
-		cout << "Exception message is: \n" << message << "\n";
-		XMLString::release(&message);
-		return 1;
-	}
-
-	const char* xmlFile = "x1.xml";
-    DOMImplementation *impl = DOMImplementationRegistry::getDOMImplementation(NULL);
-    DOMLSParser       *parser = ((DOMImplementationLS*)impl)->createLSParser(DOMImplementationLS::MODE_SYNCHRONOUS, 0);
-//	DOMConfiguration  *config = parser->getDomConfig();
-
 /*
-    config->setParameter(XMLUni::fgDOMNamespaces, doNamespaces);
-    config->setParameter(XMLUni::fgXercesSchema, doSchema);
-    config->setParameter(XMLUni::fgXercesHandleMultipleImports, true);
-    config->setParameter(XMLUni::fgXercesSchemaFullChecking, schemaFullChecking);
-*/
+ * libxslt_tutorial.c: demo program for the XSL Transformation 1.0 engine
+ *
+ * based on xsltproc.c, by Daniel.Veillard@imag.fr
+ * by John Fleck
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc.,  59 Temple Place - Suite 330, Cambridge, MA 02139, USA.
+ *
+ */
+
+#include "inc.h"
 
 
-    DOMDocument *doc = 0;
 
-	try {
-        doc = parser->parseURI(xmlFile);
-        doc->DOMXPathEvaluator();
-	} catch (const XMLException& toCatch) {
-		char* message = XMLString::transcode(toCatch.getMessage());
-		cout << "Exception message is: \n" << message << "\n";
-		XMLString::release(&message);
-		return -1;
-	} catch (...) {
-		cout << "Unexpected Exception \n";
-		return -1;
-	}
+extern int xmlLoadExtDtdDefaultValue;
 
-	delete parser;
-	return 0;
+static void usage(const char *name) {
+    printf("Usage: %s [options] stylesheet file [file ...]\n", name);
+    printf("      --param name value : pass a (parameter,value) pair\n");
+
 }
+
+int
+main(int argc, char **argv) {
+	return(0);
+
+}
+
+

@@ -5,11 +5,13 @@
  *      Author: golubev
  */
 
+#include "inc.h"
 #include "FormManager.h"
 
-FormManager::FormManager() {
-	// TODO Auto-generated constructor stub
+extern int xmlLoadExtDtdDefaultValue;
 
+FormManager::FormManager() {
+	xmlLoadExtDtdDefaultValue = 1;
 }
 
 FormManager::~FormManager() {

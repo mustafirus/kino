@@ -5,14 +5,23 @@
  *      Author: golubev
  */
 
+#include "inc.h"
 #include "Form.h"
 
 Form::Form() {
-	// TODO Auto-generated constructor stub
+	xmlSubstituteEntitiesDefault(1);
+	xmlLoadExtDtdDefaultValue = 1;
+	cur = xsltParseStylesheetFile((const xmlChar *)"");
+	doc = xmlParseFile("");
 
 }
 
 Form::~Form() {
-	// TODO Auto-generated destructor stub
+	xsltFreeStylesheet(cur);
+	//xmlFreeDoc(res);
+	xmlFreeDoc(doc);
+
+        xsltCleanupGlobals();
+        xmlCleanupParser();
 }
 

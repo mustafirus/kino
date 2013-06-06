@@ -5,5 +5,6 @@
  *      Author: golubev
  */
 
+#include "inc.h"
 #include "FormManager.h"
 

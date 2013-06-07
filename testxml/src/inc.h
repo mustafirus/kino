@@ -10,3 +10,4 @@
 #include <libxslt/transform.h>
 #include <libxslt/xsltutils.h>
 #include <string>
+#include <assert.h>

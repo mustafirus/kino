@@ -33,7 +33,7 @@ static void usage(const char *name) {
 }
 
 int
-main(int argc, char **argv) {
+main1(int argc, char **argv) {
 	return(0);
 
 }

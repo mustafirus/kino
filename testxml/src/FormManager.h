@@ -12,6 +12,7 @@
 using namespace std;
 
 class FormManager {
+	Form* parseForm(const char* name, int id);
 public:
 	FormManager();
 	virtual ~FormManager();

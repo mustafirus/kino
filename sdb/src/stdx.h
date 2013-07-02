@@ -12,8 +12,11 @@
 #include <memory>
 #include <vector>
 using namespace std;
+#define ASSERT assert
+#define BEGIN_CRITICAL_SECTION
+#define END_CRITICAL_SECTION
+
 //#include "hlpdefs.h"
-//#define ASSERT assert
 //#define DWORD unsigned
 
 //typedef ptrdiff_t HSTMT,HENV,HDBC;
@@ -30,12 +33,21 @@ struct DATE_STRUCT{
 };
 
 #define FUCK_IGNORE_THIS
-#define BEGIN_CRITICAL_SECTION
-#define END_CRITICAL_SECTION
 */
 template<class T>
 class vector_ptr_owner : public vector<T*>{
 	~vector_ptr_owner(){
+
+		for (size_type i=0, max = size(); i < max; ++i){
+			delete operator[](i);
+		}
+
+	}
+};
+
+template<class T>
+class unordered_map_owner : public std::unordered_map<string, T*>{
+	~unordered_map(){
 
 		for (size_type i=0, max = size(); i < max; ++i){
 			delete operator[](i);

@@ -17,37 +17,22 @@ public:
 
 };
 
-typedef char NAME[30];
-typedef char* PNAME;
-/*typedef struct NAMEINFO_tag
-{
-	int		fnum;
-	int		pnum;
-	PNAME*	names;
-}NAMEINFO, *PNAMEINFO;
-*/
 class PKey
 {
 public:
-	vector<Field*>	Fields;
+	typedef vector<Field*>	Fields;
+
 	Table*		pTable;
 	string		name;
 	string		rst;
-	int			fnum;
-	int			pnum;
 	Fields		fields;
-	NAME*		forms;
-	NAME*		procs;
 
-	Field* operator[](int n){
-		return fields.at();
-		if(n >= 0 && n < fields.size())return fields[n]; else return NULL;
+	Field* operator[](Fields::size_type n){
+		return fields.at(n);
 	};
-	PKey() : pTable(NULL), name(NULL), capt(NULL), ext(NULL), rst(NULL), style(0), form(0), list(0), 
-	fnum(0), pnum(0), forms(NULL), procs(NULL){};
-	~PKey(){ifdel((char*)name); ifdel((char*)capt); ifdel((char*)ext); ifdel((char*)rst);
-	if (forms) delete[] forms; if(procs) delete[] procs;};
 
+	PKey() : pTable(NULL){};
+	~PKey(){};
 };
 
 class FKey : public PKey
@@ -68,12 +53,12 @@ public:/// For Link
 	vecown<FKey>	FKeys;
 
 	string	name;
+	PKey	pkey;
+	FKeys	fkeys;
 	Fields	fields;
-	FKeys	pFKeys;
-	PKey	mPKey;
 
 public:
-	Table(): name(NULL) {};
+	Table() {};
 	~Table(){};
 
 //Operations
@@ -82,12 +67,12 @@ public:
 	Field* GetField(const char* name);
 	FKey* GetFKey(const char* name);
 	FKey* GetFKey(PKey* pRef);
-	PKey* GetPKey(){return &mPKey;};
-	operator PKey*(){if(!this) return NULL; return &mPKey;};
+	PKey* GetPKey(){return &pkey;};
+	operator PKey*(){if(!this) return NULL; return &pkey;};
 	operator char*(){if(!this) return NULL; return name;};
 
-	Field* GetKeyField(int n){return mPKey[n];}
-	int    GetKeyFieldCount(){return mPKey.fields.GetSize();}
+	Field* GetKeyField(int n){return pkey[n];}
+	int    GetKeyFieldCount(){return pkey.fields.size();}
 
 };
 

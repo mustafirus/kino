@@ -57,30 +57,3 @@ bool Table::Find(Field* pf)
 		return false;
 }
 
-#ifdef _DEBUG
-void Table::Dump()
-{
-	printf("Table %s\n", name);
-	mPKey.Dump();
-	for(int i = 0; i < pFKeys.GetSize(); i++)
-		pFKeys[i]->Dump();
-
-}
-void PKey::Dump()
-{
-	printf("Primary - %s\n", name);
-	for(int i = 0; i < fields.size(); i++)
-	{
-		printf("\t%s\n", fields[i]->name);
-	}
-}
-void FKey::Dump()
-{
-	printf("Foreign - %s\n", name);
-	printf("\tReferences - %s\n", pPKey->name);
-	for(int i = 0; i < fields.size(); i++)
-	{
-		printf("\t%s - %s\n", fields[i]->name, (*pPKey)[i]->name);
-	}
-}
-#endif //_DEBUG

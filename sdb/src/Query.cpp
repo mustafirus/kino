@@ -24,68 +24,6 @@ Query::~Query()
 }
 char* Query::GetQFields(const char* str, QFields& qf, QTable* pqt)
 {
-	if(!str)
-		return (char*)str;
-	ASSERT(str);
-	str += strspn(str, " ,");
-	ASSERT(*str != ' ' && *str != ',');
-	if(!pqt)
-		pqt = pQTable;
-	char* s1 = (char*) str;
-	char* s2;
-	QTable* last;
-	QField* pqf;
-	int k;
-	char ch;
-	do
-	{
-		ch=s1[k = strcspn(s1," ,")];
-		s1[k]=0;
-		s2 = s1;
-		pqf = NULL;
-		last = pqt;
-		char* s3;
-		while(s3 = strchr(s2, '.'))
-		{
-			*s3=0;
-			try{
-			last = last->Join(s2);
-			}catch(DbException* e)
-			{
-				e->Effect();
-				*s3++='.';
-				goto next;
-			}
-			*s3++='.';
-			s2=s3;
-		};
-/*		if(!pQField)
-			pf = pQField = last->CreateField(s2);
-		if(!pf)
-			pf = pQField->Find(last,s2);
-		if(!pf)
-			pf = pQField->Add(last->CreateField(s2));
-*/
-		pqf = last->GetQField(s2);
-		if(pqf)
-		{
-			qf.push_back(pqf);
-		}else
-		{
-			const char* ext = NULL;
-			try{
-				ext = last->GetExtent(s2);
-				last = last->Join(s2);
-			}catch(DbException* e)
-			{
-				e->Effect();
-				goto next;
-			}
-			GetQFields(ext, qf, last);
-		}
-next:	s1[k]=ch;
-		s1+=k;
-	}while(*(s1+=strspn(s1," ,")));
 	return s1;
 }
 

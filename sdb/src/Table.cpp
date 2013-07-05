@@ -6,6 +6,6 @@
  */
 
 #include "stdx.h"
-//#include "Table.h"
+#include "Table.h"
 
-//Table::Tables	Table::tables;
+Table::Tables	Table::tables;

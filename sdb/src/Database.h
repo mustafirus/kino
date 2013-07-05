@@ -63,5 +63,5 @@ public:
 		return 0;
 	}
 
-
+};
 #endif // DATABASE_H_

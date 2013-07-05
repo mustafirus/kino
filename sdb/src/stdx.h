@@ -4,11 +4,12 @@
 #include <limits.h>
 #include <cstring>
 #include <string>
+#include <sstream>
 
 
 #include <algorithm>
 #include <cassert>
-#include <deque>
+#include <queue>
 #include <unordered_map>
 
 #include <vector>
@@ -64,3 +65,12 @@ class unordered_map_owner : public std::unordered_map<string, T*>{
 
 typedef vector_ptr_owner vecown;
 */
+inline queue<string> split(string str, char delim){
+	stringstream ss(str);
+	string item;
+	queue<string> elems;
+    while (std::getline(ss, item, delim)) {
+        elems.push(item);
+    }
+    return elems;
+}

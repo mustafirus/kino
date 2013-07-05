@@ -4,13 +4,18 @@
 #include <limits.h>
 #include <cstring>
 #include <string>
-#include <vector>
+
+
 #include <algorithm>
 #include <cassert>
 #include <deque>
 #include <unordered_map>
-#include <memory>
+
 #include <vector>
+#include <map>
+#include <memory>
+
+#include <iostream>
 using namespace std;
 #define ASSERT assert
 #define BEGIN_CRITICAL_SECTION
@@ -34,6 +39,7 @@ struct DATE_STRUCT{
 
 #define FUCK_IGNORE_THIS
 */
+/*
 template<class T>
 class vector_ptr_owner : public vector<T*>{
 	~vector_ptr_owner(){
@@ -57,3 +63,4 @@ class unordered_map_owner : public std::unordered_map<string, T*>{
 };
 
 typedef vector_ptr_owner vecown;
+*/

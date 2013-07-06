@@ -13,9 +13,10 @@ STD_TYPEDEFS(Table)
 class Field
 {
 public:
-	string name;
+	string	name;
+	size_t	buflen;
 
-	Field(string n) : name(n){}
+	Field(string n, size_t b) : name(n), buflen(b){}
 	~Field(){}
 };
 
@@ -81,8 +82,8 @@ public:
 		return &pkey;
 	}
 
-	Field* addField(string n){
-		Field* f = new Field(n);
+	Field* addField(string n, size_t buflen){
+		Field* f = new Field(n, buflen);
 		fields.emplace(n,FieldPtr(f));
 		return f;
 	}
@@ -116,28 +117,28 @@ public:
 		Table* t;
 		FKey *fk1, *fk2;
 		t = addTable("sdb_tables");
-		t->pkey.addField(t->addField("id"));
-		t->addField("name");
+		t->pkey.addField(t->addField("id", 10));
+		t->addField("name", 256);
 
 		t = addTable("sdb_fields");
 		fk1 = t->addFKey("table", *(tables["sdb_tables"]));
-		t->pkey.addField(t->addField("id"));
-		fk1->addField(t->addField("table_id"));
-		t->addField("name");
+		t->pkey.addField(t->addField("id", 10));
+		fk1->addField(t->addField("table_id", 10));
+		t->addField("name", 256);
 
 		t = addTable("sdb_pkeys");
 		fk1 = t->addFKey("table", *(tables["sdb_tables"]));
-		t->pkey.addField(t->addField("id"));
-		fk1->addField(t->addField("table_id"));
-		t->addField("fieldname");
+		t->pkey.addField(t->addField("id", 10));
+		fk1->addField(t->addField("table_id", 10));
+		t->addField("fieldname", 256);
 
 		t = addTable("sdb_fkeys");
 		fk1 = t->addFKey("table", *(tables["sdb_tables"]));
 		fk2 = t->addFKey("pkey", *(tables["sdb_pkeys"]));
-		t->pkey.addField(t->addField("id"));
-		fk1->addField(t->addField("table_id"));
-		fk2->addField(t->addField("pkey_id"));
-		t->addField("fieldname");
+		t->pkey.addField(t->addField("id", 10));
+		fk1->addField(t->addField("table_id", 10));
+		fk2->addField(t->addField("pkey_id", 10));
+		t->addField("fieldname", 256);
 
 	}
 };

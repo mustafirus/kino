@@ -16,8 +16,8 @@ class RKey;
 class QField
 {
 	QTable* pQTable;
-	Field*	pField;
 public:
+	Field*	pField;
 	QField(QTable* pqt, Field* pf) :
 		pQTable(pqt),
 		pField(pf){

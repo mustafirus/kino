@@ -5,24 +5,19 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
+STD_TYPEDEFS(Field)
+STD_TYPEDEFS(FKey)
+STD_TYPEDEFS(Table)
+
+
 class Field
 {
 public:
-
 	string name;
 
 	Field(string n) : name(n){}
 	~Field(){}
-
 };
-
-typedef unique_ptr<Field> FieldPtr;
-typedef vector<FieldPtr>  FieldVectorOwner;
-typedef unordered_map<string,FieldPtr>  FieldMapOwner;
-typedef vector<Field*>  FieldVector;
-typedef unordered_map<string,Field*>  FieldMap;
-
-class Table;
 
 class PKey
 {
@@ -65,20 +60,6 @@ public:
 
 };
 
-typedef unique_ptr<FKey> FKeyPtr;
-typedef vector<FKeyPtr>  FKeyVectorOwner;
-typedef unordered_map<string,FKeyPtr>  FKeyMapOwner;
-typedef vector<FKey*>  FKeyVector;
-typedef unordered_map<string,FKey*>  FKeyMap;
-
-//class QTable;
-
-typedef unique_ptr<Table> TablePtr;
-typedef vector<TablePtr>  TableVectorOwner;
-typedef unordered_map<string,TablePtr>  TableMapOwner;
-typedef vector<Table*>  TableVector;
-typedef unordered_map<string,Table*>  TableMap;
-
 class Table
 {
 	public:/// For Link
@@ -106,10 +87,18 @@ public:
 		return f;
 	}
 
+	Field* getField(string n){
+		return fields[n].get();
+	}
+
 	FKey* addFKey(string n, PKey* pk){
 		FKey* f = new FKey(this, n, pk);
 		fkeys.emplace(n, FKeyPtr(f));
 		return f;
+	}
+
+	FKey* getFKey(string n){
+		return fkeys[n].get();
 	}
 
 	static Tables	tables;

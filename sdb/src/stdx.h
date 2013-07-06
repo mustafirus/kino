@@ -74,3 +74,15 @@ inline queue<string> split(string str, char delim){
     }
     return elems;
 }
+
+
+#define STD_TYPEDEFS2(X,T) class X; \
+typedef unique_ptr<X> X##Ptr; \
+typedef vector<X##Ptr>  X##VectorOwner; \
+typedef unordered_map<T,X##Ptr>  X##MapOwner; \
+typedef vector<X*>  X##Vector; \
+typedef unordered_map<T,X*>  X##Map;
+
+#define STD_TYPEDEFS(X) STD_TYPEDEFS2(X,string)
+
+

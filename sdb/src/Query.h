@@ -7,95 +7,163 @@
 
 #include "Table.h"
 
-class QField;
-class Field;
-class QTable;
-class Table;
+STD_TYPEDEFS2(QField,Field*)
+STD_TYPEDEFS(QTable)
+STD_TYPEDEFS(Query)
+
 class RKey;
 
 class QField
 {
-	Field*	pField;
 	QTable* pQTable;
+	Field*	pField;
 public:
-	QField(QTable* pTable, Field* pField);
-	virtual ~QField();
+	QField(QTable* pqt, Field* pf) :
+		pQTable(pqt),
+		pField(pf){
+	}
+	virtual ~QField(){};
 };
+
 
 class QTable
 {
-public:/// For Link
+public:
+	typedef QFieldMapOwner	QFields;
+	typedef stringstream	SqlStmt;
 	Table*  pNTable;
-	string	Alias[16];
-	QTable* pPTable;
-	QField* pQField;
+	string	alias;
+	QTable* parent;
+	QFields qfields;
 	FKey*	pFKey;
 	QTable* next;
-	bool	mark;
-	int		style;
-	QTable* Add(QTable* pqf);
-	QTable* Find(QTable* pqt, FKey* pfk);
+
 public:
 // Construction/Destruction
-	QTable(Table* pTable);
-	QTable(QTable* pPTable, FKey* pKey);
-	virtual ~QTable();
+	QTable(Table* pt) :
+		pNTable(pt),
+		alias("master"),
+		parent(NULL),
+		pFKey(NULL),
+		next(NULL){
+	}
+
+	QTable(QTable* pqt, FKey* pfk) :
+			pNTable(pfk->pPKey->pTable),
+			alias(getAlias()),
+			parent(pqt),
+			pFKey(pfk),
+			next(NULL){
+	}
+	virtual ~QTable(){
+		delete next;
+	}
 
 // Construction helpers
-	QTable* Join(const char* fkeyname);
-	QTable* Join(FKey* pfk);
+	QTable* join(string fkeyname)	{
+		FKey* pfk = pNTable->getFKey(fkeyname);
+		if(!pfk)
+			return NULL;
+		return join(pfk);
+	}
+
+	QTable* join(FKey* pfk) {
+		QTable* pqt = find(this, pfk);
+		if(pqt)
+			return pqt;
+		pqt = add(new QTable(this, pfk));
+		return pqt;
+	}
 	QTable* getLink(QTable* pqt);
 //	QTable* GetLink(QTable* pqtlink, QTable* pqtthis = NULL);
-	QField* getQField(const char* name);
-	void	getQFields(FieldSet& f, QFields& qf);
-	const char* GetExtent(const char* str);
-	operator Table*(){return pNTable;};
-	operator Table&(){return *pNTable;};
-	operator QTable*(){return next;};
-	operator FKey*(){return pFKey;};
-	bool	isMaster(){return pPTable == NULL;};
+	QField* getQField(string name) {
+		Field* pf;
+		pf = pNTable->getField(name);
+		if(!pf)
+			return NULL;
+		QField* pqf = getQField(pf);
+		return pqf ? pqf : addQField(pf);
+	}
+
+	bool	isMaster(){return parent == NULL;};
 
 // RKey creation
 
 	void GetKeyFields(QFields& qtrg);
-	QTable* GetFirstChild()
+	QTable* getFirstChild()
 	{
-		if(!pPTable)
+		if(!parent)
 			return this;
-		if(!pPTable->pPTable)
+		if(!parent->parent)
 			return this;
 		else
-			return pPTable->GetFirstChild();
+			return parent->getFirstChild();
 	};
-	void		Select(SqlStmt& str, bool first = true);
-	void		Delete(SqlStmt& str);
-	const char*	AliaS(){return Alias;};
-	void		Mark(bool this_only);
+	void		sql_select(SqlStmt& str, bool first = true);
+	void		sql_delete(SqlStmt& str);
+	string& 	aliaS(){return alias;};
+	void		set_mark(bool this_only);
 	const char* GetRest();
-	const char* GetName(int num, int type = 0);
-	void		GetNames(PNAMEINFO pn);
 private:
-
+	QTable* add(QTable* pqt) {
+		if (next)
+			return next->add(pqt);
+		else {
+			next = pqt;
+			pqt->next = NULL;
+			return pqt;
+		}
+	}
+	QTable* find(QTable* pqt, FKey* pfk) {
+		if (parent == pqt && pFKey == pfk)
+			return this;
+		if (next)
+			return next->find(pqt, pfk);
+		else
+			return NULL;
+	}
+	QField* addQField(Field* pf){
+		QField* pqf = new QField(this, pf);
+		qfields.emplace(pf,QFieldPtr(pqf));
+		return pqf;
+	}
+	QField* getQField(Field* pf){
+		return qfields[pf].get();
+	}
+	static string getAlias(){
+		static int anum=0;
+		char s[64];
+		sprintf(s, "t%d", anum);
+		return s;
+	}
 };
 
 class Query  
 {
-//	QField* pQField;
 	QTable* pQTable;
-friend class Record;
-friend class RecordSet;
 public:
-	Query(Table* pt);
-	virtual ~Query();
+
+	Query(Table* pt){
+		pQTable = new QTable(pt);
+	}
+
+	virtual ~Query() {
+		delete pQTable;
+	}
+
+
 // Creation helpers
-	char* GetQFields(const char* str, QFields& qf, QTable* pqt = NULL);
-	void GetKeyFields(QTable* pqt, QFields& qtrg);
+	QField* getQField(string str){
+		queue<string> parts = split(str,'.');
+		QTable* last = pQTable;
 
-protected:
 
-private:
-//	Query*	next;
-
+		while(parts.size() > 1){
+			last=last->join(parts.front());
+			parts.pop();
+		}
+		return last->getQField(parts.front());
+	}
 };
 
 #endif // QUERY_H_

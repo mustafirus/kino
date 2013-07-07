@@ -11,7 +11,7 @@
 #include "Query.h"
 
 STD_TYPEDEFS2(RField,QField*)
-STD_TYPEDEFS(RKey)
+STD_TYPEDEFS2(RKey,QTable*)
 class Record;
 
 template<class T>
@@ -125,7 +125,7 @@ public:/// For Link
 class Record {
 public:
 	typedef RFieldVectorOwner RFields;
-	typedef RKeyVectorOwner RKeys;
+	typedef RKeyMapOwner RKeys;
 
 	enum Flag {
 		s_dirty = 1, s_modified = 4
@@ -154,8 +154,8 @@ public:
 		return prf;
 	}
 	RField* getRField(QField* pqf){
-		auto it=rfieldmap.find(pqf);
-		return it != rfieldmap.end() ? *it : createRField(pqf);
+		auto it = rfieldmap.find(pqf);
+		return it != rfieldmap.end() ? it->second :  createRField(pqf);
 	}
 
 	RField* getRField(string f){
@@ -168,22 +168,19 @@ public:
 	void Save();
 	void Refresh(RKey* prk);
 
-	RKey* GetRKey(QTable* pqt = NULL);
-	RKey* Record::GetRKey(QTable* pqt)
-	{
+	RKey* GetRKey(QTable* pqt = NULL) {
 		if(!pqt)
 			pqt = pQuery->pQTable;
-	/*	else
-			pqt = pqt->GetFirstChild();
-	*/	for(size_t i = 0; i < pRKeys.size(); i++)
-		{
-			if(*pRKeys[i] == pqt)
-				return pRKeys[i];
-		}
-		pRKeys.push_back(new RKey(pqt, this));
-		if(state == s_dummy && state != s_prepare)
-			AssistLoad();
-		return pRKeys.back();
+
+		auto it = pRKeys.find(pqt);
+		if(it != pRKeys.end())
+			return it->second.get();
+		RKey* prk = new RKey(pqt, this);
+		pRKeys.emplace(pqt, RKeyPtr(prk));
+		if(state == s_dirty)
+			Load(); // need to optimize request to load only RKey fields without joins
+					// implement temp instance of Record to load this fields
+		return prk;
 	}
 
 };

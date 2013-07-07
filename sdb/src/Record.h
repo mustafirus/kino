@@ -129,35 +129,8 @@ public:
 	void Save();
 	void Refresh(RKey* prk);
 
-	char* GetRFields(char* str, RFields& rf, QTable* pqt = NULL);
-	void GetRFields(QFields& qf, RFields& rf);
-	RField* GetRField(QField* pqf);
 	RKey* GetRKey(QTable* pqt = NULL);
-	RLink* GetLink(RKey* prk);
-	RLink* GetLink(char* str);
-	virtual void SetLink(RLink* prl, RKey* prk);
-	Record* GetLinkedRecord(char* str);
-	operator RFields&() {
-		return pRFields;
-	}
-	;
-	void SetModified();
-	bool IsModified() {
-		return state == s_modified;
-	}
-	;
-	void SetDummy() {
-		state = s_dummy;
-	}
-	;
-	bool IsDummy() {
-		return state == s_dummy;
-	}
-	;
 
-private:
-	RField* Find(QField* pqf);
-	void Find(QFields& qf, RFields& rf);
 };
 
 #endif /* RECORD_H_ */

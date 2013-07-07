@@ -11,6 +11,9 @@
 #include <cassert>
 #include <queue>
 #include <unordered_map>
+#include <functional>
+#include <cctype>
+#include <locale>
 
 #include <vector>
 #include <map>
@@ -65,10 +68,6 @@ class unordered_map_owner : public std::unordered_map<string, T*>{
 
 typedef vector_ptr_owner vecown;
 */
-#include <algorithm>
-#include <functional>
-#include <cctype>
-#include <locale>
 
 // trim from start
 static inline std::string &ltrim(std::string &s) {

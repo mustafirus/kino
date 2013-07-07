@@ -89,7 +89,7 @@ public:
 	}
 
 	Field* getField(string n){
-		return fields[n].get();
+		return fields.at(n).get();
 	}
 
 	FKey* addFKey(string n, PKey* pk){
@@ -99,7 +99,7 @@ public:
 	}
 
 	FKey* getFKey(string n){
-		return fkeys[n].get();
+		return fkeys.at(n).get();
 	}
 
 	static Tables	tables;

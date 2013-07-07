@@ -98,8 +98,8 @@ public:
 	State<Flag> state;
 
 	Query*		pQuery;
-	RFields		pRFields;
-	RFieldMap	rFieldMap;
+	RFields		rfields;
+	RFieldMap	rfieldmap;
 
 	RKey*	pPRKey;
 	RKeys	pRKeys;
@@ -113,13 +113,15 @@ public:
 	RField* createRField(QField* pqf)
 	{
 		RField* prf = new RField(pqf, this);
+		rfields.push_back(RFieldPtr(prf));
+		rfieldmap.emplace(pqf,prf);
 		state = s_dirty;
 		return prf;
 	}
 	RField* getRField(string f){
 		QField* pqf = pQuery->getQField(f);
-		RField* prf = rFieldMap[pqf];
-		return prf ? prf : createRField(pqf);
+		auto it=rfieldmap.find(pqf);
+		return it != rfieldmap.end() ? *it : createRField(pqf);
 	}
 
 	void New();

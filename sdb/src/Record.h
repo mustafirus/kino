@@ -10,7 +10,20 @@
 
 #include "Query.h"
 
+STD_TYPEDEFS2(RField,QField*)
+STD_TYPEDEFS(RKey)
 class Record;
+
+template<class T>
+class State {
+	char data;
+public:
+	State(char c = 0) : data(c) {}
+	bool operator==(T f) {	return (data & f) > 0;	}
+	bool operator!=(T f) {	return !(data & f);		}
+	void operator=(T f) {	data |= f;				}
+	void operator/=(T f) {	data &= ~f;				}
+};
 
 class RField {
 
@@ -20,25 +33,17 @@ public:
 	Record* pRec;
 
 	enum Flag {
-		s_data = 1, s_null = 2, s_new = 3, s_modified = 4, s_hidden = 8
+		s_dirty = 1, s_null = 2, s_modified = 4, s_hidden = 8
 	};
-	class State {
-		char data;
-	public:
-		State() : data(0) {}
-		bool operator==(Flag f) {	return (data & f) > 0;	}
-		bool operator!=(Flag f) {	return !(data & f);		}
-		void operator=(Flag f) {	data |= f;				}
-		void operator/=(Flag f) {	data &= ~f;				}
-	};
-	State state;
+	State<Flag> state;
 
 
 public:
 
 	RField(QField* pqf, Record* pr) :
 		pQField(pqf),
-		pRec(pr){
+		pRec(pr),
+		state(s_dirty && s_hidden){
 		buf	= malloc(getBufLen());
 	}
 
@@ -53,17 +58,104 @@ public:
 	size_t getBufLen(){
 		return pQField->pField->buflen;
 	}
+
+	RKey* getRKey() {
+//		return pRec->getRKey(pQField->pQTable);
+		return NULL;
+	}
+
+	void Delete(){
+/*
+		if(ro())
+		{
+			RKey* prk = pRec->GetRKey(*this);
+			state = s_modified;
+			state = s_null;
+			v++;
+			pRec->SetModified();
+			prk->SetNull();
+			pRec->Refresh(prk);
+		}else
+		{
+			state = s_null;
+			state = s_modified;
+			state = s_data;
+			v++;
+		}
+*/
+	}
 };
+
 
 class Record {
 public:
-	Record() {
-		// TODO Auto-generated constructor stub
+	typedef RFieldVectorOwner RFields;
+	typedef RKeyVectorOwner RKeys;
 
+	enum Flag {
+		s_dirty = 1, s_modified = 4
+	};
+	State<Flag> state;
+
+	Query*		pQuery;
+	RFields		pRFields;
+	RFieldMap	rFieldMap;
+
+	RKey*	pPRKey;
+	RKeys	pRKeys;
+
+protected:
+	Record();
+public:
+	Record(RKey* rkey);
+	virtual ~Record();
+
+	RField* createRField(QField* pqf)
+	{
+		RField* prf = new RField(pqf, this);
+		state = s_dirty;
+		return prf;
 	}
-	virtual ~Record() {
-		// TODO Auto-generated destructor stub
+	RField* getRField(string f){
+		QField* pqf = pQuery->getQField(f);
+		RField* prf = rFieldMap[pqf];
+		return prf ? prf : createRField(pqf);
 	}
+
+	void New();
+	void Load();
+	void Save();
+	void Refresh(RKey* prk);
+
+	char* GetRFields(char* str, RFields& rf, QTable* pqt = NULL);
+	void GetRFields(QFields& qf, RFields& rf);
+	RField* GetRField(QField* pqf);
+	RKey* GetRKey(QTable* pqt = NULL);
+	RLink* GetLink(RKey* prk);
+	RLink* GetLink(char* str);
+	virtual void SetLink(RLink* prl, RKey* prk);
+	Record* GetLinkedRecord(char* str);
+	operator RFields&() {
+		return pRFields;
+	}
+	;
+	void SetModified();
+	bool IsModified() {
+		return state == s_modified;
+	}
+	;
+	void SetDummy() {
+		state = s_dummy;
+	}
+	;
+	bool IsDummy() {
+		return state == s_dummy;
+	}
+	;
+
+private:
+	RField* Find(QField* pqf);
+	void Find(QFields& qf, RFields& rf);
 };
 
 #endif /* RECORD_H_ */

@@ -132,9 +132,12 @@ private:
 	}
 	static string getAlias(){
 		static int anum=0;
+/*
 		char s[64];
 		sprintf(s, "t%d", anum);
 		return s;
+*/
+		return string("t") + to_string(++anum);
 	}
 };
 

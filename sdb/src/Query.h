@@ -89,7 +89,18 @@ public:
 
 // RKey creation
 
-	void GetKeyFields(QFields& qtrg);
+	void GetKeyFields(QFields& qtrg)
+	QFieldVector getKeyFields()
+	{
+		if(parent)
+		{
+			return parent->getQFields(pFKey->pFields);
+		}else
+		{
+			GetQFields(pNTable->pkey)->pFields, qf);
+		}
+	}
+
 	QTable* getFirstChild()
 	{
 		if(!parent)

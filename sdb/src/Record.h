@@ -96,28 +96,10 @@ public:/// For Link
 	Query*		pQuery;		//Trg
 	QFields		pQFields;	//Trg
 
-	RKey(QTable* pt, Record* pr);
-	RKey::RKey(QTable* pqt, Record* pRecSrc) :
-	pQTable(pqt)	{
-		QFields qf;
-		pqt->GetKeyFields(qf);
-		psrc->GetRFields(qf, pRFields);
-		pQuery = Record::pDict->GetQuery(*pqt);
-		pqt = *pQuery;
-		pqt->GetKeyFields(pQFields);
-	//	pQuery->GetQFields(((Table*)*(pQuery->pQTable))->pFields,pQFields);
-	/*	field_num = rf.GetCount();
-		pRsrc = new RField*[field_num];
-		for(int i=0; i < field_num; i++)
-		{
-			pRsrc[i] = rf[i];
-		}
-	*/
-	}	virtual ~RKey(){};
+	RKey(QTable* pqt, Record* pRecSrc);
+	virtual ~RKey(){};
 
 	void Get(char* str);
-//	bool CanSet(char*& str);
-//	void Set(char* str);
 	void SetIdentity();
 	uint GetCount(){return pRFields.size();};
 
@@ -125,58 +107,18 @@ public:/// For Link
 	bool IsNull();
 	void SetNull();
 
+/*
 	void Select(SqlStmt& str);
 	void Delete(SqlStmt& str);
 	void SrcSelect(SqlStmt& str);
 	void Update(SqlStmt& str);
 	void Refresh(SqlStmt& str);
 
+*/
+
 	RKey& operator=(RKey& rk);
 
 
-/*	RField**	pRtrg;
-	Record*		pTRec;
-	const char*	rest;
-	bool		clone;
-	bool		copy;
-*/
-/*	RKey(RKey* prk);
-	RKey(RKey& rk);
-*/
-/*	Table* GetTable();
-	CString GetForm(int num);
-	const char* GetRest();
-	void SetRest(const char* str);
-*/
-/*	Record* GetTarget(){return pTRec;};
-	Record* GetSource();
-	void SetTarget(Record* pr);
-	void SaveTarget();
-	bool Return();
-	bool IfKey();
-	void FreeTarget();
-	void RequerySrc();
-	void RequeryTrg();
-*/
-/*	Record* GetRecord();
-	void EmptyTarget();
-	void EmptySrc();
-	void NewTarget();
-	void SQLRefr(CString& str, QFields& wqf, bool useAlias);
-	void SQLStr(CString& str, bool useAlias);
-	bool Where(CString& str, bool bWhere);
-*/
-/*	const char* GetName();
-	const char* GetSrcData(int n = 0);
-	void SetSrcData(const char* data, int n );//n = 0
-	void SetSrcData(int data, int n = 0);
-	void GetSrcFields(char* str, RFields& rf);
-	const char* GetFun(char* str);
-*/
-private:
-/*friend class Record;
-friend class DataBase;
-*/
 };
 
 
@@ -211,10 +153,14 @@ public:
 		state = s_dirty;
 		return prf;
 	}
-	RField* getRField(string f){
-		QField* pqf = pQuery->getQField(f);
+	RField* getRField(QField* pqf){
 		auto it=rfieldmap.find(pqf);
 		return it != rfieldmap.end() ? *it : createRField(pqf);
+	}
+
+	RField* getRField(string f){
+		QField* pqf = pQuery->getQField(f);
+		return getRField(pqf);
 	}
 
 	void New();

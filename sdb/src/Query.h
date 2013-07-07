@@ -8,68 +8,60 @@
 #include "Table.h"
 
 STD_TYPEDEFS2(QField,Field*)
-STD_TYPEDEFS(QTable)
-STD_TYPEDEFS(Query)
+//STD_TYPEDEFS(QTable)
+class QTable;
+STD_TYPEDEFS2(Query,Table*)
 
 class RKey;
 
-class QField
-{
+class QField {
 	QTable* pQTable;
 public:
-	Field*	pField;
+	Field* pField;
 	QField(QTable* pqt, Field* pf) :
-		pQTable(pqt),
-		pField(pf){
+			pQTable(pqt), pField(pf) {
 	}
-	virtual ~QField(){};
+	virtual ~QField() {
+	}
+	;
 };
 
-
-class QTable
-{
+class QTable {
 public:
-	typedef QFieldMapOwner	QFields;
-	typedef stringstream	SqlStmt;
-	Table*  pNTable;
-	string	alias;
+	typedef QFieldMapOwner QFields;
+	typedef stringstream SqlStmt;
+	Table* pNTable;
+	string alias;
 	QTable* parent;
 	QFields qfields;
-	FKey*	pFKey;
+	FKey* pFKey;
 	QTable* next;
 
 public:
 // Construction/Destruction
 	QTable(Table* pt) :
-		pNTable(pt),
-		alias("master"),
-		parent(NULL),
-		pFKey(NULL),
-		next(NULL){
+			pNTable(pt), alias("master"), parent(NULL), pFKey(NULL), next(NULL) {
 	}
 
 	QTable(QTable* pqt, FKey* pfk) :
-			pNTable(pfk->pPKey->pTable),
-			alias(getAlias()),
-			parent(pqt),
-			pFKey(pfk),
-			next(NULL){
+			pNTable(pfk->pPKey->pTable), alias(genAlias()), parent(pqt), pFKey(
+					pfk), next(NULL) {
 	}
-	virtual ~QTable(){
+	virtual ~QTable() {
 		delete next;
 	}
 
 // Construction helpers
-	QTable* join(string fkeyname)	{
+	QTable* join(string fkeyname) {
 		FKey* pfk = pNTable->getFKey(fkeyname);
-		if(!pfk)
+		if (!pfk)
 			return NULL;
 		return join(pfk);
 	}
 
 	QTable* join(FKey* pfk) {
 		QTable* pqt = find(this, pfk);
-		if(pqt)
+		if (pqt)
 			return pqt;
 		pqt = add(new QTable(this, pfk));
 		return pqt;
@@ -79,42 +71,36 @@ public:
 	QField* getQField(string name) {
 		Field* pf;
 		pf = pNTable->getField(name);
-		if(!pf)
+		if (!pf)
 			return NULL;
-		QField* pqf = getQField(pf);
-		return pqf ? pqf : addQField(pf);
+		return getQField(pf);
 	}
-
-	bool	isMaster(){return parent == NULL;};
+	QField* getQField(Field* pf) {
+		auto it = qfields.find(pf);
+		return it != qfields.end() ? it->second.get() : addQField(pf);
+	}
+	QFieldVector getQFields(FieldVector& fv) {
+		QFieldVector qfv;
+		for (auto f : fv) {
+			qfv.push_back(getQField(f));
+		}
+		return qfv;
+	}
 
 // RKey creation
 
-	void GetKeyFields(QFields& qtrg)
-	QFieldVector getKeyFields()
-	{
-		if(parent)
-		{
-			return parent->getQFields(pFKey->pFields);
-		}else
-		{
-			GetQFields(pNTable->pkey)->pFields, qf);
-		}
+	QFieldVector getKeyFields() {
+		if (parent)
+			return parent->getQFields(pFKey->fields);
+		else
+			return getQFields(pNTable->pkey.fields);
 	}
 
-	QTable* getFirstChild()
-	{
-		if(!parent)
-			return this;
-		if(!parent->parent)
-			return this;
-		else
-			return parent->getFirstChild();
-	};
-	void		sql_select(SqlStmt& str, bool first = true);
-	void		sql_delete(SqlStmt& str);
-	string& 	aliaS(){return alias;};
-	void		set_mark(bool this_only);
-	const char* GetRest();
+	bool isMaster() {
+		return parent == NULL;
+	}
+	;
+
 private:
 	QTable* add(QTable* pqt) {
 		if (next)
@@ -133,31 +119,23 @@ private:
 		else
 			return NULL;
 	}
-	QField* addQField(Field* pf){
+	QField* addQField(Field* pf) {
 		QField* pqf = new QField(this, pf);
-		qfields.emplace(pf,QFieldPtr(pqf));
+		qfields.emplace(pf, QFieldPtr(pqf));
 		return pqf;
 	}
-	QField* getQField(Field* pf){
-		return qfields[pf].get();
-	}
-	static string getAlias(){
-		static int anum=0;
-/*
-		char s[64];
-		sprintf(s, "t%d", anum);
-		return s;
-*/
+	static string genAlias() {
+		static int anum = 0;
 		return string("t") + to_string(++anum);
 	}
 };
 
-class Query  
-{
-	QTable* pQTable;
+class Query {
+	typedef QueryMapOwner Queries;
 public:
+	QTable* pQTable;
 
-	Query(Table* pt){
+	Query(Table* pt) {
 		pQTable = new QTable(pt);
 	}
 
@@ -165,20 +143,24 @@ public:
 		delete pQTable;
 	}
 
-
 // Creation helpers
-	QField* getQField(string str){
-		queue<string> parts = split(str,'.');
+	QField* getQField(string str) {
+		queue < string > parts = split(str, '.');
 		QTable* last = pQTable;
 
-
-		while(parts.size() > 1){
-			last=last->join(parts.front());
+		while (parts.size() > 1) {
+			last = last->join(parts.front());
 			parts.pop();
 		}
 		return last->getQField(parts.front());
 	}
+	static Queries queries;
+	static Query* getQuery(Table* pt) {
+		QueryPtr& pq = queries[pt];
+		if (!pq)
+			pq.reset(new Query(pt));
+		return pq.get();
+	}
 };
 
 #endif // QUERY_H_
-

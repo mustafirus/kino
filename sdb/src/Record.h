@@ -33,7 +33,7 @@ public:
 	Record* pRec;
 
 	enum Flag {
-		s_dirty = 1, s_null = 2, s_modified = 4, s_hidden = 8
+		s_dirty = 1, s_modified = 2, s_null = 4, s_hidden = 8
 	};
 	State<Flag> state;
 
@@ -64,6 +64,19 @@ public:
 		return NULL;
 	}
 
+	bool isNull() {return state == s_null;}
+	void setNull() { state = s_null; state /= s_dirty; setModified(); }
+	void setModified(){
+		 state = s_modified;
+		 pRec->setModified();
+	}
+	bool isModified(){
+		 return state == s_modified;
+	}
+	bool isDirty(){
+		 return state == s_dirty;
+	}
+
 	void Delete(){
 /*
 		if(ro())
@@ -92,20 +105,34 @@ public:/// For Link
 	typedef RFieldVector RFields;
 	typedef QFieldVector QFields;
 	QTable*		pQTable;	//Src
-	RFields		pRFields;	// Src
+	RFields		rFields;	// Src
 	Query*		pQuery;		//Trg
-	QFields		pQFields;	//Trg
+	QFields		qFields;	//Trg
 
 	RKey(QTable* pqt, Record* pRecSrc);
 	virtual ~RKey(){};
 
 	void Get(char* str);
 	void SetIdentity();
-	uint GetCount(){return pRFields.size();};
+	uint GetCount(){return rFields.size();};
 
-	bool IsPrimary();
-	bool IsNull();
-	void SetNull();
+	bool isPrimary(){
+		return pQTable->isMaster();
+	}
+
+	bool isNull(){
+		for( auto prf : rFields){
+			if(prf->isNull())
+				return true;
+		}
+		return false;
+	}
+	void SetNull(){
+		for( auto prf : rFields){
+			prf->setNull();
+		}
+	}
+
 
 /*
 	void Select(SqlStmt& str);

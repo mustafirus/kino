@@ -43,8 +43,9 @@ public:
 	RField(QField* pqf, Record* pr) :
 		pQField(pqf),
 		pRec(pr),
-		state(s_dirty && s_hidden){
+		state(s_hidden){
 		buf	= malloc(getBufLen());
+		setDirty();
 	}
 
 	virtual ~RField(){
@@ -66,15 +67,17 @@ public:
 
 	bool isNull() {return state == s_null;}
 	void setNull() { state = s_null; state /= s_dirty; setModified(); }
-	void setModified(){
-		 state = s_modified;
-		 pRec->setModified();
-	}
+	void setModified();
 	bool isModified(){
 		 return state == s_modified;
 	}
 	bool isDirty(){
-		 return state == s_dirty;
+		return state == s_dirty;
+	}
+	void setDirty();
+
+	void show(){
+		state /= s_hidden;
 	}
 
 	void Delete(){
@@ -187,13 +190,30 @@ public:
 
 	RField* getRField(string f){
 		QField* pqf = pQuery->getQField(f);
-		return getRField(pqf);
+		RField* prf = getRField(pqf);
+		prf->show();
+		return prf;
 	}
 
 	void New();
 	void Load();
 	void Save();
 	void Refresh(RKey* prk);
+
+	void setModified(){
+		 state = s_modified;
+	}
+	bool isModified(){
+		 return state == s_modified;
+	}
+	bool isDirty(){
+		 return state == s_dirty;
+	}
+
+	void setDirty(){
+		 state = s_dirty;
+	}
+
 
 	RKey* GetRKey(QTable* pqt = NULL) {
 		if(!pqt)

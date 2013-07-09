@@ -99,7 +99,6 @@ public:
 	bool isMaster() {
 		return parent == NULL;
 	}
-	;
 
 private:
 	QTable* add(QTable* pqt) {

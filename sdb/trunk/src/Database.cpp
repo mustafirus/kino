@@ -8,7 +8,7 @@
 #include "stdx.h"
 #include "Database.h"
 
-Database::stmtpool::~stmtpool(){
+Database::Stmtpool::~Stmtpool(){
 	while (!empty())
 	  {
 	    delete back();
@@ -16,15 +16,15 @@ Database::stmtpool::~stmtpool(){
 	  }
 };
 
-Database::Stmt* Database::prepare(const char* sql){
-	stmtpool& sp = stm[sql];
-	stmtpool::iterator i=sp.begin();
+Database::Stmt* Database::prepare(string sql){
+	Stmtpool& sp = stm[sql];
+	auto i=sp.begin();
 	Stmt* p;
 	while(i != sp.end()){
 		p = (*i);
 		BEGIN_CRITICAL_SECTION
-		if(!p->busy){
-			p->busy = true;
+		if(!p->isBusy()){
+			p->setBusy(true);
 			return p;
 		}
 		END_CRITICAL_SECTION

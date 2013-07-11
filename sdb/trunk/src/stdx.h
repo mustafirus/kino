@@ -1,3 +1,6 @@
+#ifndef STDX_H_
+#define STDX_H_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -9,13 +12,15 @@
 
 #include <algorithm>
 #include <cassert>
-#include <queue>
-#include <unordered_map>
 #include <functional>
 #include <cctype>
 #include <locale>
 
 #include <vector>
+#include <list>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
 #include <map>
 #include <memory>
 
@@ -103,8 +108,10 @@ typedef unique_ptr<X> X##Ptr; \
 typedef vector<X##Ptr>  X##VectorOwner; \
 typedef unordered_map<T,X##Ptr>  X##MapOwner; \
 typedef vector<X*>  X##Vector; \
+typedef list<X*>  X##List; \
 typedef unordered_map<T,X*>  X##Map;
 
 #define STD_TYPEDEFS(X) STD_TYPEDEFS2(X,string)
 
 
+#endif // STDX_H_

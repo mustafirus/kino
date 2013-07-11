@@ -15,8 +15,8 @@ STD_TYPEDEFS2(Query,Table*)
 class RKey;
 
 class QField {
-	QTable* pQTable;
 public:
+	QTable* pQTable;
 	Field* pField;
 	QField(QTable* pqt, Field* pf) :
 			pQTable(pqt), pField(pf) {
@@ -33,42 +33,27 @@ class QTable {
 public:
 	typedef QFieldMapOwner QFields;
 	typedef stringstream SqlStmt;
+	typedef unordered_set<QTable*> Marks;
 	Table* pNTable;
 	string alias;
 	QTable* parent;
 	QFields qfields;
 	FKey* pFKey;
-	QTable* next;
+//	QTable* next;
 
 public:
 // Construction/Destruction
 	QTable(Table* pt) :
-			pNTable(pt), alias("master"), parent(NULL), pFKey(NULL), next(NULL) {
+			pNTable(pt), alias("master"), parent(NULL), pFKey(NULL) {
 	}
 
 	QTable(QTable* pqt, FKey* pfk) :
 			pNTable(pfk->pPKey->pTable), alias(genAlias()), parent(pqt), pFKey(
-					pfk), next(NULL) {
+					pfk) {
 	}
-	virtual ~QTable() {
-		delete next;
-	}
-
-// Construction helpers
-	QTable* join(string fkeyname) {
-		FKey* pfk = pNTable->getFKey(fkeyname);
-		if (!pfk)
-			return NULL;
-		return join(pfk);
+	~QTable() {
 	}
 
-	QTable* join(FKey* pfk) {
-		QTable* pqt = find(this, pfk);
-		if (pqt)
-			return pqt;
-		pqt = add(new QTable(this, pfk));
-		return pqt;
-	}
 	QTable* getLink(QTable* pqt);
 //	QTable* GetLink(QTable* pqtlink, QTable* pqtthis = NULL);
 	QField* getQField(string name) {
@@ -103,24 +88,13 @@ public:
 		return parent == NULL;
 	}
 
+	void mark( Marks& m ){
+		m.insert(this);
+		if(parent)
+			parent->mark(m);
+	}
+
 private:
-	QTable* add(QTable* pqt) {
-		if (next)
-			return next->add(pqt);
-		else {
-			next = pqt;
-			pqt->next = NULL;
-			return pqt;
-		}
-	}
-	QTable* find(QTable* pqt, FKey* pfk) {
-		if (parent == pqt && pFKey == pfk)
-			return this;
-		if (next)
-			return next->find(pqt, pfk);
-		else
-			return NULL;
-	}
 	QField* addQField(Field* pf) {
 		QField* pqf = new QField(this, pf);
 		qfields.emplace(pf, QFieldPtr(pqf));
@@ -133,25 +107,31 @@ private:
 };
 
 class Query {
-	typedef QueryMapOwner Queries;
+	typedef QueryMapOwner	Queries;
+	typedef list<QTable>	QTables;
 public:
-	QTable* pQTable;
 
-	Query(Table* pt) {
-		pQTable = new QTable(pt);
+	QTable* pQTable;
+	QTables qtables;
+
+	Query(Table* pt) : pQTable(nullptr) {
+//		pQTable = new QTable(pt);
+		qtables.emplace_back(pt);
 	}
 
 	virtual ~Query() {
-		delete pQTable;
+//		delete pQTable;
 	}
 
 // Creation helpers
 	QField* getQField(string str) {
 		queue < string > parts = split(str, '.');
-		QTable* last = pQTable;
+		if(parts.empty())
+			return nullptr;
+		QTable* last = &qtables.front();
+		while (&parts.front() != &parts.back()) {//parts.size() > 1
 
-		while (parts.size() > 1) {
-			last = last->join(parts.front());
+			last = join(last, parts.front());
 			parts.pop();
 		}
 		return last->getQField(parts.front());
@@ -163,6 +143,86 @@ public:
 			pq.reset(new Query(pt));
 		return pq.get();
 	}
+
+	/*used by record*/
+	string getSelect(QFieldList fields, QFieldVector where){
+		ostringstream sql;
+
+		QTable::Marks marks;
+
+		sql << "SELECT ";
+		const char* coma = "";
+
+		for (auto pqf : fields) {
+			sql << coma;
+			coma = ", ";
+			sql << pqf->alias() << "." << pqf->name();
+			pqf->pQTable->mark(marks);
+		}
+
+		sql << "\nFROM ";
+		bool first = true;
+
+		for(auto &qt : qtables){
+			QTable* pqt = &qt;
+			if(!marks.count(pqt))
+				continue;
+
+			if(first){
+				sql << pqt->pNTable->name << " as " << pqt->alias << " ";
+				first = false;
+				continue;
+			}
+			sql << "\nJOIN ";
+			sql << pqt->pNTable->name << " as " << pqt->alias << " ";
+			for(size_t i = 0; i < pqt->pFKey->fields.size(); i++)
+			{
+				sql << (i ? " AND " : " ON ") << pqt->alias << "." << pqt->pFKey->pPKey->fields[i]->name <<
+					" = " << pqt->parent->alias << "." <<
+					pqt->pFKey->fields[i]->name;
+			}
+		}
+
+		sql << "\nWHERE ";
+
+		for(size_t i = 0, s = where.size(); i < s; i++)
+		{
+			if(i!=0)
+				sql << " AND ";
+			QField* pqf = where[i];
+			sql << pqf->alias() << "." << pqf->name() << " = ?";
+
+		}
+
+		return sql.str();
+	}
+
+
+private:
+	QTable* find(QTable* pqt, FKey* pfk) {
+		for(auto & qt : qtables){
+			if (qt.parent == pqt && qt.pFKey == pfk)
+				return &qt;
+		}
+		return NULL;
+	}
+
+	QTable* join(QTable* pqt_parent, string fkeyname) {
+		FKey* pfk = pqt_parent->pNTable->getFKey(fkeyname);
+		if (!pfk)
+			return nullptr;
+		return join(pqt_parent, pfk);
+	}
+
+	QTable* join(QTable* pqt_parent, FKey* pfk) {
+		QTable* pqt = find(pqt_parent, pfk);
+		if (pqt)
+			return pqt;
+
+		qtables.emplace_back(pqt_parent, pfk);
+		return &qtables.back();
+	}
+
 };
 
 #endif // QUERY_H_

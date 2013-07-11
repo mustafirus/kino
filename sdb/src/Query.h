@@ -23,7 +23,10 @@ public:
 	}
 	virtual ~QField() {
 	}
-	;
+	string name(){
+		return pField->name;
+	}
+	string alias();		// { return pQTable->alias; }
 };
 
 class QTable {

@@ -29,36 +29,34 @@ void RField::setDirty(){
 
 void Record::Load(bool refresh){
 
-	if(pPRKey->isNull())
+	if (pPRKey->isNull())
 		New();
-	if(true)
-	{
-
 //		ASSERT(pRFields.size());
-		RFieldVector loadrfs;
-		for(auto const& rf : rfields){
-			if(rf->isModified())
-				continue;
-			if(refresh or rf->isDirty()){
-				loadrfs.push_back(rf.get());
-			}
+	RFieldVector loadrfs;
+	for (auto const& rf : rfields) {
+		if (rf->isModified())
+			continue;
+		if (refresh or rf->isDirty()) {
+			loadrfs.push_back(rf.get());
 		}
-
-		ostringstream sql;
-		sql << "SELECT ";
-		for(int i = 0; i<pRFields.size(); i++)
-		{
-			if(i>0)
-				str << ", ";
-			(*pRFields[i])->Select(str);
-			(*pRFields[i])->Mark();
-		}
-		str << "\nFROM ";
-		pQuery->pQTable->Select(str);
-		ASSERT(pPRKey);
-		str << "\nWHERE ";
-		pPRKey->Select(str);
 	}
+	if(!loadrfs.size())
+		return;
+
+	ostringstream sql;
+	sql << "SELECT ";
+	for (auto rf : loadrfs) {
+//		if (i > 0)
+//			str << ", ";
+		sql << rf->pQField->alias() << "." << rf->pQField->name();
+		(*pRFields[i])->Mark();
+	}
+
+	str << "\nFROM ";
+	pQuery->pQTable->Select(str);
+	ASSERT(pPRKey);
+	str << "\nWHERE ";
+	pPRKey->Select(str);
 	try{
 		if(!pDbStmt)
 		{

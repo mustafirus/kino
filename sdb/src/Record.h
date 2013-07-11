@@ -196,7 +196,7 @@ public:
 	}
 
 	void New();
-	void Load();
+	void Load(bool refresh = false);
 	void Save();
 	void Refresh(RKey* prk);
 

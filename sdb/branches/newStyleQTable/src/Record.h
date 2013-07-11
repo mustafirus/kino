@@ -9,6 +9,7 @@
 #define RECORD_H_
 
 #include "Query.h"
+#include "Database.h"
 
 STD_TYPEDEFS2(RField,QField*)
 STD_TYPEDEFS2(RKey,QTable*)
@@ -136,16 +137,6 @@ public:/// For Link
 		}
 	}
 
-
-/*
-	void Select(SqlStmt& str);
-	void Delete(SqlStmt& str);
-	void SrcSelect(SqlStmt& str);
-	void Update(SqlStmt& str);
-	void Refresh(SqlStmt& str);
-
-*/
-
 	RKey& operator=(RKey& rk);
 
 
@@ -153,6 +144,7 @@ public:/// For Link
 
 
 class Record {
+
 public:
 	typedef RFieldVectorOwner RFields;
 	typedef RKeyMapOwner RKeys;
@@ -168,6 +160,7 @@ public:
 
 	RKey*	pPRKey;
 	RKeys	pRKeys;
+	Database::Stmt* pStmt = nullptr;
 
 protected:
 	Record();
@@ -195,7 +188,7 @@ public:
 		return prf;
 	}
 
-	void New();
+	void New(){};
 	void Load(bool refresh = false);
 	void Save();
 	void Refresh(RKey* prk);
@@ -212,6 +205,8 @@ public:
 
 	void setDirty(){
 		 state = s_dirty;
+		 pStmt->release();
+		 pStmt=nullptr;
 	}
 
 

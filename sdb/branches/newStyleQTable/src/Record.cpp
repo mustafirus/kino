@@ -28,36 +28,29 @@ void RField::setDirty(){
 }
 
 void Record::Load(bool refresh){
-/*
+
+	if(state == s_dirty){}
 
 	if (pPRKey->isNull())
 		New();
 //		ASSERT(pRFields.size());
 	RFieldVector loadrfs;
+	QFieldList   loadqfs;
 	for (auto const& rf : rfields) {
 		if (rf->isModified())
 			continue;
 		if (refresh or rf->isDirty()) {
 			loadrfs.push_back(rf.get());
+			loadqfs.push_back(rf->pQField);
 		}
 	}
 	if(!loadrfs.size())
 		return;
 
-	ostringstream sql;
-	sql << "SELECT ";
-	for (auto rf : loadrfs) {
-//		if (i > 0)
-//			str << ", ";
-		sql << rf->pQField->alias() << "." << rf->pQField->name();
-		(*pRFields[i])->Mark();
-	}
+	string sql = pQuery->getSelect(loadqfs, pPRKey->qFields);
 
-	str << "\nFROM ";
-	pQuery->pQTable->Select(str);
-	ASSERT(pPRKey);
-	str << "\nWHERE ";
-	pPRKey->Select(str);
+
+/*
 	try{
 		if(!pDbStmt)
 		{
@@ -88,6 +81,7 @@ void Record::Load(bool refresh){
 	}
 	state /= s_dummy;
 	return true;
-
 */
+
+
 }

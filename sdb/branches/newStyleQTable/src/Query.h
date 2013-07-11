@@ -145,7 +145,7 @@ public:
 	}
 
 	/*used by record*/
-	string getSelect(list<QField*> fields, QFieldVector where){
+	string getSelect(QFieldList fields, QFieldVector where){
 		ostringstream sql;
 
 		QTable::Marks marks;

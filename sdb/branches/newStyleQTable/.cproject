@@ -45,11 +45,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1135114547.1436649180" name="Query.cpp" rcbsApplicability="disable" resourcePath="src/Query.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696.1866286767">
-						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696.1866286767" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696"/>
+					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1135114547.25498416" name="Database.cpp" rcbsApplicability="disable" resourcePath="src/Database.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696.2069560979">
+						<tool id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696.2069560979" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.2106801696"/>
 					</fileInfo>
 					<sourceEntries>
-						<entry excluding="src/Table_bak.cpp|src/QTable.cpp|src/QField.cpp|src/MyDb.cpp|src/Database.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Table_bak.cpp|src/QTable.cpp|src/QField.cpp|src/MyDb.cpp" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

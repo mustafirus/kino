@@ -28,6 +28,7 @@ void RField::setDirty(){
 }
 
 void Record::Load(bool refresh){
+/*
 
 	if (pPRKey->isNull())
 		New();
@@ -88,4 +89,5 @@ void Record::Load(bool refresh){
 	state /= s_dummy;
 	return true;
 
+*/
 }

@@ -29,11 +29,9 @@ void RField::setDirty(){
 
 void Record::Load(bool refresh){
 
-	if(state == s_dirty){}
-
 	if (pPRKey->isNull())
 		New();
-//		ASSERT(pRFields.size());
+
 	RFieldVector loadrfs;
 	QFieldList   loadqfs;
 	for (auto const& rf : rfields) {
@@ -50,8 +48,10 @@ void Record::Load(bool refresh){
 	string sql = pQuery->getSelect(loadqfs, pPRKey->qFields);
 
 
-/*
+
+	Database::Stmt* ps = Database::pdb->prepare(sql);
 	try{
+/*
 		if(!pDbStmt)
 		{
 			pDbStmt = pDB->Prepare(str);
@@ -68,20 +68,18 @@ void Record::Load(bool refresh){
 		if(!pDB->Read())
 			return false;
 		pDB->FlushEx();
-	}catch(DbException* e)
+*/
+	}catch(...)
 	{
-		e->Effect();
-		pDB->FlushEx();
-		return false;
+		ps->release();
+		return;
 	}
+/*
 	for(int i = 0; i<pRFields.size(); i++)
 	{
 		if(pRFields[i]->state != RField::s_modified)
 			pDB->CheckData(pRFields[i]);
 	}
-	state /= s_dummy;
-	return true;
 */
-
-
+	state /= s_dirty;
 }

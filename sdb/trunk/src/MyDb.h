@@ -22,7 +22,8 @@ class MyDb: public Database {
 		unsigned int 	field_count;
 		unsigned long	param_count;
 		MYSQL_BIND*		fields;
-		my_bool*		is_null;
+		my_bool*		is_null_field;
+		my_bool*		is_null_param;
 		unsigned long*	length;
 		MYSQL_BIND*		params;
 		RFields			rfields;
@@ -36,12 +37,12 @@ class MyDb: public Database {
 		void release();
 
 	public:
-		Stmt(MYSQL_STMT* st, const char* sql);
+		Stmt(MYSQL_STMT* st, string sql);
 		virtual ~Stmt();
 
 	};
 
-	Database::Stmt* create(const char* sql);
+	Database::Stmt* create(string sql);
 public:
 	MyDb();
 	virtual ~MyDb();

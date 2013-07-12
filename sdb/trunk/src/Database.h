@@ -18,26 +18,26 @@ public:
 	class Stmt;
 
 private:
-	class Stmtpool: public std::deque<Stmt*> {
-	public:
-		~Stmtpool();
-	};
-	typedef std::unordered_map<string, Stmtpool> stmtmap;
-	stmtmap stm;
+	typedef deque<unique_ptr<Stmt>> StmtPool;
+	typedef unordered_map<string, StmtPool> StmtMap;
+	StmtMap stm;
 protected:
 	virtual Stmt* create(string sql)=0;
 
 public:
 	class Stmt {
-//		friend class Database;
-		bool busy;
+
+		mutex busy;
 	public:
 		typedef std::vector<RField*> RFields;
-		Stmt() :
-				busy(true) {
+		Stmt(){
+			busy.lock();
 		}
 		virtual ~Stmt() {
+			busy.unlock();
 		}
+		bool lock(){return busy.try_lock();};
+		void unlock(){busy.unlock();};
 
 		virtual void bind(RFields& rf) = 0;
 		virtual void param(RKey* prk) = 0;
@@ -46,8 +46,6 @@ public:
 		virtual void fetch() = 0;
 		virtual void release();
 
-		bool isBusy(){return busy;};
-		void setBusy(bool b){busy = b;};
 	};
 	Database() {
 	}

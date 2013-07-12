@@ -16,7 +16,7 @@ Database::Stmt* Database::prepare(string sql){
 			return pst.get();
 	}
 	Stmt* p = create(sql);
-	sp.push_back(unique_ptr<Stmt>(p));
+	sp.emplace_back(p);
 	return p;
 };
 

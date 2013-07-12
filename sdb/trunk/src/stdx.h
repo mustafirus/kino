@@ -114,5 +114,14 @@ typedef unordered_map<T,X*>  X##Map;
 
 #define STD_TYPEDEFS(X) STD_TYPEDEFS2(X,string)
 
+STD_TYPEDEFS(Field)
+STD_TYPEDEFS(FKey)
+STD_TYPEDEFS(Table)
+STD_TYPEDEFS2(QField,Field*)
+class QTable;
+STD_TYPEDEFS2(Query,Table*)
+
+STD_TYPEDEFS2(RField,QField*)
+STD_TYPEDEFS2(RKey,QTable*)
 
 #endif // STDX_H_

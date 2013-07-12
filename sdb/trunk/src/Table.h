@@ -5,9 +5,6 @@
 #ifndef TABLE_H_
 #define TABLE_H_
 
-STD_TYPEDEFS(Field)
-STD_TYPEDEFS(FKey)
-STD_TYPEDEFS(Table)
 
 
 class Field

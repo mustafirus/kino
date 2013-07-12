@@ -51,35 +51,15 @@ void Record::Load(bool refresh){
 
 	Database::Stmt* ps = Database::pdb->prepare(sql);
 	try{
-/*
-		if(!pDbStmt)
-		{
-			pDbStmt = pDB->Prepare(str);
-		}else
-			pDB->Set(pDbStmt);
-		pDB->BindParameter(pPRKey);
-		for(int i=0; i < pRFields.size(); i++)
-		{
-			if(pRFields[i]->state == RField::s_modified)
-				continue;
-			pDB->Bind(i+1, pRFields[i]);
-		}
-		pDB->Exec();
-		if(!pDB->Read())
-			return false;
-		pDB->FlushEx();
-*/
+		ps->bind(loadrfs);
+		ps->param(pPRKey);
+		ps->execute();
+		ps->fetch();
+		ps->release();
 	}catch(...)
 	{
 		ps->release();
 		return;
 	}
-/*
-	for(int i = 0; i<pRFields.size(); i++)
-	{
-		if(pRFields[i]->state != RField::s_modified)
-			pDB->CheckData(pRFields[i]);
-	}
-*/
 	state /= s_dirty;
 }

@@ -29,7 +29,7 @@ public:
 
 		mutex busy;
 	public:
-		typedef std::vector<RField*> RFields;
+		typedef RFieldVector RFields;
 		Stmt(){
 			busy.lock();
 		}

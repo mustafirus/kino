@@ -7,11 +7,6 @@
 
 #include "Table.h"
 
-STD_TYPEDEFS2(QField,Field*)
-//STD_TYPEDEFS(QTable)
-class QTable;
-STD_TYPEDEFS2(Query,Table*)
-
 class RKey;
 
 class QField {

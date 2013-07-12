@@ -11,8 +11,6 @@
 #include "Query.h"
 #include "Database.h"
 
-STD_TYPEDEFS2(RField,QField*)
-STD_TYPEDEFS2(RKey,QTable*)
 class Record;
 
 template<class T>

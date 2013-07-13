@@ -208,7 +208,7 @@ public:
 	}
 
 
-	RKey* GetRKey(QTable* pqt = NULL) {
+	RKey* getRKey(QTable* pqt = NULL) {
 		if(!pqt)
 			pqt = pQuery->pQTable;
 

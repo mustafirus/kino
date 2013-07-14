@@ -15,16 +15,16 @@ RKey::RKey(QTable* pqt, Record* pRecSrc) :
 		rFields.push_back(pRecSrc->getRField(it));
 	}
 	pQuery = Query::getQuery(pqt->pNTable);
-	qFields = pQuery->pQTable->getKeyFields();
+	qFields = pQuery->getMaster()->getKeyFields();
 }
 void RField::setModified(){
 	 state = s_modified;
-	 pRec->setModified();
+//	 pRec->setModified();
 }
 
 void RField::setDirty(){
 	state = s_dirty;
-	pRec->setDirty();
+//	pRec->setDirty();
 }
 
 void Record::Load(bool refresh){

@@ -9,19 +9,30 @@
 #define RECORDSET_H_
 
 #include "Record.h"
+class PRKey{
+	typedef RFieldVectorOwner RFields;
 
-class Recordset: public Record {
+	RFields rfields;
+};
+
+class Recordset {
 public:
 	typedef deque<RKey> RKeys;
+	typedef RFieldVectorOwner RFields;
+
+	Query*		pQuery;
+	RFields		rfields;
 
 	RKeys		rkeys;
-	Recordset() {
-		// TODO Auto-generated constructor stub
+	Recordset(Query* pq) : pQuery(pq) {
 
 	}
+
 	virtual ~Recordset() {
-		// TODO Auto-generated destructor stub
+
 	}
+	void Load();
+	void Save();
 };
 
 #endif /* RECORDSET_H_ */

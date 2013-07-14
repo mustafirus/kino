@@ -106,10 +106,10 @@ class Query {
 	typedef list<QTable>	QTables;
 public:
 
-	QTable* pQTable;
+//	QTable* pQTable;
 	QTables qtables;
 
-	Query(Table* pt) : pQTable(nullptr) {
+	Query(Table* pt) {
 //		pQTable = new QTable(pt);
 		qtables.emplace_back(pt);
 	}
@@ -118,7 +118,8 @@ public:
 //		delete pQTable;
 	}
 
-// Creation helpers
+	QTable* getMaster(){return &qtables.front();}
+
 	QField* getQField(string str) {
 		queue < string > parts = split(str, '.');
 		if(parts.empty())

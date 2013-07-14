@@ -7,4 +7,3 @@
 
 #include "stdx.h"
 #include "Recordset.h"
-

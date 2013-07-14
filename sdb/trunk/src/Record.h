@@ -11,7 +11,7 @@
 #include "Query.h"
 #include "Database.h"
 
-class Record;
+//class Record;
 
 template<class T>
 class State {
@@ -29,7 +29,7 @@ class RField {
 public:
 	QField* pQField;
 	void* buf;
-	Record* pRec;
+//	Record* pRec;
 
 	enum Flag {
 		s_dirty = 1, s_modified = 2, s_null = 4, s_hidden = 8
@@ -39,9 +39,9 @@ public:
 
 public:
 
-	RField(QField* pqf, Record* pr) :
+	RField(QField* pqf/*, Record* pr*/) :
 		pQField(pqf),
-		pRec(pr),
+//		pRec(pr),
 		state(s_hidden){
 		buf	= malloc(getBufLen());
 		setDirty();
@@ -100,7 +100,7 @@ public:
 */
 	}
 };
-
+class Record;
 class RKey
 {
 public:/// For Link
@@ -168,7 +168,7 @@ public:
 
 	RField* createRField(QField* pqf)
 	{
-		RField* prf = new RField(pqf, this);
+		RField* prf = new RField(pqf/*, this*/);
 		rfields.push_back(RFieldPtr(prf));
 		rfieldmap.emplace(pqf,prf);
 		state = s_dirty;
@@ -210,7 +210,7 @@ public:
 
 	RKey* getRKey(QTable* pqt = NULL) {
 		if(!pqt)
-			pqt = pQuery->pQTable;
+			pqt = pQuery->getMaster();
 
 		auto it = pRKeys.find(pqt);
 		if(it != pRKeys.end())

@@ -17,13 +17,13 @@ class PRKey{
 
 class Recordset {
 public:
-	typedef deque<RKey> RKeys;
-	typedef RFieldVectorOwner RFields;
+	typedef deque<vector<RField> > RKeysFields;
+	typedef vector<RField> RFields;
 
 	Query*		pQuery;
+	RKeysFields rkeysfields;
 	RFields		rfields;
 
-	RKeys		rkeys;
 	Recordset(Query* pq) : pQuery(pq) {
 
 	}

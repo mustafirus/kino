@@ -27,7 +27,7 @@ public:
 class QTable {
 public:
 	typedef QFieldMapOwner QFields;
-	typedef stringstream SqlStmt;
+//	typedef stringstream SqlStmt;
 	typedef unordered_set<QTable*> Marks;
 	Table* pNTable;
 	string alias;

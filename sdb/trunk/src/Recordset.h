@@ -23,6 +23,7 @@ public:
 	Query*		pQuery;
 	RKeysFields rkeysfields;
 	RFields		rfields;
+	vector<RField*>  sortkey;
 
 	Recordset(Query* pq) : pQuery(pq) {
 

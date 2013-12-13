@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vbox>
+    <hbox>
+        <form><field label="f1"/><field label="f2"/><field label="f3"/></form>
+        <form><field label="f4"/><field label="f5"/><field label="f1"/></form>
+    </hbox>
+    <list>
+        <field/><field/><field/>
+    </list>
+
+</vbox>
